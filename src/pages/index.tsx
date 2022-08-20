@@ -1,6 +1,6 @@
 import { FormEvent, useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { Box, Button, TextField, Grid } from "@mui/material";
+import { Box, Button, TextField, Grid, Typography, Link } from "@mui/material";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -30,7 +30,10 @@ export default function Home() {
       height="100vh"
       width="100vw"
     >
-      <Grid container xs={4}>
+      <Grid container spacing={2} xs={10} sm={5} md={4} lg={3}>
+        <Grid item xs={12}>
+          <Typography variant="h3">Login</Typography>
+        </Grid>
         <Grid item xs={12}>
           <TextField
             variant="outlined"
@@ -61,6 +64,11 @@ export default function Home() {
           >
             Entrar
           </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Typography variant="body2">
+            Clique aqui e <Link href="/cadastro">cadastre-se</Link>
+          </Typography>
         </Grid>
       </Grid>
     </Box>
