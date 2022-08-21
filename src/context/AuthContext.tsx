@@ -11,7 +11,7 @@ type User = {
 
 type SignInCredentials = {
   email: string;
-  password: string;
+  senha: string;
 };
 
 type AuthContextData = {
@@ -41,25 +41,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const { "nextauth.token": token } = parseCookies();
 
     if (token) {
-      api
-        .get("/me")
-        .then((response) => {
-          console.log("res", response);
-          const { email, permissions, roles } = response?.data;
-
-          setUser({ email, permissions, roles });
-        })
-        .catch(() => {
-          signOut();
-        });
+      // api
+      //   .get("/me")
+      //   .then((response) => {
+      //     console.log("res", response);
+      //     const { email, permissions, roles } = response?.data;
+      //     setUser({ email, permissions, roles });
+      //   })
+      //   .catch(() => {
+      //     signOut();
+      //   });
     }
   }, []);
 
-  async function signIn({ email, password }) {
+  async function signIn({ email, senha }) {
     try {
-      const response = await api.post("sessions", {
+      const response = await api.post("/autenticao", {
         email,
-        password,
+        senha,
       });
 
       const { token, refreshToken, permissions, roles } = response.data;

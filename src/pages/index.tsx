@@ -4,16 +4,16 @@ import { Box, Button, TextField, Grid, Typography, Link } from "@mui/material";
 
 export default function Home() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [senha, setSenha] = useState("");
 
-  const { signIn, isAuthenticated } = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
 
     const data = {
       email,
-      password,
+      senha,
     };
 
     await signIn(data);
@@ -50,8 +50,8 @@ export default function Home() {
             label="Digite sua senha"
             type="password"
             fullWidth
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={senha}
+            onChange={(e) => setSenha(e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>
@@ -60,7 +60,7 @@ export default function Home() {
             variant="contained"
             size="large"
             fullWidth
-            disabled={!password || !email}
+            disabled={!senha || !email}
           >
             Entrar
           </Button>
