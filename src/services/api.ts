@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { parseCookies, setCookie } from "nookies";
 import { signOut } from "../context/AuthContext";
 
@@ -13,13 +13,19 @@ export const api = axios.create({
   },
 });
 
+interface AxiosError2 extends AxiosError {
+  response: AxiosResponse;
+}
+
 api.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error: AxiosError) => {
+  (error: AxiosError2) => {
     if (error.response.status === 401) {
-      if (error.response.data?.code === "token.expired") {
+      const code = error.response?.data?.code as string;
+
+      if (code === "token.expired") {
         cookies = parseCookies();
 
         const { "nextauth.refreshToken": refreshToken } = cookies;
