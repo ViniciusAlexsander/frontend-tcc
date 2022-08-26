@@ -1,4 +1,5 @@
 import { FormEvent, useContext, useState } from "react";
+import Image from "next/image";
 import { AuthContext } from "../context/AuthContext";
 import { Box, Button, TextField, Grid, Typography, Link } from "@mui/material";
 
@@ -20,17 +21,45 @@ export default function Home() {
   }
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
+    <Grid
+      container
+      xs={12}
       display="flex"
-      flexDirection="column"
       alignItems="center"
       justifyContent="center"
       height="100vh"
-      width="100vw"
     >
-      <Grid container spacing={2} xs={10} sm={5} md={4} lg={3}>
+      <Grid
+        container
+        item
+        display={{ xs: "none", sm: "flex" }}
+        sm={7}
+        md={6}
+        lg={5}
+        flexDirection="column"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Image
+          width={500}
+          height={592}
+          src="/imgLogin.svg"
+          objectFit="cover"
+          alt="Imagem de duas pessoas sentadas no sofá vendo um filme"
+        />
+      </Grid>
+      <Grid
+        container
+        item
+        spacing={2}
+        xs={10}
+        sm={5}
+        md={4}
+        lg={3}
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{ height: "50%" }}
+      >
         <Grid item xs={12}>
           <Typography variant="h3">Login</Typography>
         </Grid>
@@ -71,6 +100,6 @@ export default function Home() {
           </Typography>
         </Grid>
       </Grid>
-    </Box>
+    </Grid>
   );
 }
