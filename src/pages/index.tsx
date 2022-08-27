@@ -24,7 +24,13 @@ export default function Home() {
   };
   return (
     <Box>
-      <Carousel responsive={responsive} titulo="Novos filmes">
+      <Carousel
+        responsive={responsive}
+        titulo="Novos filmes"
+        arrows
+        mostrarPontos
+        mostrarProximo
+      >
         <Box sx={{ width: 200, height: 200, backgroundColor: "#707070" }}>
           Teste
         </Box>
