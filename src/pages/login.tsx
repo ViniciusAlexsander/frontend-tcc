@@ -1,7 +1,7 @@
 import { FormEvent, useContext, useState } from "react";
 import Image from "next/image";
 import { AuthContext } from "../context/AuthContext";
-import { Box, Button, TextField, Grid, Typography, Link } from "@mui/material";
+import { Button, TextField, Grid, Typography, Link } from "@mui/material";
 
 export default function Login() {
   const [email, setEmail] = useState("");

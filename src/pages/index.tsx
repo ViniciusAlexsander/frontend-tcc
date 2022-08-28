@@ -1,5 +1,3 @@
-import { FormEvent, useContext, useState } from "react";
-import Image from "next/image";
 import { GetStaticProps } from "next";
 import { Box, useTheme, useMediaQuery } from "@mui/material";
 import { Carousel, CardFilme } from "../shared/components";

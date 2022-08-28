@@ -11,7 +11,6 @@ import {
   AlertProps,
 } from "@mui/material";
 
-import { AuthContext } from "../context/AuthContext";
 import { api } from "../services/api";
 import Router from "next/router";
 
