@@ -19,7 +19,11 @@ import {
 import { ExitToApp, Menu } from "@mui/icons-material";
 import { routes } from "../../utils/routes";
 
-export const MenuLateral: React.FC = ({ children }) => {
+export interface MenuLateralProps {
+  children: React.ReactNode;
+}
+
+export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   const theme = useTheme();
