@@ -1,76 +1,61 @@
 import { FormEvent, useContext, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { Box, Button, TextField, Grid, Typography, Link } from "@mui/material";
+import Image from "next/image";
+import { GetStaticProps } from "next";
+import { Box, useTheme, useMediaQuery } from "@mui/material";
+import { Carousel, CardFilme } from "../shared/components";
+import { getUpcomingMovies, movie } from "../services/movies/upcomingMovies";
+import { ResponsiveType } from "../shared/components/Carousel";
 
-export default function Home() {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+interface HomeProps {
+  upComingMovies: movie[];
+}
 
-  const { signIn } = useContext(AuthContext);
+export default function Home({ upComingMovies }: HomeProps) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
 
-  async function handleSubmit(event: FormEvent) {
-    event.preventDefault();
-
-    const data = {
-      email,
-      senha,
-    };
-
-    await signIn(data);
-  }
-
+  const responsive: ResponsiveType = {
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 6,
+      slidesToSlide: 5, // optional, default to 1.
+    },
+    tablet: {
+      breakpoint: { max: 900, min: 464 },
+      items: 5,
+      slidesToSlide: 4, // optional, default to 1.
+    },
+    mobile: {
+      breakpoint: { max: 600, min: 0 },
+      items: 2,
+      slidesToSlide: 2, // optional, default to 1.
+    },
+  };
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      height="100vh"
-      width="100vw"
-    >
-      <Grid container spacing={2} xs={10} sm={5} md={4} lg={3}>
-        <Grid item xs={12}>
-          <Typography variant="h3">Login</Typography>
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            variant="outlined"
-            label="Digite seu e-mail"
-            type="email"
-            fullWidth
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            variant="outlined"
-            label="Digite sua senha"
-            type="password"
-            fullWidth
-            value={senha}
-            onChange={(e) => setSenha(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <Button
-            type="submit"
-            variant="contained"
-            size="large"
-            fullWidth
-            disabled={!senha || !email}
-          >
-            Entrar
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <Typography variant="body2">
-            Clique aqui e <Link href="/cadastro">cadastre-se</Link>
-          </Typography>
-        </Grid>
-      </Grid>
+    <Box>
+      <Carousel
+        responsive={responsive}
+        titulo="Próximos Lançamentos"
+        arrows
+        mostrarPontos={!isMobile}
+        mostrarProximo
+      >
+        {upComingMovies &&
+          upComingMovies.map((movie) => (
+            <CardFilme key={movie.id} movie={movie} />
+          ))}
+      </Carousel>
     </Box>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const { upComingMovies } = await getUpcomingMovies(1);
+
+  return {
+    props: {
+      upComingMovies: JSON.parse(JSON.stringify(upComingMovies)),
+    },
+    revalidate: 60 * 60 * 24, // 24hours
+  };
+};
