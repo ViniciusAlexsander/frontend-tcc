@@ -92,10 +92,10 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
         <AppBar
           position="fixed"
           sx={{
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            width: { md: `calc(100% - ${drawerWidth}px)` },
             ml: { sm: `${drawerWidth}px` },
             zIndex: (theme) => theme.zIndex.drawer + 1,
-            display: { xs: "block", sm: "none" },
+            display: { xs: "block", md: "none" },
             height: { xs: headerHeight },
           }}
         >
@@ -123,7 +123,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
             keepMounted: true,
           }}
           sx={{
-            display: { xs: "block", sm: "none" },
+            display: { xs: "block", md: "none" },
           }}
         >
           {itensMenu}
@@ -132,7 +132,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
           variant="permanent"
           anchor="left"
           sx={{
-            display: { xs: "none", sm: "block" },
+            display: { xs: "none", md: "block" },
           }}
         >
           {itensMenu}
@@ -140,11 +140,10 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
       </Box>
       <Grid
         container
-        xs={12}
         height="100vh"
-        width={{ xs: "100%", sm: `calc(100% - ${theme.spacing(30)})` }}
-        marginLeft={{ xs: 0, sm: theme.spacing(30) }}
-        marginTop={{ xs: headerHeight, sm: 0 }}
+        width={{ xs: "100%", md: `calc(100% - ${theme.spacing(30)})` }}
+        marginLeft={{ xs: 0, md: theme.spacing(30) }}
+        marginTop={{ xs: headerHeight, md: 0 }}
       >
         <Grid item xs={12}>
           {children}

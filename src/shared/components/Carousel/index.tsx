@@ -64,12 +64,14 @@ export const Carousel: React.FC<ICarouselProps> = ({
   const isXl = useMediaQuery(theme.breakpoints.only("xl"));
 
   let deviceType;
-  if (isXs) deviceType = "mobile";
-  if (isSm) deviceType = "tablet";
-  if (isMd) deviceType = "desktop";
+  if (isXs) deviceType = "xs";
+  if (isSm) deviceType = "sm";
+  if (isMd) deviceType = "md";
+  if (isLg) deviceType = "lg";
+  if (isXl) deviceType = "xl";
 
   return (
-    <Grid container xs={12}>
+    <Grid container>
       <Grid item xs={12} mb={4}>
         <Typography variant="h5">{titulo}</Typography>
       </Grid>

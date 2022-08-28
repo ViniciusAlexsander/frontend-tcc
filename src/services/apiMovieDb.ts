@@ -5,6 +5,7 @@ export const axiosMovies = axios.create({
   params: {
     api_key: process.env.NEXT_PUBLIC_MOVIE_DB_API_KEY,
     language: "pt-BR",
+    region: "BR",
   },
 });
 

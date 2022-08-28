@@ -8,12 +8,8 @@ interface MovieCardProps {
 type movie = {
   poster_path: string | null;
   title: string;
-  genre_ids: number[];
   id: number;
-  release_date: Date;
-  original_title: string;
   vote_average: number;
-  overview: string;
 };
 
 export function CardFilme({ movie }: MovieCardProps) {
