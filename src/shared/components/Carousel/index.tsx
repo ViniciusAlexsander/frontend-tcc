@@ -30,7 +30,7 @@ export type { ResponsiveType };
 
 const StyledMultiCarousel = styled(MultiCarousel)(({ theme }) => ({
   ".itemClass": {
-    marginLeft: "0px 16px",
+    // marginLeft: "20px", // margem entre os itens
     marginBottom: "32px",
   },
   ".dotClass": {

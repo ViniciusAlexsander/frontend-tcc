@@ -1,62 +1,61 @@
 import { FormEvent, useContext, useState } from "react";
 import Image from "next/image";
-import { AuthContext } from "../context/AuthContext";
-import { Box, Button, TextField, Grid, Typography, Link } from "@mui/material";
-import { Carousel, MenuLateral } from "../shared/components";
+import { GetStaticProps } from "next";
+import { Box, useTheme, useMediaQuery } from "@mui/material";
+import { Carousel, CardFilme } from "../shared/components";
+import { getUpcomingMovies, movie } from "../services/movies/upcomingMovies";
+import { ResponsiveType } from "../shared/components/Carousel";
 
-export default function Home() {
-  const responsive = {
+interface HomeProps {
+  upComingMovies: movie[];
+}
+
+export default function Home({ upComingMovies }: HomeProps) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+
+  const responsive: ResponsiveType = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
-      items: 4,
-      slidesToSlide: 3, // optional, default to 1.
+      items: 6,
+      slidesToSlide: 5, // optional, default to 1.
     },
     tablet: {
       breakpoint: { max: 900, min: 464 },
-      items: 2,
-      slidesToSlide: 2, // optional, default to 1.
+      items: 5,
+      slidesToSlide: 4, // optional, default to 1.
     },
     mobile: {
       breakpoint: { max: 600, min: 0 },
       items: 2,
-      slidesToSlide: 1, // optional, default to 1.
+      slidesToSlide: 2, // optional, default to 1.
     },
   };
   return (
     <Box>
       <Carousel
         responsive={responsive}
-        titulo="Novos filmes"
+        titulo="Próximos Lançamentos"
         arrows
-        mostrarPontos
+        mostrarPontos={!isMobile}
         mostrarProximo
       >
-        <Box sx={{ width: 200, height: 200, backgroundColor: "#707070" }}>
-          Teste
-        </Box>
-        <Box sx={{ width: 200, height: 200, backgroundColor: "red" }}>
-          Teste
-        </Box>
-        <Box sx={{ width: 200, height: 200, backgroundColor: "#707070" }}>
-          Teste
-        </Box>
-        <Box sx={{ width: 200, height: 200, backgroundColor: "#707070" }}>
-          Teste
-        </Box>
-        <Box sx={{ width: 200, height: 200, backgroundColor: "#707070" }}>
-          Teste
-        </Box>
-        <Box sx={{ width: 200, height: 200, backgroundColor: "#707070" }}>
-          Teste
-        </Box>
-        <Box sx={{ width: 200, height: 200, backgroundColor: "#707070" }}>
-          Teste
-        </Box>
-        <Box sx={{ width: 200, height: 200, backgroundColor: "#707070" }}>
-          Teste
-        </Box>
+        {upComingMovies &&
+          upComingMovies.map((movie) => (
+            <CardFilme key={movie.id} movie={movie} />
+          ))}
       </Carousel>
-      <Typography>Teste testeTeste testeTeste teste</Typography>
     </Box>
   );
 }
+
+export const getStaticProps: GetStaticProps = async () => {
+  const { upComingMovies } = await getUpcomingMovies(1);
+
+  return {
+    props: {
+      upComingMovies: JSON.parse(JSON.stringify(upComingMovies)),
+    },
+    revalidate: 60 * 60 * 24, // 24hours
+  };
+};
