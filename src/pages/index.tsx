@@ -14,18 +14,18 @@ export default function Home({ upComingMovies }: HomeProps) {
 
   const responsive: ResponsiveType = {
     desktop: {
-      breakpoint: { max: 3000, min: 1024 },
-      items: 6,
+      breakpoint: { max: 1199, min: 900 },
+      items: 5,
       slidesToSlide: 5, // optional, default to 1.
     },
     tablet: {
-      breakpoint: { max: 900, min: 464 },
-      items: 5,
-      slidesToSlide: 4, // optional, default to 1.
+      breakpoint: { max: 899, min: 600 },
+      items: 4,
+      slidesToSlide: 3, // optional, default to 1.
     },
     mobile: {
-      breakpoint: { max: 600, min: 0 },
-      items: 2,
+      breakpoint: { max: 599, min: 0 },
+      items: 3,
       slidesToSlide: 2, // optional, default to 1.
     },
   };
