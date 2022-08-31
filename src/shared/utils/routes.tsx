@@ -12,17 +12,17 @@ export interface IRoute {
 
 export const routes: IRoute[] = [
   {
-    label: "Inicio",
+    label: "INÍCIO",
     rota: "/",
     icon: <Home />,
     exibirMenuLateral: true,
   },
-  { label: "Repositorio", rota: "/", icon: <List />, exibirMenuLateral: true },
+  { label: "FILMES", rota: "/", icon: <List />, exibirMenuLateral: true },
   {
-    label: "Perfil",
+    label: "PERFIL",
     rota: "/",
     icon: <AccountCircle />,
     exibirMenuLateral: true,
   },
-  { label: "Amigos", rota: "/", icon: <People />, exibirMenuLateral: true },
+  { label: "GRUPOS", rota: "/", icon: <People />, exibirMenuLateral: true },
 ];

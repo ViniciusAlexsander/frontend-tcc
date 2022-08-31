@@ -73,7 +73,7 @@ export const Carousel: React.FC<ICarouselProps> = ({
   return (
     <Grid container padding={2} sx={{ backgroundColor: "#545454" }}>
       <Grid item xs={12} mb={4}>
-        <Typography variant="h5">{titulo}</Typography>
+        <Typography variant="h5" fontWeight={700}>{titulo}</Typography>
       </Grid>
       <Grid
         item

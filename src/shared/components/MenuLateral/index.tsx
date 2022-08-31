@@ -60,8 +60,8 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
               textAlign: "center",
             }}
           >
-            <Typography variant="h4" noWrap component="div">
-              Cine.repo
+            <Typography variant="h5" fontWeight={700} noWrap component="div">
+              CINE.REPO
             </Typography>
           </Box>
           <Divider />
@@ -112,7 +112,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
               <Menu />
             </IconButton>
             <Typography variant="h6" noWrap component="div">
-              Cine.repo
+              CINE.REPO
             </Typography>
           </Toolbar>
         </AppBar>
