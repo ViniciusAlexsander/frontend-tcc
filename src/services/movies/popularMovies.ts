@@ -2,6 +2,7 @@ import { axiosMovies, axiosMoviesUrl } from "../apiMovieDb";
 
 export type popularMovie = {
   poster_path: string | null;
+  banner_path: string | null;
   adult: boolean;
   overview: string;
   release_date: Date;
@@ -34,6 +35,7 @@ export async function getPopularMovies(
       ...movie,
       release_date: new Date(movie.release_date),
       poster_path: `${axiosMoviesUrl.small}${movie.poster_path}`,
+      banner_path: `${axiosMoviesUrl.large}${movie.poster_path}`,
     };
   });
 
