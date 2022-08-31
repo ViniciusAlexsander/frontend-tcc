@@ -2,13 +2,20 @@ import { axiosMovies, axiosMoviesUrl } from "../apiMovieDb";
 
 export type movie = {
   poster_path: string | null;
-  title: string;
+  banner_path: string | null;
+  adult: boolean;
+  overview: string;
+  release_date: Date;
   genre_ids: number[];
   id: number;
-  release_date: Date;
   original_title: string;
+  original_language: string;
+  title: string;
+  backdrop_path?: string;
+  popularity: number;
+  vote_count: number;
+  video: boolean;
   vote_average: number;
-  overview: string;
 };
 
 export type GetTopRatedMoviesResponse = {
@@ -28,6 +35,7 @@ export async function getUpcomingMovies(
       ...movie,
       release_date: new Date(movie.release_date),
       poster_path: `${axiosMoviesUrl.small}${movie.poster_path}`,
+      banner_path: `${axiosMoviesUrl.large}${movie.poster_path}`,
     };
   });
 

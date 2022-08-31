@@ -69,10 +69,7 @@ export default function Home({
               <CardFilme
                 key={movie.id}
                 movie={{
-                  id: movie.id,
-                  poster_path: movie.poster_path,
-                  title: movie.title,
-                  vote_average: movie.vote_average,
+                  ...movie,
                 }}
               />
             ))}
@@ -91,10 +88,7 @@ export default function Home({
               <CardFilme
                 key={movie.id}
                 movie={{
-                  id: movie.id,
-                  poster_path: movie.poster_path,
-                  title: movie.title,
-                  vote_average: movie.vote_average,
+                  ...movie,
                 }}
               />
             ))}
@@ -113,10 +107,7 @@ export default function Home({
               <CardFilme
                 key={movie.id}
                 movie={{
-                  id: movie.id,
-                  poster_path: movie.poster_path,
-                  title: movie.title,
-                  vote_average: movie.vote_average,
+                  ...movie,
                 }}
               />
             ))}
