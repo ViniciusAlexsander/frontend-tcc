@@ -50,18 +50,20 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
         }}
       >
         <Box>
-          <ListItem
-            disablePadding
+          <Box
             sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
               height: { xs: headerHeight },
+              width: "100%",
+              textAlign: "center",
             }}
           >
-            <Box sx={{ width: "100%", textAlign: "center" }}>
-              <Typography variant="h6" noWrap component="div">
-                Cine.repo
-              </Typography>
-            </Box>
-          </ListItem>
+            <Typography variant="h4" noWrap component="div">
+              Cine.repo
+            </Typography>
+          </Box>
           <Divider />
           <Box>
             {routes.map((route, index) => (
@@ -133,6 +135,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
           anchor="left"
           sx={{
             display: { xs: "none", md: "block" },
+            backgroundColor: "#2c2c2c",
           }}
         >
           {itensMenu}

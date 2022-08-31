@@ -4,26 +4,59 @@ import { red } from "@mui/material/colors";
 // Create a theme instance.
 const theme = createTheme({
   palette: {
+    background: { default: "#2c2c2c", paper: "#2c2c2c" },
+    text: { primary: "#fff" },
+
     primary: {
-      main: "#707070",
+      light: "#8183e3",
+      main: "#4e57b0",
+      dark: "#122e80",
+      contrastText: "#fff",
     },
     secondary: {
-      main: "#19857b",
-    },
-    error: {
-      main: red.A400,
+      light: "#52c882",
+      main: "#0b9655",
+      dark: "#00672b",
+      contrastText: "#000",
     },
   },
   typography: {
-    allVariants: {
-      fontFamily: "sans-serif",
-    },
+    fontFamily: "'Source Sans Pro', sans-serif",
   },
   components: {
     MuiTypography: {
+      defaultProps: {
+        fontFamily: "'Source Sans Pro', sans-serif",
+      },
+      styleOverrides: {},
+    },
+    MuiListItem: {
       styleOverrides: {
-        h1: {
-          color: "red",
+        root: {
+          color: "#fff",
+          "&:hover": {
+            backgroundColor: "#545454",
+          },
+        },
+      },
+    },
+    MuiListItemIcon: {
+      styleOverrides: {
+        root: {
+          color: "#fff",
+          "&:hover": {
+            backgroundColor: "#545454",
+          },
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          color: "#fff",
+          "&:hover": {
+            backgroundColor: "#545454",
+          },
         },
       },
     },
