@@ -71,7 +71,7 @@ export const Carousel: React.FC<ICarouselProps> = ({
   if (isXl) deviceType = "xl";
 
   return (
-    <Grid container>
+    <Grid container padding={2} sx={{ backgroundColor: "#545454" }}>
       <Grid item xs={12} mb={4}>
         <Typography variant="h5">{titulo}</Typography>
       </Grid>

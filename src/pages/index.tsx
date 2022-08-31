@@ -1,5 +1,5 @@
 import { GetStaticProps } from "next";
-import { Box, useTheme, useMediaQuery } from "@mui/material";
+import { Box, useTheme, useMediaQuery, Stack } from "@mui/material";
 import { Carousel, CardFilme } from "../shared/components";
 import { getUpcomingMovies, movie } from "../services/movies/upcomingMovies";
 import { ResponsiveType } from "../shared/components/Carousel";
@@ -7,7 +7,6 @@ import {
   getNowPlayingMovies,
   nowPlayingMovie,
 } from "../services/movies/nowPlayingMovies";
-import { useEffect } from "react";
 import {
   getPopularMovies,
   popularMovie,
@@ -56,7 +55,7 @@ export default function Home({
   };
 
   return (
-    <Box>
+    <Stack spacing={2} sx={{ margin: 1 }}>
       <Box>
         <Carousel
           responsive={responsive}
@@ -123,7 +122,7 @@ export default function Home({
             ))}
         </Carousel>
       </Box>
-    </Box>
+    </Stack>
   );
 }
 
