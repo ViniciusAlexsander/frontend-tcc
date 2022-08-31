@@ -31,10 +31,16 @@ export function CardFilme({ movie }: MovieCardProps) {
   const handleClickCard = () => {
     setOpenModalDetalhes(true);
   };
-  console.log(movie.banner_path);
+  const handleClose = () => {
+    setOpenModalDetalhes(false);
+  };
   return (
     <>
-      <ModalDetalhesFilme open={openModalDetalhes} movie={{ ...movie }} />
+      <ModalDetalhesFilme
+        open={openModalDetalhes}
+        handleClose={handleClose}
+        movie={{ ...movie }}
+      />
       <CardActionArea
         onClick={handleClickCard}
         sx={{

@@ -1,10 +1,12 @@
 import { Grid, Typography, Dialog, Box, Button } from "@mui/material";
 import { ArrowRight } from "@mui/icons-material";
 import Image from "next/image";
+import { useState } from "react";
 
 interface ModalDetalhesFilmeProps {
   movie: movie;
   open: boolean;
+  handleClose: () => void;
 }
 
 type movie = {
@@ -25,10 +27,13 @@ type movie = {
   vote_average: number;
 };
 
-export function ModalDetalhesFilme({ movie, open }: ModalDetalhesFilmeProps) {
-  console.log(movie.banner_path);
+export function ModalDetalhesFilme({
+  movie,
+  open,
+  handleClose,
+}: ModalDetalhesFilmeProps) {
   return (
-    <Dialog open={open}>
+    <Dialog open={open} onClose={handleClose}>
       <Box sx={{ backgroundColor: "#595959" }}>
         <Image
           alt={"poster do filme" + movie.title}
@@ -39,7 +44,11 @@ export function ModalDetalhesFilme({ movie, open }: ModalDetalhesFilmeProps) {
         />
         <Grid container px={2} py={1}>
           <Grid item xs={12} sm={8}>
-            <Box display="flex" alignItems="center">
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent={{ xs: "space-between" }}
+            >
               <Typography variant="h5" fontWeight="bold" mr={3}>
                 {movie.title}
               </Typography>
