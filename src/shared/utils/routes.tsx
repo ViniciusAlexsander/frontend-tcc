@@ -8,6 +8,7 @@ export interface IRoute {
   rota: string;
   icon: ReactElement;
   exibirMenuLateral?: boolean;
+  menuAninhado?: IRoute[];
 }
 
 export const routes: IRoute[] = [
@@ -17,7 +18,26 @@ export const routes: IRoute[] = [
     icon: <Home />,
     exibirMenuLateral: true,
   },
-  { label: "FILMES", rota: "/", icon: <List />, exibirMenuLateral: true },
+  {
+    label: "FILMES",
+    rota: "/",
+    icon: <List />,
+    exibirMenuLateral: true,
+    menuAninhado: [
+      {
+        label: "TESTE",
+        rota: "/",
+        icon: <List />,
+        exibirMenuLateral: true,
+      },
+      {
+        label: "TESTE 2",
+        rota: "/",
+        icon: <AccountCircle />,
+        exibirMenuLateral: true,
+      },
+    ],
+  },
   {
     label: "PERFIL",
     rota: "/",

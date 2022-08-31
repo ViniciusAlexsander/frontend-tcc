@@ -15,8 +15,15 @@ import {
   Toolbar,
   IconButton,
   useTheme,
+  Collapse,
 } from "@mui/material";
-import { ExitToApp, Menu } from "@mui/icons-material";
+import {
+  AccountCircle,
+  ExitToApp,
+  ExpandLess,
+  ExpandMore,
+  Menu,
+} from "@mui/icons-material";
 import { routes } from "../../utils/routes";
 
 export interface MenuLateralProps {
@@ -25,6 +32,7 @@ export interface MenuLateralProps {
 
 export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const theme = useTheme();
   const drawerWidth = theme.spacing(28);
@@ -32,6 +40,10 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleClick = () => {
+    setOpen(!open);
   };
 
   const itensMenu = (
@@ -67,15 +79,31 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
           <Divider />
           <Box>
             {routes.map((route, index) => (
-              <ListItem key={route.label + index} disablePadding>
-                <ListItemButton>
+              <Box>
+                <ListItemButton onClick={route.menuAninhado && handleClick}>
                   <ListItemIcon>{route.icon}</ListItemIcon>
                   <ListItemText primary={route.label} />
+                  {route.menuAninhado &&
+                    (open ? <ExpandLess /> : <ExpandMore />)}
                 </ListItemButton>
-              </ListItem>
+
+                {route.menuAninhado && (
+                  <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                      {route.menuAninhado.map((route, index) => (
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemIcon>{route.icon}</ListItemIcon>
+                          <ListItemText primary={route.label} />
+                        </ListItemButton>
+                      ))}
+                    </List>
+                  </Collapse>
+                )}
+              </Box>
             ))}
           </Box>
         </Box>
+
         <ListItem disablePadding>
           <ListItemButton>
             <ListItemIcon>
