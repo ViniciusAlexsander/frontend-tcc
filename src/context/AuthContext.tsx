@@ -2,6 +2,7 @@ import Router from "next/router";
 import { ReactNode, createContext, useState, useEffect } from "react";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { api } from "../services/api";
+import { RotasEnum } from "../shared/utils/rotas";
 
 type User = {
   email: string;
@@ -28,7 +29,7 @@ export function signOut() {
   destroyCookie(undefined, "nextauth.token");
   destroyCookie(undefined, "nextauth.refreshToken");
 
-  Router.push("/");
+  Router.push(RotasEnum.INICIO);
 }
 
 export const AuthContext = createContext({} as AuthContextData);
@@ -80,7 +81,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       api.defaults.headers["Authorization"] = `Bearer ${token}`;
 
-      Router.push("/dashboard");
+      Router.push(RotasEnum.INICIO);
     } catch (error) {
       console.log(error);
     }

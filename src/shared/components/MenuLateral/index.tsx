@@ -1,5 +1,5 @@
 import { FormEvent, useContext, useState } from "react";
-import Image from "next/image";
+import Router from "next/router";
 import {
   Box,
   Drawer,
@@ -46,6 +46,10 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
     setOpen(!open);
   };
 
+  const handleClickMenuItem = (rota: string) => {
+    Router.push(rota);
+  };
+
   const itensMenu = (
     <List
       sx={{
@@ -79,8 +83,16 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
           <Divider />
           <Box>
             {routes.map((route, index) => (
-              <Box>
-                <ListItemButton onClick={route.menuAninhado && handleClick}>
+              <Box key={route.rota + index}>
+                <ListItemButton
+                  onClick={
+                    route.menuAninhado
+                      ? handleClick
+                      : () => {
+                          handleClickMenuItem(route.rota);
+                        }
+                  }
+                >
                   <ListItemIcon>{route.icon}</ListItemIcon>
                   <ListItemText primary={route.label} />
                   {route.menuAninhado &&
@@ -91,7 +103,13 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
                   <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       {route.menuAninhado.map((route, index) => (
-                        <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemButton
+                          key={route.rota + index}
+                          sx={{ pl: 4 }}
+                          onClick={() => {
+                            handleClickMenuItem(route.rota);
+                          }}
+                        >
                           <ListItemIcon>{route.icon}</ListItemIcon>
                           <ListItemText primary={route.label} />
                         </ListItemButton>

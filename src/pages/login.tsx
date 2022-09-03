@@ -2,6 +2,7 @@ import { FormEvent, useContext, useState } from "react";
 import Image from "next/image";
 import { AuthContext } from "../context/AuthContext";
 import { Button, TextField, Grid, Typography, Link } from "@mui/material";
+import { RotasEnum } from "../shared/utils/rotas";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -96,7 +97,7 @@ export default function Login() {
         </Grid>
         <Grid item xs={12}>
           <Typography variant="body2">
-            Clique aqui e <Link href="/cadastro">cadastre-se</Link>
+            Clique aqui e <Link href={RotasEnum.CADASTRO}>cadastre-se</Link>
           </Typography>
         </Grid>
       </Grid>

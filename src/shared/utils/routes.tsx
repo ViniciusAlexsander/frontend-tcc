@@ -1,7 +1,15 @@
-import { People, AccountCircle, Home, List } from "@mui/icons-material";
-import { SvgIconTypeMap } from "@mui/material";
-import { OverridableComponent } from "@mui/material/OverridableComponent";
+import {
+  People,
+  AccountCircle,
+  Home,
+  List,
+  Search,
+  CheckCircle,
+  FeaturedPlayList,
+} from "@mui/icons-material";
+
 import React, { ReactElement } from "react";
+import { RotasEnum } from "./rotas";
 
 export interface IRoute {
   label: string;
@@ -14,35 +22,46 @@ export interface IRoute {
 export const routes: IRoute[] = [
   {
     label: "INÍCIO",
-    rota: "/",
+    rota: RotasEnum.INICIO,
     icon: <Home />,
     exibirMenuLateral: true,
   },
   {
     label: "FILMES",
-    rota: "/",
+    rota: RotasEnum.FILMES,
     icon: <List />,
     exibirMenuLateral: true,
     menuAninhado: [
       {
-        label: "TESTE",
-        rota: "/",
-        icon: <List />,
+        label: "Buscar",
+        rota: RotasEnum.FILMES,
+        icon: <Search />,
         exibirMenuLateral: true,
       },
       {
-        label: "TESTE 2",
-        rota: "/",
-        icon: <AccountCircle />,
+        label: "Assistidos",
+        rota: RotasEnum.FILMES_ASSISTIDOS,
+        icon: <CheckCircle />,
+        exibirMenuLateral: true,
+      },
+      {
+        label: "À assistir",
+        rota: RotasEnum.FILMES_ASSISTIR,
+        icon: <FeaturedPlayList />,
         exibirMenuLateral: true,
       },
     ],
   },
   {
     label: "PERFIL",
-    rota: "/",
+    rota: RotasEnum.PERFIL,
     icon: <AccountCircle />,
     exibirMenuLateral: true,
   },
-  { label: "GRUPOS", rota: "/", icon: <People />, exibirMenuLateral: true },
+  {
+    label: "GRUPOS",
+    rota: RotasEnum.GRUPOS,
+    icon: <People />,
+    exibirMenuLateral: true,
+  },
 ];
