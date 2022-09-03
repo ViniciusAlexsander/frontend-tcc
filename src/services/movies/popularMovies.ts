@@ -1,6 +1,6 @@
 import { axiosMovies, axiosMoviesUrl } from "../apiMovieDb";
 
-export type movie = {
+export type popularMovie = {
   poster_path: string | null;
   banner_path: string | null;
   adult: boolean;
@@ -18,19 +18,19 @@ export type movie = {
   vote_average: number;
 };
 
-export type GetTopRatedMoviesResponse = {
-  upComingMovies: movie[];
+export type GetPopularMoviesResponse = {
+  popularMovies: popularMovie[];
   totalResults: number;
 };
 
-export async function getUpcomingMovies(
+export async function getPopularMovies(
   page: number
-): Promise<GetTopRatedMoviesResponse> {
-  const { data } = await axiosMovies.get(`/movie/upcoming`, {
-    params: { page, region: "BR" },
+): Promise<GetPopularMoviesResponse> {
+  const { data } = await axiosMovies.get("/movie/popular", {
+    params: { page },
   });
 
-  const upComingMovies = data.results.map((movie) => {
+  const popularMovies = data.results.map((movie) => {
     return {
       ...movie,
       release_date: new Date(movie.release_date),
@@ -39,5 +39,5 @@ export async function getUpcomingMovies(
     };
   });
 
-  return { upComingMovies, totalResults: data.total_results };
+  return { popularMovies, totalResults: data.total_results };
 }

@@ -8,21 +8,41 @@ export interface IRoute {
   rota: string;
   icon: ReactElement;
   exibirMenuLateral?: boolean;
+  menuAninhado?: IRoute[];
 }
 
 export const routes: IRoute[] = [
   {
-    label: "Inicio",
+    label: "INÍCIO",
     rota: "/",
     icon: <Home />,
     exibirMenuLateral: true,
   },
-  { label: "Repositorio", rota: "/", icon: <List />, exibirMenuLateral: true },
   {
-    label: "Perfil",
+    label: "FILMES",
+    rota: "/",
+    icon: <List />,
+    exibirMenuLateral: true,
+    menuAninhado: [
+      {
+        label: "TESTE",
+        rota: "/",
+        icon: <List />,
+        exibirMenuLateral: true,
+      },
+      {
+        label: "TESTE 2",
+        rota: "/",
+        icon: <AccountCircle />,
+        exibirMenuLateral: true,
+      },
+    ],
+  },
+  {
+    label: "PERFIL",
     rota: "/",
     icon: <AccountCircle />,
     exibirMenuLateral: true,
   },
-  { label: "Amigos", rota: "/", icon: <People />, exibirMenuLateral: true },
+  { label: "GRUPOS", rota: "/", icon: <People />, exibirMenuLateral: true },
 ];

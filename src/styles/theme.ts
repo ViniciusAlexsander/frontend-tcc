@@ -4,28 +4,29 @@ import { red } from "@mui/material/colors";
 // Create a theme instance.
 const theme = createTheme({
   palette: {
+    mode: "dark",
     primary: {
-      main: "#707070",
+      light: "#8183e3",
+      main: "#4e57b0",
+      dark: "#122e80",
+      contrastText: "#fff",
     },
     secondary: {
-      main: "#19857b",
-    },
-    error: {
-      main: red.A400,
+      light: "#52c882",
+      main: "#0b9655",
+      dark: "#00672b",
+      contrastText: "#000",
     },
   },
   typography: {
-    allVariants: {
-      fontFamily: "sans-serif",
-    },
+    fontFamily: "'Source Sans Pro', sans-serif",
   },
   components: {
     MuiTypography: {
-      styleOverrides: {
-        h1: {
-          color: "red",
-        },
+      defaultProps: {
+        fontFamily: "'Source Sans Pro', sans-serif",
       },
+      styleOverrides: {},
     },
   },
 });

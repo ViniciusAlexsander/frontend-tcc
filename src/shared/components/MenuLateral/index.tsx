@@ -15,8 +15,15 @@ import {
   Toolbar,
   IconButton,
   useTheme,
+  Collapse,
 } from "@mui/material";
-import { ExitToApp, Menu } from "@mui/icons-material";
+import {
+  AccountCircle,
+  ExitToApp,
+  ExpandLess,
+  ExpandMore,
+  Menu,
+} from "@mui/icons-material";
 import { routes } from "../../utils/routes";
 
 export interface MenuLateralProps {
@@ -25,6 +32,7 @@ export interface MenuLateralProps {
 
 export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   const theme = useTheme();
   const drawerWidth = theme.spacing(28);
@@ -32,6 +40,10 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleClick = () => {
+    setOpen(!open);
   };
 
   const itensMenu = (
@@ -50,30 +62,48 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
         }}
       >
         <Box>
-          <ListItem
-            disablePadding
+          <Box
             sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
               height: { xs: headerHeight },
+              width: "100%",
+              textAlign: "center",
             }}
           >
-            <Box sx={{ width: "100%", textAlign: "center" }}>
-              <Typography variant="h6" noWrap component="div">
-                Cine.repo
-              </Typography>
-            </Box>
-          </ListItem>
+            <Typography variant="h5" fontWeight={700} noWrap component="div">
+              CINE.REPO
+            </Typography>
+          </Box>
           <Divider />
           <Box>
             {routes.map((route, index) => (
-              <ListItem key={route.label + index} disablePadding>
-                <ListItemButton>
+              <Box>
+                <ListItemButton onClick={route.menuAninhado && handleClick}>
                   <ListItemIcon>{route.icon}</ListItemIcon>
                   <ListItemText primary={route.label} />
+                  {route.menuAninhado &&
+                    (open ? <ExpandLess /> : <ExpandMore />)}
                 </ListItemButton>
-              </ListItem>
+
+                {route.menuAninhado && (
+                  <Collapse in={open} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                      {route.menuAninhado.map((route, index) => (
+                        <ListItemButton sx={{ pl: 4 }}>
+                          <ListItemIcon>{route.icon}</ListItemIcon>
+                          <ListItemText primary={route.label} />
+                        </ListItemButton>
+                      ))}
+                    </List>
+                  </Collapse>
+                )}
+              </Box>
             ))}
           </Box>
         </Box>
+
         <ListItem disablePadding>
           <ListItemButton>
             <ListItemIcon>
@@ -92,10 +122,10 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
         <AppBar
           position="fixed"
           sx={{
-            width: { sm: `calc(100% - ${drawerWidth}px)` },
+            width: { md: `calc(100% - ${drawerWidth}px)` },
             ml: { sm: `${drawerWidth}px` },
             zIndex: (theme) => theme.zIndex.drawer + 1,
-            display: { xs: "block", sm: "none" },
+            display: { xs: "block", md: "none" },
             height: { xs: headerHeight },
           }}
         >
@@ -105,12 +135,12 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: "none" } }}
+              sx={{ mr: 2 }}
             >
               <Menu />
             </IconButton>
             <Typography variant="h6" noWrap component="div">
-              Cine.repo
+              CINE.REPO
             </Typography>
           </Toolbar>
         </AppBar>
@@ -123,7 +153,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
             keepMounted: true,
           }}
           sx={{
-            display: { xs: "block", sm: "none" },
+            display: { xs: "block", md: "none" },
           }}
         >
           {itensMenu}
@@ -132,7 +162,8 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
           variant="permanent"
           anchor="left"
           sx={{
-            display: { xs: "none", sm: "block" },
+            display: { xs: "none", md: "block" },
+            backgroundColor: "#2c2c2c",
           }}
         >
           {itensMenu}
@@ -140,11 +171,10 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
       </Box>
       <Grid
         container
-        xs={12}
         height="100vh"
-        width={{ xs: "100%", sm: `calc(100% - ${theme.spacing(30)})` }}
-        marginLeft={{ xs: 0, sm: theme.spacing(30) }}
-        marginTop={{ xs: headerHeight, sm: 0 }}
+        width={{ xs: "100%", md: `calc(100% - ${theme.spacing(30)})` }}
+        marginLeft={{ xs: 0, md: theme.spacing(30) }}
+        marginTop={{ xs: headerHeight, md: 0 }}
       >
         <Grid item xs={12}>
           {children}

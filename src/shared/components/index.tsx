@@ -1,5 +1,4 @@
-import { Carousel } from "./Carousel";
-import { MenuLateral } from "./MenuLateral";
-import { CardFilme } from "./CardFilme";
-
-export { Carousel, MenuLateral, CardFilme };
+export * from "./Carousel";
+export * from "./MenuLateral";
+export * from "./CardFilme";
+export * from "./ModalDetalhesFilme";

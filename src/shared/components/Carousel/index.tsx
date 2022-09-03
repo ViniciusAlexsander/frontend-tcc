@@ -57,11 +57,23 @@ export const Carousel: React.FC<ICarouselProps> = ({
   titulo,
 }) => {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+  const isXs = useMediaQuery(theme.breakpoints.only("xs"));
+  const isSm = useMediaQuery(theme.breakpoints.only("sm"));
+  const isMd = useMediaQuery(theme.breakpoints.only("md"));
+  const isLg = useMediaQuery(theme.breakpoints.only("lg"));
+  const isXl = useMediaQuery(theme.breakpoints.only("xl"));
+
+  let deviceType;
+  if (isXs) deviceType = "xs";
+  if (isSm) deviceType = "sm";
+  if (isMd) deviceType = "md";
+  if (isLg) deviceType = "lg";
+  if (isXl) deviceType = "xl";
+
   return (
-    <Grid container xs={12}>
+    <Grid container padding={2} sx={{ backgroundColor: "#545454" }}>
       <Grid item xs={12} mb={4}>
-        <Typography variant="h5">{titulo}</Typography>
+        <Typography variant="h5" fontWeight={700}>{titulo}</Typography>
       </Grid>
       <Grid
         item
@@ -95,7 +107,7 @@ export const Carousel: React.FC<ICarouselProps> = ({
           slidesToSlide={slidesToSlide}
           swipeable
           ssr={true} // means to render carousel on server-side.
-          deviceType={isMobile ? "mobile" : "desktop"}
+          deviceType={deviceType}
         >
           {children}
         </StyledMultiCarousel>
