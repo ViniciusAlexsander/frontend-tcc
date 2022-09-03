@@ -1,3 +1,11 @@
+import React from "react";
+import { Grid } from "@mui/material";
+import { HeaderBuscarFilmes } from "../../shared/components";
+
 export default function Filmes() {
-  return <h1>Filmes</h1>;
+  return (
+    <Grid container>
+      <HeaderBuscarFilmes />
+    </Grid>
+  );
 }

@@ -54,7 +54,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
     <List
       sx={{
         height: "100%",
-        width: theme.spacing(28),
+        width: drawerWidth,
       }}
     >
       <Box
@@ -182,6 +182,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
           sx={{
             display: { xs: "none", md: "block" },
             backgroundColor: "#2c2c2c",
+            borderColor: "rgba(255, 255, 255, 0.12)",
           }}
         >
           {itensMenu}
@@ -190,9 +191,10 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
       <Grid
         container
         height="100vh"
-        width={{ xs: "100%", md: `calc(100% - ${theme.spacing(30)})` }}
-        marginLeft={{ xs: 0, md: theme.spacing(30) }}
+        width={{ xs: "100%", md: `calc(100% - ${drawerWidth})` }}
+        marginLeft={{ xs: 0, md: drawerWidth }}
         marginTop={{ xs: headerHeight, md: 0 }}
+        padding={{ md: 2 }}
       >
         <Grid item xs={12}>
           {children}
