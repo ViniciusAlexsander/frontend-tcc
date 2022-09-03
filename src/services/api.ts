@@ -7,7 +7,7 @@ let isRefreshing = false;
 let failedRequestsQueue = [];
 
 export const api = axios.create({
-  baseURL: "http://localhost:3333",
+  baseURL: process.env.NEXT_PUBLIC_URL_BFF,
   headers: {
     Authorization: `Bearer ${cookies["nextauth.token"]}`,
   },

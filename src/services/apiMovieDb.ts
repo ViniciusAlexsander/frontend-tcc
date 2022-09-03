@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const axiosMovies = axios.create({
-  baseURL: "https://api.themoviedb.org/3",
+  baseURL: process.env.NEXT_PUBLIC_URL_MOVIES_API,
   params: {
     api_key: process.env.NEXT_PUBLIC_MOVIE_DB_API_KEY,
     language: "pt-BR",
