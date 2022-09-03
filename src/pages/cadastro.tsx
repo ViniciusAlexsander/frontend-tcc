@@ -13,6 +13,7 @@ import {
 
 import { api } from "../services/api";
 import Router from "next/router";
+import { RotasEnum } from "../shared/utils/rotas";
 
 export default function Cadastro() {
   const [nome, setNome] = useState("");
@@ -39,6 +40,8 @@ export default function Cadastro() {
         mensagem: "Usuário criado com sucesso",
         severity: "success",
       });
+
+      Router.push("/login");
     } catch (error) {
       setAlert({
         open: true,
@@ -125,7 +128,7 @@ export default function Cadastro() {
           </Grid>
           <Grid item xs={12}>
             <Typography variant="body2">
-              Ja tem conta? <Link href="/">Fazer login</Link>
+              Ja tem conta? <Link href={RotasEnum.LOGIN}>Fazer login</Link>
             </Typography>
           </Grid>
         </Grid>

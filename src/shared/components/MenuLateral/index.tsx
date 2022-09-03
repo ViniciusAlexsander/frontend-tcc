@@ -1,5 +1,5 @@
 import { FormEvent, useContext, useState } from "react";
-import Image from "next/image";
+import Router from "next/router";
 import {
   Box,
   Drawer,
@@ -46,11 +46,15 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
     setOpen(!open);
   };
 
+  const handleClickMenuItem = (rota: string) => {
+    Router.push(rota);
+  };
+
   const itensMenu = (
     <List
       sx={{
         height: "100%",
-        width: theme.spacing(28),
+        width: drawerWidth,
       }}
     >
       <Box
@@ -79,8 +83,16 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
           <Divider />
           <Box>
             {routes.map((route, index) => (
-              <Box>
-                <ListItemButton onClick={route.menuAninhado && handleClick}>
+              <Box key={route.rota + index}>
+                <ListItemButton
+                  onClick={
+                    route.menuAninhado
+                      ? handleClick
+                      : () => {
+                          handleClickMenuItem(route.rota);
+                        }
+                  }
+                >
                   <ListItemIcon>{route.icon}</ListItemIcon>
                   <ListItemText primary={route.label} />
                   {route.menuAninhado &&
@@ -91,7 +103,13 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
                   <Collapse in={open} timeout="auto" unmountOnExit>
                     <List component="div" disablePadding>
                       {route.menuAninhado.map((route, index) => (
-                        <ListItemButton sx={{ pl: 4 }}>
+                        <ListItemButton
+                          key={route.rota + index}
+                          sx={{ pl: 4 }}
+                          onClick={() => {
+                            handleClickMenuItem(route.rota);
+                          }}
+                        >
                           <ListItemIcon>{route.icon}</ListItemIcon>
                           <ListItemText primary={route.label} />
                         </ListItemButton>
@@ -164,6 +182,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
           sx={{
             display: { xs: "none", md: "block" },
             backgroundColor: "#2c2c2c",
+            borderColor: "rgba(255, 255, 255, 0.12)",
           }}
         >
           {itensMenu}
@@ -172,9 +191,10 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
       <Grid
         container
         height="100vh"
-        width={{ xs: "100%", md: `calc(100% - ${theme.spacing(30)})` }}
-        marginLeft={{ xs: 0, md: theme.spacing(30) }}
+        width={{ xs: "100%", md: `calc(100% - ${drawerWidth})` }}
+        marginLeft={{ xs: 0, md: drawerWidth }}
         marginTop={{ xs: headerHeight, md: 0 }}
+        padding={{ md: 2 }}
       >
         <Grid item xs={12}>
           {children}
