@@ -15,7 +15,12 @@ import { styled } from "@mui/material/styles";
 import { DatePicker } from "../";
 import { Dayjs } from "dayjs";
 
-export function HeaderBuscarFilmes() {
+interface HeaderBuscarFilmesProps {
+  search: string | null;
+  handleSearch: (search: string | null) => void;
+}
+
+export function HeaderBuscarFilmes({search, handleSearch}: HeaderBuscarFilmesProps) {
   const [expanded, setExpanded] = useState(false);
   const [dataLancamento, setDataLancamento] = useState<Dayjs | null>(null);
 
@@ -33,11 +38,13 @@ export function HeaderBuscarFilmes() {
         </Grid>
 
         <Grid item xs={12}>
-          <Autocomplete
-            options={top100Films}
-            renderInput={(params) => (
-              <TextField {...params} fullWidth label="Nome do filme" />
-            )}
+          <TextField 
+            fullWidth 
+            label="Nome do filme"             
+            value={search}
+            onChange={(e) => {
+              handleSearch(e.target.value);
+            }} 
           />
         </Grid>
         <Grid
