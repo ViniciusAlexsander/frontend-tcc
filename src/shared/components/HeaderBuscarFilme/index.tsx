@@ -9,18 +9,37 @@ import {
   Collapse,
   Box,
   Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Chip,
+  OutlinedInput,
 } from "@mui/material";
 import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { DatePicker } from "../";
 import { Dayjs } from "dayjs";
+import { sortByOptions } from "../../utils/movieDiscover";
+import { movieProvidersOptions } from "../../utils/movieProviders";
 
 interface HeaderBuscarFilmesProps {
   search: string | null;
   handleSearch: (search: string | null) => void;
+  sortBy: string | null;
+  handleSortBy: (sortBy: string | null) => void;
+  providers: string[];
+  handleProviders: (provider: string[]) => void;
 }
 
-export function HeaderBuscarFilmes({search, handleSearch}: HeaderBuscarFilmesProps) {
+export function HeaderBuscarFilmes({
+  search,
+  handleSearch,
+  sortBy,
+  handleSortBy,
+  providers,
+  handleProviders,
+}: HeaderBuscarFilmesProps) {
   const [expanded, setExpanded] = useState(false);
   const [dataLancamento, setDataLancamento] = useState<Dayjs | null>(null);
 
@@ -38,13 +57,13 @@ export function HeaderBuscarFilmes({search, handleSearch}: HeaderBuscarFilmesPro
         </Grid>
 
         <Grid item xs={12}>
-          <TextField 
-            fullWidth 
-            label="Nome do filme"             
+          <TextField
+            fullWidth
+            label="Nome do filme"
             value={search}
             onChange={(e) => {
               handleSearch(e.target.value);
-            }} 
+            }}
           />
         </Grid>
         <Grid
@@ -91,6 +110,59 @@ export function HeaderBuscarFilmes({search, handleSearch}: HeaderBuscarFilmesPro
                     label: "Data de lançamento",
                   }}
                 />
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <FormControl fullWidth>
+                  <InputLabel id="ordenar-por-label">Ordenar por</InputLabel>
+                  <Select
+                    labelId="ordenar-por-label"
+                    id="ordenar-por"
+                    value={sortBy}
+                    label="Ordenar por"
+                    onChange={(e) => {
+                      handleSortBy(e.target.value);
+                    }}
+                  >
+                    {sortByOptions.map((s) => (
+                      <MenuItem key={s.label} value={s.value}>
+                        {s.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6} md={4}>
+                <FormControl fullWidth>
+                  <InputLabel id="providers-label">Exibido em</InputLabel>
+                  <Select
+                    labelId="providers-label"
+                    id="providers"
+                    multiple
+                    value={providers}
+                    label="Exibido em"
+                    onChange={(e) => {
+                      const {
+                        target: { value },
+                      } = e;
+                      handleProviders(
+                        typeof value === "string" ? value.split("|") : value
+                      );
+                    }}
+                    renderValue={(selected) => (
+                      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                        {selected.map((value) => (
+                          <Chip key={value} label={value} />
+                        ))}
+                      </Box>
+                    )}
+                  >
+                    {movieProvidersOptions.map((s) => (
+                      <MenuItem key={s.provider_id} value={s.provider_name}>
+                        {s.provider_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid
                 item
