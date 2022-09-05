@@ -64,7 +64,7 @@ export default function Filmes() {
 
       {movies &&
         movies.map((movie) => (
-          <Grid item xs={12} sm={2} key={movie.id}>
+          <Grid item xs={6} sm={3} lg={2} xl={1.5} key={movie.id} mt={2}>
             <CardFilme
               movie={{
                 ...movie,
