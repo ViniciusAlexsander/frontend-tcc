@@ -1,7 +1,9 @@
+import { Dayjs } from "dayjs";
+import { findMovieGenresByName } from "../../shared/utils/movieGenres";
 import { findByName } from "../../shared/utils/movieProviders";
 import { axiosMovies, axiosMoviesUrl } from "../apiMovieDb";
 
-export type searchMovie = {
+export type IDiscoverMovie = {
   poster_path: string | null;
   banner_path: string | null;
   adult: boolean;
@@ -19,21 +21,37 @@ export type searchMovie = {
   vote_average: number;
 };
 
-export type GetSearchMoviesResponse = {
-  searchMovies: searchMovie[];
+export type GetDiscoverMoviesResponse = {
+  discoverMovies: IDiscoverMovie[];
   totalResults: number;
 };
 
-export async function getSearchMovies(
-  page: number,
-  search: string,
-  sortBy: string | null,
-  providers: string[]
-): Promise<GetSearchMoviesResponse> {
+export type GetDiscoverMoviesRequest = {
+  page: number;
+  search: string;
+  sortBy: string | null;
+  providers: string[];
+  genders: string[];
+  releaseYear: number | null;
+};
+
+export async function getDiscoverMovies({
+  page,
+  search,
+  sortBy,
+  providers,
+  genders,
+  releaseYear,
+}: GetDiscoverMoviesRequest): Promise<GetDiscoverMoviesResponse> {
   let query = search;
   let providersIds = findByName(providers)
     .map((provider) => provider.provider_id)
     .join("|");
+
+  let gendersIds = findMovieGenresByName(genders)
+    .map((gender) => gender.id)
+    .join("|");
+
   const { data } = await axiosMovies.get("/discover/movie", {
     params: {
       page,
@@ -41,10 +59,12 @@ export async function getSearchMovies(
       query,
       sort_by: sortBy,
       with_watch_providers: providersIds,
+      with_genres: gendersIds,
+      primary_release_year: releaseYear,
     },
   });
 
-  const searchMovies = data.results.map((movie) => {
+  const discoverMovies = data.results.map((movie) => {
     return {
       ...movie,
       release_date: new Date(movie.release_date),
@@ -53,5 +73,5 @@ export async function getSearchMovies(
     };
   });
 
-  return { searchMovies, totalResults: data.total_results };
+  return { discoverMovies, totalResults: data.total_results };
 }
