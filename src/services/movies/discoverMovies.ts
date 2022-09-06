@@ -24,6 +24,7 @@ export type IDiscoverMovie = {
 export type GetDiscoverMoviesResponse = {
   discoverMovies: IDiscoverMovie[];
   totalResults: number;
+  totalPages: number;
 };
 
 export type GetDiscoverMoviesRequest = {
@@ -73,5 +74,9 @@ export async function getDiscoverMovies({
     };
   });
 
-  return { discoverMovies, totalResults: data.total_results };
+  return {
+    discoverMovies,
+    totalResults: data.total_results,
+    totalPages: data.total_pages,
+  };
 }

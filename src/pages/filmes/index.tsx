@@ -1,13 +1,17 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Grid } from "@mui/material";
-import { HeaderBuscarFilmes, CardFilme } from "../../shared/components";
+import React, { useEffect, useState } from "react";
+import { Grid, Button, CircularProgress } from "@mui/material";
+import {
+  HeaderBuscarFilmes,
+  CardFilme,
+  CardInformativo,
+} from "../../shared/components";
+import { SentimentVeryDissatisfied } from "@mui/icons-material";
 import {
   getDiscoverMovies,
   IDiscoverMovie,
 } from "../../services/movies/discoverMovies";
 import { popularMovie } from "../../services/movies/popularMovies";
 import { sortByOptions } from "../../shared/utils/movieDiscover";
-import { Dayjs } from "dayjs";
 
 export default function Filmes() {
   const [page, setPage] = useState(1);
@@ -16,8 +20,10 @@ export default function Filmes() {
   const [providers, setProviders] = useState<string[]>([]);
   const [genders, setGenders] = useState<string[]>([]);
   const [releaseYear, setReleaseYear] = useState<Date | null>(null);
-  const [movies, setMovies] = useState<IDiscoverMovie[] | popularMovie[]>([]);
+  const [movies, setMovies] = useState<IDiscoverMovie[]>([]);
   const [totalResults, setTotalResults] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   const getMovies = async (
     page: number,
@@ -27,22 +33,27 @@ export default function Filmes() {
     genders: string[],
     releaseYear: Date | null
   ) => {
-    const { discoverMovies, totalResults } = await getDiscoverMovies({
-      page,
-      search,
-      sortBy,
-      providers,
-      genders,
-      releaseYear: releaseYear ? new Date(releaseYear).getFullYear() : null,
-    });
+    if (page === 1) setLoading(true);
+    const { discoverMovies, totalResults, totalPages } =
+      await getDiscoverMovies({
+        page,
+        search,
+        sortBy,
+        providers,
+        genders,
+        releaseYear: releaseYear ? new Date(releaseYear).getFullYear() : null,
+      });
+    console.log(discoverMovies);
+    setMovies(page > 1 ? movies.concat(discoverMovies) : discoverMovies);
     setTotalResults(totalResults);
-    setMovies(discoverMovies);
+    setTotalPages(totalPages);
+    setLoading(false);
   };
 
   useEffect(() => {
     getMovies(page, search, sortBy, providers, genders, releaseYear);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [page]);
 
   const handleSearch = (search: string | null) => {
     setSearch(search);
@@ -70,10 +81,12 @@ export default function Filmes() {
     setProviders([]);
     setGenders([]);
     setReleaseYear(null);
+    setPage(1);
     getMovies(page, search, sortByOptions[0].value, [], [], null);
   };
   const handleClickFilter = () => {
-    getMovies(page, search, sortBy, providers, genders, releaseYear);
+    setPage(1);
+    getMovies(1, search, sortBy, providers, genders, releaseYear);
   };
 
   return (
@@ -97,16 +110,60 @@ export default function Filmes() {
         />
       </Grid>
 
-      {movies &&
-        movies.map((movie) => (
-          <Grid item xs={6} sm={3} lg={2} xl={1.5} key={movie.id} mt={2}>
-            <CardFilme
-              movie={{
-                ...movie,
-              }}
-            />
-          </Grid>
-        ))}
+      {loading ? (
+        <Grid
+          item
+          xs={12}
+          mt={2}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <CircularProgress />
+        </Grid>
+      ) : (
+        <>
+          {movies && movies.length > 0 ? (
+            movies.map((movie) => (
+              <Grid item xs={6} sm={3} lg={2} xl={1.5} key={movie.id} mt={2}>
+                <CardFilme
+                  movie={{
+                    ...movie,
+                  }}
+                />
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={12} mt={2}>
+              <CardInformativo
+                mensagem={
+                  "Nenhum filme encontrado com os parâmetros informados"
+                }
+                tipo="info"
+                icon={<SentimentVeryDissatisfied />}
+              />
+            </Grid>
+          )}
+        </>
+      )}
+      {!(totalPages === page) && movies && movies.length > 0 && (
+        <Grid
+          item
+          xs={12}
+          mt={2}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Button
+            variant="contained"
+            size="large"
+            onClick={() => setPage(page + 1)}
+          >
+            Carregar mais
+          </Button>
+        </Grid>
+      )}
     </Grid>
   );
 }

@@ -4,3 +4,4 @@ export * from "./CardFilme";
 export * from "./ModalDetalhesFilme";
 export * from "./DatePicker";
 export * from "./HeaderBuscarFilme";
+export * from "./CardInformativo";
