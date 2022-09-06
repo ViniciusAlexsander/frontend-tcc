@@ -10,9 +10,7 @@ import {
   getDiscoverMovies,
   IDiscoverMovie,
 } from "../../services/movies/discoverMovies";
-import { popularMovie } from "../../services/movies/popularMovies";
 import { sortByOptions } from "../../shared/utils/movieDiscover";
-import { movieProvidersOptions } from "../../shared/utils/movieProviders";
 import { getRandomInt, randomYear } from "../../shared/utils/utils";
 import { movieGenres } from "../../shared/utils/movieGenres";
 import { LoadingButton } from "@mui/lab";
