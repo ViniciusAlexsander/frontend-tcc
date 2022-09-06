@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Grid, Button, CircularProgress } from "@mui/material";
+import { Grid, CircularProgress } from "@mui/material";
 import {
   HeaderBuscarFilmes,
   CardFilme,
   CardInformativo,
 } from "../../shared/components";
-import { SentimentVeryDissatisfied } from "@mui/icons-material";
+import { SentimentVeryDissatisfied, Search } from "@mui/icons-material";
 import {
   getDiscoverMovies,
   IDiscoverMovie,
 } from "../../services/movies/discoverMovies";
 import { popularMovie } from "../../services/movies/popularMovies";
 import { sortByOptions } from "../../shared/utils/movieDiscover";
+import { movieProvidersOptions } from "../../shared/utils/movieProviders";
+import { getRandomInt, randomYear } from "../../shared/utils/utils";
+import { movieGenres } from "../../shared/utils/movieGenres";
+import { LoadingButton } from "@mui/lab";
 
 export default function Filmes() {
   const [page, setPage] = useState(1);
@@ -24,6 +28,8 @@ export default function Filmes() {
   const [totalResults, setTotalResults] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [loadingButton, setLoadingButton] = useState(false);
+  const [isRandomFilm, setIsRandomFilm] = useState(false);
 
   const getMovies = async (
     page: number,
@@ -31,8 +37,10 @@ export default function Filmes() {
     sortBy: string | null,
     providers: string[],
     genders: string[],
-    releaseYear: Date | null
+    releaseYear: Date | null,
+    randomFilm: boolean = false
   ) => {
+    setIsRandomFilm(randomFilm);
     if (page === 1) setLoading(true);
     const { discoverMovies, totalResults, totalPages } =
       await getDiscoverMovies({
@@ -43,11 +51,12 @@ export default function Filmes() {
         genders,
         releaseYear: releaseYear ? new Date(releaseYear).getFullYear() : null,
       });
-    console.log(discoverMovies);
-    setMovies(page > 1 ? movies.concat(discoverMovies) : discoverMovies);
+    if (randomFilm) setMovies([discoverMovies[1]]);
+    else setMovies(page > 1 ? movies.concat(discoverMovies) : discoverMovies);
     setTotalResults(totalResults);
     setTotalPages(totalPages);
     setLoading(false);
+    setLoadingButton(false);
   };
 
   useEffect(() => {
@@ -75,7 +84,23 @@ export default function Filmes() {
     setReleaseYear(releaseYear);
   };
 
-  const handleClickSort = () => {};
+  const handleClickSort = () => {
+    let randomGender = [movieGenres[getRandomInt(0, movieGenres.length)].name];
+    let randomYearResult = randomYear();
+    setGenders(randomGender);
+    setReleaseYear(randomYearResult);
+    setPage(1);
+    getMovies(
+      page,
+      search,
+      sortByOptions[0].value,
+      providers,
+      randomGender,
+      randomYearResult,
+      true
+    );
+  };
+
   const handleClickClean = () => {
     setSortBy(sortByOptions[0].value);
     setProviders([]);
@@ -84,6 +109,7 @@ export default function Filmes() {
     setPage(1);
     getMovies(page, search, sortByOptions[0].value, [], [], null);
   };
+
   const handleClickFilter = () => {
     setPage(1);
     getMovies(1, search, sortBy, providers, genders, releaseYear);
@@ -146,7 +172,7 @@ export default function Filmes() {
           )}
         </>
       )}
-      {!(totalPages === page) && movies && movies.length > 0 && (
+      {!(totalPages === page) && movies && movies.length > 0 && !isRandomFilm && (
         <Grid
           item
           xs={12}
@@ -155,13 +181,19 @@ export default function Filmes() {
           alignItems="center"
           justifyContent="center"
         >
-          <Button
+          <LoadingButton
             variant="contained"
             size="large"
-            onClick={() => setPage(page + 1)}
+            onClick={() => {
+              setLoadingButton(true);
+              setPage(page + 1);
+            }}
+            loading={loadingButton}
+            loadingPosition="start"
+            startIcon={<Search />}
           >
             Carregar mais
-          </Button>
+          </LoadingButton>
         </Grid>
       )}
     </Grid>
