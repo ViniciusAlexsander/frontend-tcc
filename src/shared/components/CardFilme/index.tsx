@@ -45,12 +45,15 @@ export function CardFilme({ movie }: MovieCardProps) {
         onClick={handleClickCard}
         sx={{
           width: "150px",
-          borderRadius: "0px 0px 8px 8px",
+          borderRadius: "8px",
           height: "100%",
           display: "flex",
           justifyContent: "space-between",
           flexDirection: "column",
+          alignItems: "flex-start",
           marginLeft: "21px",
+          backgroundColor: "#cccccc",
+          color: "#000",
         }}
       >
         <div>
@@ -61,9 +64,11 @@ export function CardFilme({ movie }: MovieCardProps) {
             height="225px"
             style={{ borderRadius: "8px 8px 0px 0px" }}
           />
-          <Typography variant="body2">Nota: {movie.vote_average}</Typography>
+          <Typography variant="body2" p={0.5}>
+            Nota: {movie.vote_average}
+          </Typography>
         </div>
-        <Typography variant="body1" fontWeight="bold">
+        <Typography variant="body1" fontWeight="bold" p={0.5}>
           {movie.title}
         </Typography>
       </CardActionArea>

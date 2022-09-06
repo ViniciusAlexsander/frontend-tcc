@@ -33,7 +33,7 @@ export const routes: IRoute[] = [
     exibirMenuLateral: true,
     menuAninhado: [
       {
-        label: "Buscar",
+        label: "Descubra",
         rota: RotasEnum.FILMES,
         icon: <Search />,
         exibirMenuLateral: true,
