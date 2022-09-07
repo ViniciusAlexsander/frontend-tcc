@@ -1,6 +1,7 @@
 import { GetStaticProps } from "next";
 import { Box, useTheme, useMediaQuery, Stack } from "@mui/material";
-import { Carousel, CardFilme } from "../shared/components";
+import { Carousel, CardFilme, TituloComIcone } from "../shared/components";
+import { LocalMovies } from "@mui/icons-material";
 import { getUpcomingMovies, movie } from "../services/movies/upcomingMovies";
 import { ResponsiveType } from "../shared/components/Carousel";
 import {
@@ -56,6 +57,10 @@ export default function Home({
 
   return (
     <Stack spacing={2} sx={{ margin: 1 }}>
+      <TituloComIcone
+        titulo="Veja os filmes populares, filmes disponíveis no cinema e os próximos lançamentos"
+        icon={<LocalMovies />}
+      />
       <Box>
         <Carousel
           responsive={responsive}

@@ -5,3 +5,5 @@ export * from "./ModalDetalhesFilme";
 export * from "./DatePicker";
 export * from "./HeaderBuscarFilme";
 export * from "./CardInformativo";
+export * from "./TituloComIcone";
+export * from "./ModalNovoGrupo";

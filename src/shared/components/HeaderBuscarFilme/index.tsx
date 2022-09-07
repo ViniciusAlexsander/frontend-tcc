@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import {
-  Autocomplete,
-  TextField,
   Typography,
   Grid,
   IconButton,
@@ -14,12 +12,10 @@ import {
   Select,
   MenuItem,
   Chip,
-  OutlinedInput,
 } from "@mui/material";
-import { ExpandMore as ExpandMoreIcon } from "@mui/icons-material";
+import { ExpandMore as ExpandMoreIcon, Search } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
-import { DatePicker } from "../";
-import { Dayjs } from "dayjs";
+import { DatePicker, TituloComIcone } from "../";
 import { sortByOptions } from "../../utils/movieDiscover";
 import { movieProvidersOptions } from "../../utils/movieProviders";
 import { movieGenres } from "../../utils/movieGenres";
@@ -74,9 +70,10 @@ export function HeaderBuscarFilmes({
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
-        <Typography variant="h4" mb={2}>
-          Descubra um novo filme
-        </Typography>
+        <TituloComIcone
+          titulo="          Descubra um novo filme"
+          icon={<Search />}
+        />
       </Grid>
       <Grid item xs={12} sm={6}>
         <FormControl fullWidth>
