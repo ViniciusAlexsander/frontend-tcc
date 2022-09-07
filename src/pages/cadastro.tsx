@@ -16,9 +16,10 @@ import Router from "next/router";
 import { RotasEnum } from "../shared/utils/rotas";
 
 export default function Cadastro() {
-  const [nome, setNome] = useState("");
+  const [name, setName] = useState("");
+  const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
+  const [password, setPassword] = useState("");
   const [alert, setAlert] = React.useState<{
     open: boolean;
     mensagem: string;
@@ -29,10 +30,11 @@ export default function Cadastro() {
     event.preventDefault();
 
     try {
-      const response = await api.post("/usuarios", {
+      const response = await api.post("/users", {
         email,
-        senha,
-        nome,
+        password,
+        name,
+        userName,
       });
 
       setAlert({
@@ -90,8 +92,18 @@ export default function Cadastro() {
               label="Digite seu nome completo"
               type="text"
               fullWidth
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              variant="outlined"
+              label="Digite um username"
+              type="text"
+              fullWidth
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
             />
           </Grid>
           <Grid item xs={12}>
@@ -110,8 +122,8 @@ export default function Cadastro() {
               label="Digite sua senha"
               type="password"
               fullWidth
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </Grid>
           <Grid item xs={12}>
@@ -120,7 +132,7 @@ export default function Cadastro() {
               variant="contained"
               size="large"
               fullWidth
-              disabled={!senha || !email}
+              disabled={!password || !email || !name || !userName}
             >
               Entrar
             </Button>

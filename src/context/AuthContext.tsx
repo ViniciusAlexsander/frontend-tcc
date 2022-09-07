@@ -57,9 +57,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   async function signIn({ email, senha }) {
     try {
-      const response = await api.post("/autenticao", {
+      const response = await api.post("/auth", {
         email,
-        senha,
+        password: senha,
       });
 
       const { token, refreshToken, permissions, roles } = response.data;

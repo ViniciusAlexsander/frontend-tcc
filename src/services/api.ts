@@ -35,7 +35,7 @@ api.interceptors.response.use(
           isRefreshing = true;
 
           api
-            .post("/autenticao/refresh-token", {
+            .post("/auth/refresh-token", {
               refreshToken,
             })
             .then((response) => {

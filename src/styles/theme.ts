@@ -16,6 +16,11 @@ const theme = createTheme({
       dark: "#00672b",
       contrastText: "#000",
     },
+    error: {
+      light: "#ef5350",
+      main: "#d32f2f",
+      dark: "#c62828",
+    },
   },
   typography: {
     fontFamily: "'Source Sans Pro', sans-serif",
