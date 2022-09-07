@@ -63,6 +63,14 @@ export function HeaderBuscarFilmes({
     setExpanded(!expanded);
   };
 
+  const MenuProps = {
+    PaperProps: {
+      style: {
+        maxHeight: 50 * 4.5 + 8,
+      },
+    },
+  };
+
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -94,6 +102,7 @@ export function HeaderBuscarFilmes({
                 ))}
               </Box>
             )}
+            MenuProps={MenuProps}
           >
             {movieGenres.map((s) => (
               <MenuItem key={s.id} value={s.name}>
@@ -128,6 +137,7 @@ export function HeaderBuscarFilmes({
                 ))}
               </Box>
             )}
+            MenuProps={MenuProps}
           >
             {movieProvidersOptions.map((s) => (
               <MenuItem key={s.provider_id} value={s.provider_name}>
