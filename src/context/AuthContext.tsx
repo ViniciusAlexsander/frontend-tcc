@@ -29,7 +29,7 @@ export function signOut() {
   destroyCookie(undefined, "nextauth.token");
   destroyCookie(undefined, "nextauth.refreshToken");
 
-  Router.push(RotasEnum.INICIO);
+  Router.push(RotasEnum.LOGIN);
 }
 
 export const AuthContext = createContext({} as AuthContextData);

@@ -1,4 +1,4 @@
-import { FormEvent, useContext, useState } from "react";
+import { useContext, useState } from "react";
 import Router from "next/router";
 import {
   Box,
@@ -25,6 +25,8 @@ import {
   Menu,
 } from "@mui/icons-material";
 import { routes } from "../../utils/routes";
+import { AuthContext, signOut } from "../../../context/AuthContext";
+import { RotasEnum } from "../../utils/rotas";
 
 export interface MenuLateralProps {
   children: React.ReactNode;
@@ -33,6 +35,8 @@ export interface MenuLateralProps {
 export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [open, setOpen] = useState(true);
+
+  const { isAuthenticated } = useContext(AuthContext);
 
   const theme = useTheme();
   const drawerWidth = theme.spacing(28);
@@ -48,6 +52,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
 
   const handleClickMenuItem = (rota: string) => {
     Router.push(rota);
+    handleDrawerToggle();
   };
 
   const itensMenu = (
@@ -123,11 +128,19 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
         </Box>
 
         <ListItem disablePadding>
-          <ListItemButton>
+          <ListItemButton
+            onClick={
+              isAuthenticated
+                ? signOut
+                : () => {
+                    handleClickMenuItem(RotasEnum.LOGIN);
+                  }
+            }
+          >
             <ListItemIcon>
               <ExitToApp />
             </ListItemIcon>
-            <ListItemText primary="Sair" />
+            <ListItemText primary={isAuthenticated ? "Sair" : "Fazer login"} />
           </ListItemButton>
         </ListItem>
       </Box>

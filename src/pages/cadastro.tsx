@@ -78,10 +78,9 @@ export default function Cadastro() {
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
-        height="100vh"
-        width="100vw"
+        height="90vh"
       >
-        <Grid container spacing={2} xs={10} sm={5} md={4} lg={3}>
+        <Grid container spacing={2} sx={{ maxWidth: "300px" }}>
           <Grid item xs={12}>
             <Typography variant="h3">Cadastre-se</Typography>
           </Grid>

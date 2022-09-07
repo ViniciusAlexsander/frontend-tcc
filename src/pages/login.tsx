@@ -3,6 +3,9 @@ import Image from "next/image";
 import { AuthContext } from "../context/AuthContext";
 import { Button, TextField, Grid, Typography, Link } from "@mui/material";
 import { RotasEnum } from "../shared/utils/rotas";
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
+import { withSSRGuest } from "../shared/utils/withSSRGuest";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -25,6 +28,7 @@ export default function Login() {
     <Grid
       container
       xs={12}
+      spacing={8}
       display="flex"
       alignItems="center"
       justifyContent="center"
@@ -34,9 +38,7 @@ export default function Login() {
         container
         item
         display={{ xs: "none", sm: "flex" }}
-        sm={7}
-        md={6}
-        lg={5}
+        sm={5}
         flexDirection="column"
         alignItems="center"
         justifyContent="center"
@@ -52,11 +54,11 @@ export default function Login() {
       <Grid
         container
         item
-        spacing={2}
         xs={10}
         sm={5}
-        md={4}
-        lg={3}
+        md={5}
+        lg={4}
+        xl={3}
         component="form"
         onSubmit={handleSubmit}
         sx={{ height: "50%" }}
@@ -104,3 +106,9 @@ export default function Login() {
     </Grid>
   );
 }
+
+export const getServerSideProps = withSSRGuest(async () => {
+  return {
+    props: {},
+  };
+});
