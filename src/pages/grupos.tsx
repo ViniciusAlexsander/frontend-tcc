@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Grid, Button } from "@mui/material";
-import { GroupAdd, People } from "@mui/icons-material";
-import { ModalNovoGrupo, TituloComIcone } from "../shared/components";
+import { GroupAdd, People, PersonSearch } from "@mui/icons-material";
+import {
+  ModalNovoGrupo,
+  PesquisarGrupos,
+  TituloComIcone,
+} from "../shared/components";
 import { CarouselGruposParticipa } from "../shared/components/CarouselGruposParticipa";
 
 export default function Grupos() {
@@ -40,6 +44,15 @@ export default function Grupos() {
 
         <Grid item xs={12}>
           <CarouselGruposParticipa />
+        </Grid>
+        <Grid item xs={12}>
+          <TituloComIcone
+            titulo="Encontre novos grupos"
+            icon={<PersonSearch />}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <PesquisarGrupos />
         </Grid>
       </Grid>
     </>

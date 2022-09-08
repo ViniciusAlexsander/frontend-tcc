@@ -7,3 +7,5 @@ export * from "./HeaderBuscarFilme";
 export * from "./CardInformativo";
 export * from "./TituloComIcone";
 export * from "./ModalNovoGrupo";
+export * from "./CardGrupo";
+export * from "./PesquisarGrupos";
