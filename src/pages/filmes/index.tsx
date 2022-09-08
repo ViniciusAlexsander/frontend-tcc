@@ -73,7 +73,8 @@ export default function Filmes() {
   }, [page]);
 
   useEffect(() => {
-    getSearchMoviesFunc(1, search);
+    if (search) getSearchMoviesFunc(1, search);
+    else getMovies(page, sortBy, providers, genders, releaseYear);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 

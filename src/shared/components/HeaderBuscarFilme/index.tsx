@@ -12,6 +12,7 @@ import {
   Select,
   MenuItem,
   Chip,
+  TextField,
 } from "@mui/material";
 import { ExpandMore as ExpandMoreIcon, Search } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
@@ -71,78 +72,20 @@ export function HeaderBuscarFilmes({
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <TituloComIcone
-          titulo="          Descubra um novo filme"
+          titulo="Pesquise ou descubra um novo filme"
           icon={<Search />}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <FormControl fullWidth>
-          <InputLabel id="genders-label">Gêneros</InputLabel>
-          <Select
-            labelId="genders-label"
-            id="genders"
-            multiple
-            value={genders}
-            label="Gêneros"
-            onChange={(e) => {
-              const {
-                target: { value },
-              } = e;
-              handleGenders(
-                typeof value === "string" ? value.split("|") : value
-              );
-            }}
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-          >
-            {movieGenres.map((s) => (
-              <MenuItem key={s.id} value={s.name}>
-                {s.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-      </Grid>
-
-      <Grid item xs={12} sm={6}>
-        <FormControl fullWidth>
-          <InputLabel id="providers-label">Exibido em</InputLabel>
-          <Select
-            labelId="providers-label"
-            id="providers"
-            multiple
-            value={providers}
-            label="Exibido em"
-            onChange={(e) => {
-              const {
-                target: { value },
-              } = e;
-              handleProviders(
-                typeof value === "string" ? value.split("|") : value
-              );
-            }}
-            renderValue={(selected) => (
-              <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                {selected.map((value) => (
-                  <Chip key={value} label={value} />
-                ))}
-              </Box>
-            )}
-            MenuProps={MenuProps}
-          >
-            {movieProvidersOptions.map((s) => (
-              <MenuItem key={s.provider_id} value={s.provider_name}>
-                {s.provider_name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+      <Grid item xs={12}>
+        <TextField
+          size="medium"
+          fullWidth
+          label="Digite o nome de um filme"
+          value={search}
+          onChange={(e) => {
+            handleSearch(e.target.value);
+          }}
+        />
       </Grid>
       <Grid
         item
@@ -179,6 +122,75 @@ export function HeaderBuscarFilmes({
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6} md={4}>
               <FormControl fullWidth>
+                <InputLabel id="genders-label">Gêneros</InputLabel>
+                <Select
+                  labelId="genders-label"
+                  id="genders"
+                  multiple
+                  value={genders}
+                  label="Gêneros"
+                  onChange={(e) => {
+                    const {
+                      target: { value },
+                    } = e;
+                    handleGenders(
+                      typeof value === "string" ? value.split("|") : value
+                    );
+                  }}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={value} />
+                      ))}
+                    </Box>
+                  )}
+                  MenuProps={MenuProps}
+                >
+                  {movieGenres.map((s) => (
+                    <MenuItem key={s.id} value={s.name}>
+                      {s.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={4}>
+              <FormControl fullWidth>
+                <InputLabel id="providers-label">Exibido em</InputLabel>
+                <Select
+                  labelId="providers-label"
+                  id="providers"
+                  multiple
+                  value={providers}
+                  label="Exibido em"
+                  onChange={(e) => {
+                    const {
+                      target: { value },
+                    } = e;
+                    handleProviders(
+                      typeof value === "string" ? value.split("|") : value
+                    );
+                  }}
+                  renderValue={(selected) => (
+                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                      {selected.map((value) => (
+                        <Chip key={value} label={value} />
+                      ))}
+                    </Box>
+                  )}
+                  MenuProps={MenuProps}
+                >
+                  {movieProvidersOptions.map((s) => (
+                    <MenuItem key={s.provider_id} value={s.provider_name}>
+                      {s.provider_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <FormControl fullWidth>
                 <InputLabel id="ordenar-por-label">Ordenar por</InputLabel>
                 <Select
                   labelId="ordenar-por-label"
@@ -207,33 +219,45 @@ export function HeaderBuscarFilmes({
                 }}
               />
             </Grid>
+            <Grid
+              item
+              xs={12}
+              justifyContent="flex-end"
+              display="flex"
+              alignItems="center"
+            >
+              <Box
+                sx={{
+                  "& button": {
+                    marginLeft: 3,
+                  },
+                }}
+              >
+                <Button
+                  variant="contained"
+                  size="medium"
+                  onClick={handleClickSort}
+                >
+                  Sortear
+                </Button>
+                <Button
+                  variant="contained"
+                  size="medium"
+                  onClick={handleClickClean}
+                >
+                  Limpar
+                </Button>
+                <Button
+                  variant="contained"
+                  size="medium"
+                  onClick={handleClickFilter}
+                >
+                  Filtrar
+                </Button>
+              </Box>
+            </Grid>
           </Grid>
         </Collapse>
-      </Grid>
-      <Grid
-        item
-        xs={12}
-        justifyContent="flex-end"
-        display="flex"
-        alignItems="center"
-      >
-        <Box
-          sx={{
-            "& button": {
-              marginLeft: 3,
-            },
-          }}
-        >
-          <Button variant="contained" size="medium" onClick={handleClickSort}>
-            Sortear
-          </Button>
-          <Button variant="contained" size="medium" onClick={handleClickClean}>
-            Limpar
-          </Button>
-          <Button variant="contained" size="medium" onClick={handleClickFilter}>
-            Filtrar
-          </Button>
-        </Box>
       </Grid>
     </Grid>
   );
