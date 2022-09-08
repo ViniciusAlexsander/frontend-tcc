@@ -16,6 +16,7 @@ import {
   IconButton,
   useTheme,
   Collapse,
+  useMediaQuery,
 } from "@mui/material";
 import {
   AccountCircle,
@@ -39,6 +40,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
 
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const drawerWidth = theme.spacing(28);
   const headerHeight = theme.spacing(7);
 
@@ -176,34 +178,35 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
           </Toolbar>
         </AppBar>
 
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          sx={{
-            display: { xs: "block", md: "none" },
-          }}
-        >
-          {itensMenu}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          anchor="left"
-          sx={{
-            display: { xs: "none", md: "block" },
-            backgroundColor: "#2c2c2c",
-            borderColor: "rgba(255, 255, 255, 0.12)",
-          }}
-        >
-          {itensMenu}
-        </Drawer>
+        {isMobile ? (
+          <Drawer
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true,
+            }}
+          >
+            {itensMenu}
+          </Drawer>
+        ) : (
+          <Drawer
+            variant="permanent"
+            anchor="left"
+            sx={{
+              backgroundColor: "#2c2c2c",
+              borderColor: "rgba(255, 255, 255, 0.12)",
+            }}
+          >
+            {itensMenu}
+          </Drawer>
+        )}
       </Box>
       <Grid
         container
-        height="100vh"
+        display="flex"
+        flexDirection="column"
+        height="100%"
         width={{ xs: "100%", md: `calc(100% - ${drawerWidth})` }}
         marginLeft={{ xs: 0, md: drawerWidth }}
         marginTop={{ xs: headerHeight, md: 0 }}

@@ -17,6 +17,10 @@ import { SentimentVeryDissatisfied, Search } from "@mui/icons-material";
 export const CarouselGruposParticipa = () => {
   const [myGroups, setMyGroups] = useState<IFindGroupResponse[]>([]);
   const [loading, setLoading] = useState(true);
+  const [cardInformativoData, setCardInformativoData] = useState<{
+    message: string;
+    tipo: "success" | "info" | "error" | "warning";
+  }>({ message: "", tipo: "info" });
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
 
@@ -49,10 +53,22 @@ export const CarouselGruposParticipa = () => {
   };
 
   const findGroupService = async () => {
-    setLoading(true);
-    const groups = await findGroup("", "");
-    setMyGroups(groups);
-    setLoading(false);
+    try {
+      setLoading(true);
+      const groups = await findGroup("", "");
+      setMyGroups(groups);
+      setCardInformativoData({
+        message: "Você ainda não faz parte de nenhum grupo",
+        tipo: "info",
+      });
+    } catch (error) {
+      setCardInformativoData({
+        message: "Ocorreu um erro ao buscar os seus grupos",
+        tipo: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -93,8 +109,8 @@ export const CarouselGruposParticipa = () => {
           ) : (
             <Grid item xs={12} mt={2}>
               <CardInformativo
-                mensagem={"Você ainda não faz parte de nenhum grupo"}
-                tipo="info"
+                mensagem={cardInformativoData.message}
+                tipo={cardInformativoData.tipo}
                 icon={<SentimentVeryDissatisfied />}
               />
             </Grid>

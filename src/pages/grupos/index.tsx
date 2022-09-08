@@ -5,11 +5,11 @@ import {
   ModalNovoGrupo,
   PesquisarGrupos,
   TituloComIcone,
-} from "../shared/components";
-import { CarouselGruposParticipa } from "../shared/components/CarouselGruposParticipa";
+} from "../../shared/components";
+import { CarouselGruposParticipa } from "../../shared/components/CarouselGruposParticipa";
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
-import { RotasEnum } from "../shared/utils/rotas";
+import { RotasEnum } from "../../shared/utils/rotas";
 
 export default function Grupos() {
   const [openModalNovoGrupo, setOpenModalNovoGrupo] = useState<boolean>(false);
