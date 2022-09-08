@@ -15,7 +15,7 @@ import MultiCarousel, { ResponsiveType } from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 export interface ICarouselProps {
-  titulo: string;
+  titulo?: string;
   velocidadeAutoPlay?: number;
   slidesToSlide?: number;
   arrows?: boolean;
@@ -72,11 +72,13 @@ export const Carousel: React.FC<ICarouselProps> = ({
 
   return (
     <Grid container padding={2}>
-      <Grid item xs={12} mb={4}>
-        <Typography variant="h5" fontWeight={700}>
-          {titulo}
-        </Typography>
-      </Grid>
+      {titulo && (
+        <Grid item xs={12} mb={4}>
+          <Typography variant="h5" fontWeight={700}>
+            {titulo}
+          </Typography>
+        </Grid>
+      )}
       <Grid
         item
         xs={12}
