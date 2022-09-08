@@ -6,14 +6,13 @@ import {
   CardInformativo,
 } from "../../shared/components";
 import { SentimentVeryDissatisfied, Search } from "@mui/icons-material";
-import {
-  getDiscoverMovies,
-  IDiscoverMovie,
-} from "../../services/movies/discoverMovies";
+import { getDiscoverMovies } from "../../services/movies/discoverMovies";
+import { getSearchMovies } from "../../services/movies/searchMovies";
 import { sortByOptions } from "../../shared/utils/movieDiscover";
 import { getRandomInt, randomYear } from "../../shared/utils/utils";
 import { movieGenres } from "../../shared/utils/movieGenres";
 import { LoadingButton } from "@mui/lab";
+import { IMovie } from "../../shared/models/movies/IMovie";
 
 export default function Filmes() {
   const [page, setPage] = useState(1);
@@ -22,7 +21,7 @@ export default function Filmes() {
   const [providers, setProviders] = useState<string[]>([]);
   const [genders, setGenders] = useState<string[]>([]);
   const [releaseYear, setReleaseYear] = useState<Date | null>(null);
-  const [movies, setMovies] = useState<IDiscoverMovie[]>([]);
+  const [movies, setMovies] = useState<IMovie[]>([]);
   const [totalResults, setTotalResults] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -31,7 +30,6 @@ export default function Filmes() {
 
   const getMovies = async (
     page: number,
-    search: string | null,
     sortBy: string | null,
     providers: string[],
     genders: string[],
@@ -43,7 +41,6 @@ export default function Filmes() {
     const { discoverMovies, totalResults, totalPages } =
       await getDiscoverMovies({
         page,
-        search,
         sortBy,
         providers,
         genders,
@@ -57,10 +54,28 @@ export default function Filmes() {
     setLoadingButton(false);
   };
 
+  const getSearchMoviesFunc = async (page: number, search: string | null) => {
+    if (page === 1) setLoading(true);
+    const { searchMovies, totalResults, totalPages } = await getSearchMovies({
+      page,
+      search,
+    });
+    setMovies(page > 1 ? movies.concat(searchMovies) : searchMovies);
+    setTotalResults(totalResults);
+    setTotalPages(totalPages);
+    setLoading(false);
+    setLoadingButton(false);
+  };
+
   useEffect(() => {
-    getMovies(page, search, sortBy, providers, genders, releaseYear);
+    getMovies(page, sortBy, providers, genders, releaseYear);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
+
+  useEffect(() => {
+    getSearchMoviesFunc(1, search);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [search]);
 
   const handleSearch = (search: string | null) => {
     setSearch(search);
@@ -90,7 +105,6 @@ export default function Filmes() {
     setPage(1);
     getMovies(
       page,
-      search,
       sortByOptions[0].value,
       providers,
       randomGender,
@@ -105,12 +119,12 @@ export default function Filmes() {
     setGenders([]);
     setReleaseYear(null);
     setPage(1);
-    getMovies(page, search, sortByOptions[0].value, [], [], null);
+    getMovies(page, sortByOptions[0].value, [], [], null);
   };
 
   const handleClickFilter = () => {
     setPage(1);
-    getMovies(1, search, sortBy, providers, genders, releaseYear);
+    getMovies(1, sortBy, providers, genders, releaseYear);
   };
 
   return (

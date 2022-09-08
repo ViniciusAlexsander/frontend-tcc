@@ -1,4 +1,4 @@
-import { Box, Typography, CardActionArea } from "@mui/material";
+import { Box, Typography, CardActionArea, useTheme } from "@mui/material";
 import { ModalDetalhesFilme } from "../";
 import Image from "next/image";
 import { useState } from "react";
@@ -9,7 +9,6 @@ interface MovieCardProps {
 
 type movie = {
   poster_path: string | null;
-  banner_path: string | null;
   adult: boolean;
   overview: string;
   release_date: Date;
@@ -18,7 +17,7 @@ type movie = {
   original_title: string;
   original_language: string;
   title: string;
-  backdrop_path?: string;
+  backdrop_path?: string | null;
   popularity: number;
   vote_count: number;
   video: boolean;
@@ -27,6 +26,7 @@ type movie = {
 
 export function CardFilme({ movie }: MovieCardProps) {
   const [openModalDetalhes, setOpenModalDetalhes] = useState<boolean>(false);
+  const theme = useTheme();
 
   const handleClickCard = () => {
     setOpenModalDetalhes(true);
@@ -52,8 +52,8 @@ export function CardFilme({ movie }: MovieCardProps) {
           flexDirection: "column",
           alignItems: "flex-start",
           marginLeft: "21px",
-          backgroundColor: "#cccccc",
-          color: "#000",
+          backgroundColor: theme.palette.primary.main,
+          color: theme.palette.primary.contrastText,
         }}
       >
         <div>

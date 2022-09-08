@@ -11,7 +11,6 @@ interface ModalDetalhesFilmeProps {
 
 type movie = {
   poster_path: string | null;
-  banner_path: string | null;
   adult: boolean;
   overview: string;
   release_date: Date;
@@ -20,7 +19,7 @@ type movie = {
   original_title: string;
   original_language: string;
   title: string;
-  backdrop_path?: string;
+  backdrop_path?: string | null;
   popularity: number;
   vote_count: number;
   video: boolean;
@@ -37,7 +36,7 @@ export function ModalDetalhesFilme({
       <Box sx={{ backgroundColor: "#595959" }}>
         <Image
           alt={"poster do filme" + movie.title}
-          src={movie.banner_path}
+          src={movie.backdrop_path}
           width="600px"
           height="240px"
           style={{ borderRadius: "8px 8px 0px 0px" }}

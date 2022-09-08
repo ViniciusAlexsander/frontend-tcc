@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { useTheme, useMediaQuery, Grid, TextField } from "@mui/material";
+import {
+  useTheme,
+  useMediaQuery,
+  Grid,
+  TextField,
+  CircularProgress,
+} from "@mui/material";
 import { CardGrupo, CardInformativo } from "../";
 import { findGroup, IFindGroupResponse } from "../../../services/bff/findGroup";
 import { SentimentVeryDissatisfied, Search } from "@mui/icons-material";
@@ -36,23 +42,36 @@ export const PesquisarGrupos = () => {
           }}
         />
       </Grid>
-      <Grid container item xs={12} spacing={1} mt={2}>
-        {myGroups.length > 0 ? (
-          myGroups.map((grupo) => (
-            <Grid key={grupo.id} item xs={12} sm={4} lg={3} xl={2}>
-              <CardGrupo grupo={grupo} key={grupo.id} />
+      {loading ? (
+        <Grid
+          item
+          xs={12}
+          mt={2}
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+        >
+          <CircularProgress />
+        </Grid>
+      ) : (
+        <Grid container item xs={12} spacing={1} mt={2}>
+          {myGroups.length > 0 ? (
+            myGroups.map((grupo) => (
+              <Grid key={grupo.id} item xs={12} sm={4} lg={3} xl={2}>
+                <CardGrupo grupo={grupo} key={grupo.id} />
+              </Grid>
+            ))
+          ) : (
+            <Grid item xs={12} mt={2}>
+              <CardInformativo
+                mensagem={"Não encontramos nenhum grupo com o nome pesquisado"}
+                tipo="info"
+                icon={<SentimentVeryDissatisfied />}
+              />
             </Grid>
-          ))
-        ) : (
-          <Grid item xs={12} mt={2}>
-            <CardInformativo
-              mensagem={"Não encontramos nenhum grupo com o nome pesquisado"}
-              tipo="info"
-              icon={<SentimentVeryDissatisfied />}
-            />
-          </Grid>
-        )}
-      </Grid>
+          )}
+        </Grid>
+      )}
     </Grid>
   );
 };
