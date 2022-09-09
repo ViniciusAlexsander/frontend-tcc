@@ -18,7 +18,7 @@ export type IFindGroupResponse = {
   users: IFindGroupUsersResponse[];
 };
 
-export async function findGroup(
+export async function findGroups(
   id: string | null,
   title: string | null
 ): Promise<IFindGroupResponse[]> {

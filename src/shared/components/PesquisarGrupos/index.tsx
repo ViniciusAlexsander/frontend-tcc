@@ -7,7 +7,10 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { CardGrupo, CardInformativo } from "../";
-import { findGroup, IFindGroupResponse } from "../../../services/bff/findGroup";
+import {
+  findGroups,
+  IFindGroupResponse,
+} from "../../../services/bff/findGroup";
 import { SentimentVeryDissatisfied } from "@mui/icons-material";
 
 export const PesquisarGrupos = () => {
@@ -23,7 +26,7 @@ export const PesquisarGrupos = () => {
   const findGroupService = async (searchGroup: string | null) => {
     try {
       setLoading(true);
-      const groups = await findGroup("", searchGroup);
+      const groups = await findGroups("", searchGroup);
       setMyGroups(groups);
       setCardInformativoData({
         message: "Não encontramos nenhum grupo com o nome pesquisado",

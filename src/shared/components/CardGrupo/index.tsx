@@ -5,6 +5,8 @@ import {
   Avatar,
   AvatarGroup,
 } from "@mui/material";
+import Router from "next/router";
+import { RotasEnum } from "../../utils/rotas";
 import { stringAvatar } from "../../utils/utils";
 
 export interface CardGrupoProps {
@@ -23,9 +25,15 @@ type users = {
 };
 
 export function CardGrupo({ grupo }: CardGrupoProps) {
+  const handleClickCard = (id: string) => {
+    Router.push(`${RotasEnum.GRUPOS}/${id}`);
+  };
+
   return (
     <CardActionArea
-      key={grupo.id}
+      onClick={() => {
+        handleClickCard(grupo.id);
+      }}
       sx={{
         width: "200px",
         height: "260px",

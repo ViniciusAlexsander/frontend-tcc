@@ -8,7 +8,10 @@ import {
   Grid,
 } from "@mui/material";
 import { Carousel, ResponsiveType, CardInformativo, CardGrupo } from "../";
-import { findGroup, IFindGroupResponse } from "../../../services/bff/findGroup";
+import {
+  findGroups,
+  IFindGroupResponse,
+} from "../../../services/bff/findGroup";
 import { SentimentVeryDissatisfied } from "@mui/icons-material";
 
 export const CarouselGruposParticipa = () => {
@@ -52,7 +55,7 @@ export const CarouselGruposParticipa = () => {
   const findGroupService = async () => {
     try {
       setLoading(true);
-      const groups = await findGroup("", "");
+      const groups = await findGroups("", "");
       setMyGroups(groups);
       setCardInformativoData({
         message: "Você ainda não faz parte de nenhum grupo",
