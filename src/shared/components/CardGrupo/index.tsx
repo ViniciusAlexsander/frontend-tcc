@@ -19,7 +19,7 @@ type grupo = {
 
 type users = {
   id: string;
-  user_name: string;
+  name: string;
 };
 
 export function CardGrupo({ grupo }: CardGrupoProps) {
@@ -30,7 +30,7 @@ export function CardGrupo({ grupo }: CardGrupoProps) {
         width: "200px",
         height: "260px",
         marginLeft: 4,
-        border: "#fff solid 1px",
+        border: "#fff solid 0.5px",
         borderRadius: "4px",
         padding: 2,
         "&:hover": {
@@ -72,7 +72,7 @@ export function CardGrupo({ grupo }: CardGrupoProps) {
           }}
         >
           {grupo.users.slice(0, 4).map((user) => (
-            <Avatar key={user.id} {...stringAvatar(user.user_name)} />
+            <Avatar key={user.id} {...stringAvatar(user.name)} />
           ))}
         </AvatarGroup>
       </Box>

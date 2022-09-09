@@ -20,14 +20,14 @@ export const PesquisarGrupos = () => {
   }>({ message: "", tipo: "info" });
   const theme = useTheme();
 
-  const findGroupService = async (searchGroup: string) => {
+  const findGroupService = async (searchGroup: string | null) => {
     try {
       setLoading(true);
       const groups = await findGroup("", searchGroup);
       setMyGroups(groups);
       setCardInformativoData({
         message: "Não encontramos nenhum grupo com o nome pesquisado",
-        tipo: "error",
+        tipo: "info",
       });
     } catch (error) {
       setCardInformativoData({
@@ -40,7 +40,8 @@ export const PesquisarGrupos = () => {
   };
 
   useEffect(() => {
-    findGroupService(searchGroup);
+    if (searchGroup) findGroupService(searchGroup);
+    else findGroupService(null);
   }, [searchGroup]);
 
   return (

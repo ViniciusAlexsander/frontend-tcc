@@ -3,10 +3,7 @@ import { api } from "../api";
 export type IFindGroupUsersResponse = {
   id: string;
   name: string;
-  user_name: string;
-  email: string;
-  description: null;
-  created_at: string;
+  joinedAt: Date;
 };
 
 export type IFindGroupRequest = {
@@ -18,16 +15,15 @@ export type IFindGroupResponse = {
   id: string;
   title: string;
   description: string;
-  created_at: Date;
   users: IFindGroupUsersResponse[];
 };
 
 export async function findGroup(
-  groupId: string | undefined,
-  name: string | undefined
+  id: string | null,
+  title: string | null
 ): Promise<IFindGroupResponse[]> {
   const { data } = await api.get<IFindGroupResponse[]>("/groups", {
-    params: { groupId, name },
+    params: { id, title },
   });
   return data;
 }

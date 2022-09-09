@@ -4,15 +4,12 @@ import {
   Typography,
   useTheme,
   useMediaQuery,
-  CardActionArea,
-  Avatar,
-  AvatarGroup,
   CircularProgress,
   Grid,
 } from "@mui/material";
 import { Carousel, ResponsiveType, CardInformativo, CardGrupo } from "../";
 import { findGroup, IFindGroupResponse } from "../../../services/bff/findGroup";
-import { SentimentVeryDissatisfied, Search } from "@mui/icons-material";
+import { SentimentVeryDissatisfied } from "@mui/icons-material";
 
 export const CarouselGruposParticipa = () => {
   const [myGroups, setMyGroups] = useState<IFindGroupResponse[]>([]);
