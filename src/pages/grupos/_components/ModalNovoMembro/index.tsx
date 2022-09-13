@@ -139,12 +139,12 @@ export function ModalNovoMembro({
                 option: IUsersOptions,
                 value: IUsersOptions
               ) => option.id === value.id}
-              noOptionsText="Digite o username de um usuário"
+              noOptionsText="Digite o username do membro"
               loading={loading}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Busque por username ou email"
+                  label="Busque por username do membro"
                   required
                   size="medium"
                   fullWidth
