@@ -10,6 +10,7 @@ export type IFindGroupUsersResponse = {
 export type IFindGroupRequest = {
   id?: string | null;
   title?: string | null;
+  isMember?: boolean;
 };
 
 export type IFindGroupResponse = {
@@ -22,20 +23,21 @@ export type IFindGroupResponse = {
 export async function findGroups({
   id,
   title,
+  isMember,
 }: IFindGroupRequest): Promise<IFindGroupResponse[]> {
   const { data } = await api.get<IFindGroupResponse[]>("/groups", {
-    params: { id, title },
+    params: { id, title, isMember },
   });
   return data;
 }
 
 export async function findGroupsServerSide(
-  { id, title }: IFindGroupRequest,
+  { id, title, isMember }: IFindGroupRequest,
   ctx
 ): Promise<IFindGroupResponse[]> {
   const apiClient = setupAPIClient(ctx);
   const { data } = await apiClient.get<IFindGroupResponse[]>("/groups", {
-    params: { id, title },
+    params: { id, title, isMember },
   });
   return data;
 }

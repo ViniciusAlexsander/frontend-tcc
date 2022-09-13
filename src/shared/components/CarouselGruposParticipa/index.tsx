@@ -55,7 +55,7 @@ export const CarouselGruposParticipa = () => {
   const findGroupService = async () => {
     try {
       setLoading(true);
-      const groups = await findGroups("", "");
+      const groups = await findGroups({ isMember: true });
       setMyGroups(groups);
       setCardInformativoData({
         message: "Você ainda não faz parte de nenhum grupo",
