@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import {
   Box,
@@ -14,14 +15,21 @@ import { Carousel, ResponsiveType } from "../../shared/components";
 import { ModalNovoMembro } from "./_components/ModalNovoMembro";
 import { findGroups, findGroupsServerSide } from "../../services/bff/findGroup";
 import { stringAvatar, stringToColor } from "../../shared/utils/utils";
+import {
+  checkAdminGroup,
+  checkAdminGroupServerSide,
+} from "../../services/bff/checkAdminGroup";
 
 interface DetalheGrupoProps {
-  grupo: {
-    id: string;
-    title: string;
-    description: string;
-    users: IUsersGroup[];
-  };
+  id: string;
+}
+
+interface IDetalheGroup {
+  id: string;
+  isAdmin: boolean;
+  title: string;
+  description: string;
+  users: IUsersGroup[];
 }
 
 interface IUsersGroup {
@@ -30,12 +38,14 @@ interface IUsersGroup {
   joinedAt: string;
 }
 
-export default function DetalheGrupo({ grupo }: DetalheGrupoProps) {
+export default function DetalheGrupo({ id }: DetalheGrupoProps) {
   const [openModalNovoMembro, setOpenModalNovoMembro] =
     useState<boolean>(false);
+  const [grupo, setGrupo] = useState<IDetalheGroup | null>(null);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+  const router = useRouter();
 
   const handleClickNovoMembro = () => {
     setOpenModalNovoMembro(true);
@@ -44,108 +54,152 @@ export default function DetalheGrupo({ grupo }: DetalheGrupoProps) {
     setOpenModalNovoMembro(false);
   };
 
+  const getGroupDetails = async () => {
+    let isAdmin: boolean;
+    try {
+      const checkAdminGroupResponse = await checkAdminGroup({
+        groupId: id as string,
+      });
+      isAdmin = checkAdminGroupResponse.isAdmin;
+    } catch (error) {
+      isAdmin = false;
+    }
+    const response = await findGroups({ id: id as string });
+    const grupoResponse = response[0];
+    setGrupo({
+      id,
+      isAdmin,
+      title: grupoResponse.title,
+      description: grupoResponse.description,
+      users: grupoResponse.users.map((user) => {
+        return {
+          ...user,
+          joinedAt: new Date(user.joinedAt).toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          }),
+        };
+      }),
+    });
+  };
+
+  useEffect(() => {
+    if (!openModalNovoMembro) getGroupDetails();
+  }, [openModalNovoMembro]);
+
   return (
     <>
-      <ModalNovoMembro
-        open={openModalNovoMembro}
-        handleClose={handleClose}
-        groupId={grupo.id}
-      />
-      <Grid container spacing={2}>
-        <Grid item xs={3}>
-          <Groups
-            sx={{
-              fontSize: "5rem",
-              width: "80%",
-              height: "100%",
-              borderRadius: "25%",
-              backgroundColor: theme.palette.primary.main,
-            }}
+      {grupo && (
+        <>
+          <ModalNovoMembro
+            open={openModalNovoMembro}
+            handleClose={handleClose}
+            groupId={grupo?.id}
           />
-        </Grid>
-        <Grid item container xs={6}>
-          <Grid item xs={12}>
-            <Typography variant="h4" fontWeight="bold">
-              {grupo.title}
-            </Typography>
-          </Grid>
-          <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
-            <People sx={{ marginRight: 2 }} />
-            <Typography variant="body1" mr={3}>
-              <strong>{grupo.users.length}</strong>{" "}
-              {grupo.users.length > 0 ? " Participantes" : " Participante"}
-            </Typography>
-          </Grid>
-          <Typography variant="body1" mr={3}>
-            {grupo.description}
-          </Typography>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          display="flex"
-          alignItems="center"
-          justifyContent="flex-end"
-        >
-          <Button
-            variant="contained"
-            size="medium"
-            startIcon={<PersonAdd />}
-            onClick={handleClickNovoMembro}
-          >
-            Novo membro
-          </Button>
-        </Grid>
-        <Grid item xs={12}>
-          <Carousel
-            titulo="Membros"
-            responsive={responsive}
-            arrows
-            mostrarPontos={!isMobile}
-            mostrarProximo
-          >
-            {grupo.users.map((user) => (
-              <Box
-                key={user.id}
+          <Grid container spacing={2}>
+            <Grid item xs={3}>
+              <Groups
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  flexDirection: "column",
-                  marginRight: 2,
+                  fontSize: "5rem",
+                  width: "80%",
+                  height: "100%",
+                  borderRadius: "25%",
+                  backgroundColor: theme.palette.primary.main,
                 }}
+              />
+            </Grid>
+            <Grid item container xs={6}>
+              <Grid item xs={12}>
+                <Typography variant="h4" fontWeight="bold">
+                  {grupo?.title}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
+                <People sx={{ marginRight: 2 }} />
+                <Typography variant="body1" mr={3}>
+                  <strong>{grupo?.users?.length}</strong>{" "}
+                  {grupo?.users?.length > 0
+                    ? " Participantes"
+                    : " Participante"}
+                </Typography>
+              </Grid>
+              <Typography variant="body1" mr={3}>
+                {grupo?.description}
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-end"
+            >
+              {grupo?.isAdmin && (
+                <Button
+                  variant="contained"
+                  size="medium"
+                  startIcon={<PersonAdd />}
+                  onClick={handleClickNovoMembro}
+                >
+                  Novo membro
+                </Button>
+              )}
+            </Grid>
+            <Grid item xs={12}>
+              <Carousel
+                titulo="Membros"
+                responsive={responsive}
+                arrows
+                mostrarPontos={!isMobile}
+                mostrarProximo
               >
-                <Avatar
-                  {...stringAvatar(user.name)}
-                  sx={{
-                    bgcolor: stringToColor(user.name),
-                    width: 100,
-                    height: 100,
-                    fontSize: "2.25rem",
-                    marginBottom: 2,
-                  }}
-                />
-                <Typography variant="body1">{user.name}</Typography>
-              </Box>
-            ))}
-          </Carousel>
-        </Grid>
-        <Grid
-          item
-          xs={12}
-          display="flex"
-          alignItems="center"
-          justifyContent="flex-end"
-        >
-          <Button
-            variant="contained"
-            size="medium"
-            startIcon={<EventSeat />}
-            onClick={handleClickNovoMembro}
-          >
-            Criar sessão
-          </Button>
-        </Grid>
-      </Grid>
+                {grupo?.users.map((user) => (
+                  <Box
+                    key={user.id}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      flexDirection: "column",
+                      marginRight: 2,
+                    }}
+                  >
+                    <Avatar
+                      {...stringAvatar(user.name)}
+                      sx={{
+                        bgcolor: stringToColor(user.name),
+                        width: 100,
+                        height: 100,
+                        fontSize: "2.25rem",
+                        marginBottom: 2,
+                      }}
+                    />
+                    <Typography variant="body1">{user.name}</Typography>
+                  </Box>
+                ))}
+              </Carousel>
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-end"
+            >
+              {grupo?.isAdmin && (
+                <Button
+                  variant="contained"
+                  size="medium"
+                  startIcon={<EventSeat />}
+                  onClick={handleClickNovoMembro}
+                >
+                  Criar sessão
+                </Button>
+              )}
+            </Grid>
+          </Grid>
+        </>
+      )}
     </>
   );
 }
@@ -154,25 +208,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { params } = ctx;
   const { id } = params;
 
-  const response = await findGroupsServerSide({ id: id as string }, ctx);
-
-  const grupoResponse = response[0];
-  const grupo = {
-    id,
-    title: grupoResponse.title,
-    description: grupoResponse.description,
-    users: grupoResponse.users.map((user) => {
-      return {
-        ...user,
-        joinedAt: new Date(user.joinedAt).toLocaleDateString("pt-BR", {
-          day: "2-digit",
-          month: "long",
-          year: "numeric",
-        }),
-      };
-    }),
-  };
-  return { props: { grupo } };
+  return { props: { id } };
 };
 
 const responsive: ResponsiveType = {
