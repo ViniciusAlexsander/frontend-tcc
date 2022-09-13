@@ -7,7 +7,7 @@ import {
 } from "@mui/material";
 import Router from "next/router";
 import { RotasEnum } from "../../utils/rotas";
-import { stringAvatar } from "../../utils/utils";
+import { stringAvatar, stringToColor } from "../../utils/utils";
 
 export interface CardGrupoProps {
   grupo: grupo;
@@ -58,6 +58,7 @@ export function CardGrupo({ grupo }: CardGrupoProps) {
         <Avatar
           {...stringAvatar(grupo.title)}
           sx={{
+            bgcolor: stringToColor(grupo.title),
             width: 100,
             height: 100,
             fontSize: "2.25rem",
@@ -80,7 +81,13 @@ export function CardGrupo({ grupo }: CardGrupoProps) {
           }}
         >
           {grupo.users.slice(0, 4).map((user) => (
-            <Avatar key={user.id} {...stringAvatar(user.name)} />
+            <Avatar
+              key={user.id}
+              {...stringAvatar(user.name)}
+              sx={{
+                bgcolor: stringToColor(user.name),
+              }}
+            />
           ))}
         </AvatarGroup>
       </Box>

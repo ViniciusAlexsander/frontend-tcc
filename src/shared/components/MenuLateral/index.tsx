@@ -40,7 +40,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
   const { isAuthenticated } = useContext(AuthContext);
 
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
   const drawerWidth = theme.spacing(28);
   const headerHeight = theme.spacing(7);
 
@@ -210,7 +210,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
         width={{ xs: "100%", md: `calc(100% - ${drawerWidth})` }}
         marginLeft={{ xs: 0, md: drawerWidth }}
         marginTop={{ xs: headerHeight, md: 0 }}
-        padding={{ md: 2 }}
+        padding={{ xs: 2 }}
       >
         <Grid item xs={12}>
           {children}

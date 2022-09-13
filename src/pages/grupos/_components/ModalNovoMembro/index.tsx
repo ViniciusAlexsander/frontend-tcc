@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Grid,
   Typography,
@@ -9,38 +9,76 @@ import {
   Snackbar,
   Alert,
   AlertColor,
+  Autocomplete,
 } from "@mui/material";
 import { GroupAdd } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { postNewGroup } from "../../../services/bff/addNewGroup";
+import {
+  IFindUserResponse,
+  findUsers,
+} from "../../../../services/bff/findUsers";
+import { addUserInGroup } from "../../../../services/bff/addUserInGroup";
 
 export interface ModalNovoGrupoProps {
   open: boolean;
   handleClose: () => void;
+  groupId: string;
 }
 
-export function ModalNovoGrupo({ handleClose, open }: ModalNovoGrupoProps) {
+export interface IUsersOptions {
+  id: string;
+  label: string;
+}
+
+export function ModalNovoMembro({
+  handleClose,
+  open,
+  groupId,
+}: ModalNovoGrupoProps) {
   const [loadingButton, setLoadingButton] = useState(false);
-  const [description, setDescription] = useState<string | null>(null);
-  const [title, setTitle] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [searchUser, setSearchUser] = useState<string | null>(null);
+  const [users, setUsers] = useState<IUsersOptions[]>([]);
+  const [user, setUser] = useState<IUsersOptions | null>(null);
   const [alert, setAlert] = useState<{
     message: string;
     severity: AlertColor;
     open: boolean;
   }>({ message: "", open: false, severity: "success" });
 
-  const handleClickAddGroup = async () => {
+  const findUsersService = async (searchUser: string | null) => {
+    try {
+      setLoading(true);
+      const users = await findUsers();
+      setUsers(
+        users.map((user) => {
+          return { id: user.id, label: user.userName };
+        })
+      );
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: "Ocorreu um erro ao buscar usuário",
+        severity: "error",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleClickAddUsuario = async (userId: string) => {
     try {
       setLoadingButton(true);
-      await postNewGroup({ title, description });
+      await addUserInGroup({ groupId, userId });
       setAlert({
-        message: "Grupo criado com sucesso",
+        message: "Membro adicionado com sucesso",
         open: true,
         severity: "success",
       });
     } catch (error) {
       setAlert({
-        message: "Erro ao criar o grupo, tente novamente mais tarde",
+        message:
+          "Erro ao adicionar membro ao grupo, tente novamente mais tarde",
         open: true,
         severity: "error",
       });
@@ -51,10 +89,13 @@ export function ModalNovoGrupo({ handleClose, open }: ModalNovoGrupoProps) {
 
   const handleCloseAlert = () => {
     setAlert({ message: "", open: false, severity: "success" });
-    setDescription(null);
-    setTitle(null);
+    setSearchUser(null);
     handleClose();
   };
+
+  useEffect(() => {
+    if (searchUser) findUsersService(searchUser);
+  }, [searchUser]);
 
   return (
     <>
@@ -82,31 +123,33 @@ export function ModalNovoGrupo({ handleClose, open }: ModalNovoGrupoProps) {
             justifyContent="center"
           >
             <Typography variant="h5" fontWeight="bold">
-              Crie um novo grupo
+              Adicionar novo usuário
             </Typography>
           </Grid>
           <Grid item xs={12}>
-            <TextField
-              required
-              size="medium"
-              fullWidth
-              label="Nome do grupo"
-              value={title}
-              onChange={(e) => {
-                setTitle(e.target.value);
+            <Autocomplete
+              options={users}
+              value={user}
+              onChange={(_, option: IUsersOptions) => setUser(option)}
+              onInputChange={(_, searchValue) => {
+                setSearchUser(searchValue);
               }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              size="medium"
-              fullWidth
-              label="Descrição"
-              value={description}
-              onChange={(e) => {
-                setDescription(e.target.value);
-              }}
+              inputValue={searchUser}
+              isOptionEqualToValue={(
+                option: IUsersOptions,
+                value: IUsersOptions
+              ) => option.id === value.id}
+              noOptionsText="Digite o username de um usuário"
+              loading={loading}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Busque por username ou email"
+                  required
+                  size="medium"
+                  fullWidth
+                />
+              )}
             />
           </Grid>
           <Grid
@@ -131,14 +174,16 @@ export function ModalNovoGrupo({ handleClose, open }: ModalNovoGrupoProps) {
           >
             <LoadingButton
               variant="contained"
-              disabled={!title || !description}
+              disabled={!user}
               size="large"
-              onClick={handleClickAddGroup}
+              onClick={() => {
+                handleClickAddUsuario(user.id);
+              }}
               loading={loadingButton}
               loadingPosition="start"
               startIcon={<GroupAdd />}
             >
-              Criar grupo
+              Carregar mais
             </LoadingButton>
           </Grid>
         </Grid>

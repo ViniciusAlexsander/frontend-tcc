@@ -15,14 +15,11 @@ export function randomYear(): Date {
 
 export function stringAvatar(name: string) {
   return {
-    sx: {
-      bgcolor: stringToColor(name),
-    },
     children: `${name?.split(" ")[0][0]}`,
   };
 }
 
-function stringToColor(string: string) {
+export function stringToColor(string: string) {
   let hash = 0;
   let i;
 
