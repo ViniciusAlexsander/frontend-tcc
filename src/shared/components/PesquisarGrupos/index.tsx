@@ -26,7 +26,7 @@ export const PesquisarGrupos = () => {
   const findGroupService = async (searchGroup: string | null) => {
     try {
       setLoading(true);
-      const groups = await findGroups("", searchGroup);
+      const groups = await findGroups({ title: searchGroup });
       setMyGroups(groups);
       setCardInformativoData({
         message: "Não encontramos nenhum grupo com o nome pesquisado",

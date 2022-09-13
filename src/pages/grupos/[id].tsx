@@ -12,6 +12,7 @@ import {
 import { People, Groups, PersonAdd, EventSeat } from "@mui/icons-material";
 import { Carousel, ResponsiveType } from "../../shared/components";
 import { ModalNovoMembro } from "./_components/ModalNovoMembro";
+import { findGroups, findGroupsServerSide } from "../../services/bff/findGroup";
 import { stringAvatar, stringToColor } from "../../shared/utils/utils";
 
 interface DetalheGrupoProps {
@@ -149,69 +150,18 @@ export default function DetalheGrupo({ grupo }: DetalheGrupoProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { params } = ctx;
   const { id } = params;
 
-  // const response = await findGroup(id as string, "");
+  const response = await findGroupsServerSide({ id: id as string }, ctx);
 
-  const response = {
-    id: "aa7c16af-ef25-4980-8ec1-c138c244a830",
-    title: "Grupo de filmes",
-    description: "Este é um grupo de filmes, destinado aos amantes de filmes",
-    users: [
-      {
-        id: "fe2ba560-db9f-42c0-b5d0-6c6a4b0f11b3",
-        name: "Vinicius Alexsander Lima Marinho",
-        joinedAt: "2022-10-07T18:59:28.064Z",
-      },
-      {
-        id: "fe2ba560-db9f-42c0-b5d0-6c6a4b0f11b3",
-        name: "Guilherme",
-        joinedAt: "2022-06-07T18:59:28.064Z",
-      },
-      {
-        id: "fe2ba560-db9f-42c0-b5d0-6c6a4b0f11b3",
-        name: "Isabella",
-        joinedAt: "2022-02-08T18:59:28.064Z",
-      },
-      {
-        id: "fe2ba560-db9f-42c0-b5d0-6c6a4b0f11b3",
-        name: "Vinicius",
-        joinedAt: "2022-10-07T18:59:28.064Z",
-      },
-      {
-        id: "fe2ba560-db9f-42c0-b5d0-6c6a4b0f11b3",
-        name: "Guilherme",
-        joinedAt: "2022-06-07T18:59:28.064Z",
-      },
-      {
-        id: "fe2ba560-db9f-42c0-b5d0-6c6a4b0f11b3",
-        name: "Isabella",
-        joinedAt: "2022-02-08T18:59:28.064Z",
-      },
-      {
-        id: "fe2ba560-db9f-42c0-b5d0-6c6a4b0f11b3",
-        name: "Vinicius",
-        joinedAt: "2022-10-07T18:59:28.064Z",
-      },
-      {
-        id: "fe2ba560-db9f-42c0-b5d0-6c6a4b0f11b3",
-        name: "Guilherme",
-        joinedAt: "2022-06-07T18:59:28.064Z",
-      },
-      {
-        id: "fe2ba560-db9f-42c0-b5d0-6c6a4b0f11b3",
-        name: "Isabella",
-        joinedAt: "2022-02-08T18:59:28.064Z",
-      },
-    ],
-  };
-
+  const grupoResponse = response[0];
   const grupo = {
     id,
-    title: response.title,
-    description: response.description,
-    users: response.users.map((user) => {
+    title: grupoResponse.title,
+    description: grupoResponse.description,
+    users: grupoResponse.users.map((user) => {
       return {
         ...user,
         joinedAt: new Date(user.joinedAt).toLocaleDateString("pt-BR", {

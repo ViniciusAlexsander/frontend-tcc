@@ -1,4 +1,5 @@
-import { api } from "../api";
+import { api } from "../apiClient";
+import { setupAPIClient } from "../api";
 
 export type IFindGroupUsersResponse = {
   id: string;
@@ -7,8 +8,8 @@ export type IFindGroupUsersResponse = {
 };
 
 export type IFindGroupRequest = {
-  groupId: string | undefined;
-  name: string | undefined;
+  id?: string | null;
+  title?: string | null;
 };
 
 export type IFindGroupResponse = {
@@ -18,11 +19,22 @@ export type IFindGroupResponse = {
   users: IFindGroupUsersResponse[];
 };
 
-export async function findGroups(
-  id: string | null,
-  title: string | null
-): Promise<IFindGroupResponse[]> {
+export async function findGroups({
+  id,
+  title,
+}: IFindGroupRequest): Promise<IFindGroupResponse[]> {
   const { data } = await api.get<IFindGroupResponse[]>("/groups", {
+    params: { id, title },
+  });
+  return data;
+}
+
+export async function findGroupsServerSide(
+  { id, title }: IFindGroupRequest,
+  ctx
+): Promise<IFindGroupResponse[]> {
+  const apiClient = setupAPIClient(ctx);
+  const { data } = await apiClient.get<IFindGroupResponse[]>("/groups", {
     params: { id, title },
   });
   return data;
