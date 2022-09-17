@@ -13,13 +13,10 @@ import {
 } from "@mui/material";
 import { GroupAdd } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import {
-  IFindUserResponse,
-  findUsers,
-} from "../../../../services/bff/findUsers";
-import { addUserInGroup } from "../../../../services/bff/addUserInGroup";
+import { findUsers } from "../../../services/bff/findUsers";
+import { addUserInGroup } from "../../../services/bff/addUserInGroup";
 
-export interface ModalNovoGrupoProps {
+export interface ModalNovoMembroProps {
   open: boolean;
   handleClose: () => void;
   groupId: string;
@@ -34,7 +31,7 @@ export function ModalNovoMembro({
   handleClose,
   open,
   groupId,
-}: ModalNovoGrupoProps) {
+}: ModalNovoMembroProps) {
   const [loadingButton, setLoadingButton] = useState(false);
   const [loading, setLoading] = useState(false);
   const [searchUser, setSearchUser] = useState<string | null>(null);
@@ -190,4 +187,7 @@ export function ModalNovoMembro({
       </Dialog>
     </>
   );
+}
+function setLoadingButton(arg0: boolean) {
+  throw new Error("Function not implemented.");
 }

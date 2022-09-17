@@ -11,8 +11,11 @@ import {
   Button,
 } from "@mui/material";
 import { People, Groups, PersonAdd, EventSeat } from "@mui/icons-material";
-import { Carousel, ResponsiveType } from "../../shared/components";
-import { ModalNovoMembro } from "./_components/ModalNovoMembro";
+import {
+  Carousel,
+  ResponsiveType,
+  ModalNovoMembro,
+} from "../../shared/components";
 import { findGroups, findGroupsServerSide } from "../../services/bff/findGroup";
 import { stringAvatar, stringToColor } from "../../shared/utils/utils";
 import {

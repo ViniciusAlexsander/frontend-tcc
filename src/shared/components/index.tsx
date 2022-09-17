@@ -9,3 +9,4 @@ export * from "./TituloComIcone";
 export * from "./ModalNovoGrupo";
 export * from "./CardGrupo";
 export * from "./PesquisarGrupos";
+export * from "./ModalNovoMembro";
