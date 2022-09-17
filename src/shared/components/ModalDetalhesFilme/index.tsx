@@ -2,6 +2,7 @@ import { Grid, Typography, Dialog, Box, Button } from "@mui/material";
 import { ArrowRight } from "@mui/icons-material";
 import Image from "next/image";
 import { useState } from "react";
+import { findGenresNamesByIds } from "../../utils/movieGenres";
 
 interface ModalDetalhesFilmeProps {
   movie: movie;
@@ -43,11 +44,7 @@ export function ModalDetalhesFilme({
         />
         <Grid container px={2} py={1}>
           <Grid item xs={12} sm={8}>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent={{ xs: "space-between" }}
-            >
+            <Box display="flex" alignItems="flex-end" mr={2}>
               <Typography variant="h5" fontWeight="bold" mr={3}>
                 {movie.title}
               </Typography>
@@ -57,7 +54,8 @@ export function ModalDetalhesFilme({
             </Box>
             <Box display="flex" alignItems="center">
               <Typography variant="body1" mr={3}>
-                <strong>Duração: </strong>2h 30min
+                <strong>Título original: </strong>
+                {movie.original_title}
               </Typography>
 
               <Typography variant="body1">
@@ -77,12 +75,12 @@ export function ModalDetalhesFilme({
           >
             <Typography variant="body1" mr={{ xs: 3, sm: 0 }}>
               <strong>Genêro: </strong>
-              {movie.genre_ids[1]}
+              {findGenresNamesByIds(movie.genre_ids)}
             </Typography>
 
-            <Typography variant="body1">
+            {/* <Typography variant="body1">
               <strong>Atores: </strong>Tom roland
-            </Typography>
+            </Typography> */}
           </Grid>
           <Grid container item xs={12} mt={{ xs: 2, sm: 4 }}>
             <Typography variant="body2">{movie.overview}</Typography>

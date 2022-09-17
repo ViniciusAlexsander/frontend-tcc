@@ -4,6 +4,15 @@ export const findMovieGenresByName = (names: string[]) => {
   });
 };
 
+export const findGenresNamesByIds = (ids: number[]) => {
+  return movieGenres
+    .filter((genre) => {
+      return ids.find((id) => id === genre.id);
+    })
+    .map((gender) => gender.name)
+    .join(", ");
+};
+
 export const movieGenres = [
   {
     id: 28,

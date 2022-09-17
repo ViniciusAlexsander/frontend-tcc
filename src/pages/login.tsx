@@ -27,7 +27,6 @@ export default function Login() {
   return (
     <Grid
       container
-      xs={12}
       spacing={8}
       display="flex"
       alignItems="center"
