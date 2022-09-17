@@ -57,7 +57,8 @@ export function ModalDetalhesFilme({
                 <strong>Título original: </strong>
                 {movie.original_title}
               </Typography>
-
+            </Box>
+            <Box display="flex" alignItems="center">
               <Typography variant="body1">
                 <strong>Popularidade: </strong>
                 {movie.vote_average}
@@ -71,7 +72,7 @@ export function ModalDetalhesFilme({
             display="flex"
             alignItems={{ xs: "center", sm: "flex-start" }}
             flexDirection={{ xs: "row", sm: "column" }}
-            justifyContent={{ xs: "start", sm: "end" }}
+            justifyContent={{ xs: "start" }}
           >
             <Typography variant="body1" mr={{ xs: 3, sm: 0 }}>
               <strong>Genêro: </strong>
