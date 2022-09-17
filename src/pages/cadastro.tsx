@@ -11,7 +11,7 @@ import {
   AlertProps,
 } from "@mui/material";
 
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import Router from "next/router";
 import { RotasEnum } from "../shared/utils/rotas";
 
