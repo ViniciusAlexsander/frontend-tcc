@@ -15,6 +15,7 @@ import {
   Carousel,
   ResponsiveType,
   ModalNovoMembro,
+  ModalNovaSessao,
 } from "../../shared/components";
 import { findGroups, findGroupsServerSide } from "../../services/bff/findGroup";
 import { stringAvatar, stringToColor } from "../../shared/utils/utils";
@@ -44,6 +45,8 @@ interface IUsersGroup {
 export default function DetalheGrupo({ id }: DetalheGrupoProps) {
   const [openModalNovoMembro, setOpenModalNovoMembro] =
     useState<boolean>(false);
+  const [openModalNovaSessao, setOpenModalNovaSessao] =
+    useState<boolean>(false);
   const [grupo, setGrupo] = useState<IDetalheGroup | null>(null);
 
   const theme = useTheme();
@@ -53,7 +56,13 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
   const handleClickNovoMembro = () => {
     setOpenModalNovoMembro(true);
   };
-  const handleClose = () => {
+  const handleClickCriarSessao = () => {
+    setOpenModalNovaSessao(true);
+  };
+  const handleCloseModalCriarSessao = () => {
+    setOpenModalNovaSessao(false);
+  };
+  const handleCloseModalNovoMembro = () => {
     setOpenModalNovoMembro(false);
   };
 
@@ -97,7 +106,12 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
         <>
           <ModalNovoMembro
             open={openModalNovoMembro}
-            handleClose={handleClose}
+            handleClose={handleCloseModalNovoMembro}
+            groupId={grupo?.id}
+          />
+          <ModalNovaSessao
+            open={openModalNovaSessao}
+            handleClose={handleCloseModalCriarSessao}
             groupId={grupo?.id}
           />
           <Grid container spacing={2}>
@@ -194,7 +208,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                   variant="contained"
                   size="medium"
                   startIcon={<EventSeat />}
-                  onClick={handleClickNovoMembro}
+                  onClick={handleClickCriarSessao}
                 >
                   Criar sessão
                 </Button>
