@@ -114,13 +114,13 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
             handleClose={handleCloseModalCriarSessao}
             groupId={grupo?.id}
           />
-          <Grid container spacing={2}>
-            <Grid item xs={3}>
+          <Grid container spacing={3}>
+            <Grid item xs={3} sm={2} lg={1.5}>
               <Groups
                 sx={{
                   fontSize: "5rem",
-                  width: "80%",
-                  height: "100%",
+                  width: "100%",
+                  height: "auto",
                   borderRadius: "25%",
                   backgroundColor: theme.palette.primary.main,
                 }}

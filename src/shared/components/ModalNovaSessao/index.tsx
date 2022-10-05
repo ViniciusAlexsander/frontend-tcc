@@ -13,10 +13,9 @@ import {
 } from "@mui/material";
 import { GroupAdd } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { findUsers } from "../../../services/bff/findUsers";
-import { addUserInGroup } from "../../../services/bff/addUserInGroup";
-import { IMovie } from "../../models/movies/IMovie";
+
 import { getSearchMovies } from "../../../services/movies/searchMovies";
+import { createGroupSession } from "../../../services/bff/createGroupSession";
 
 export interface ModalNovaSessaoProps {
   open: boolean;
@@ -36,7 +35,7 @@ export function ModalNovaSessao({
 }: ModalNovaSessaoProps) {
   const [loadingButton, setLoadingButton] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [searchUser, setSearchUser] = useState<string | null>(null);
+  const [searchMovie, setSearchMovie] = useState<string | null>(null);
   const [movies, setMovies] = useState<IMovieOptions[]>([]);
   const [movie, setMovie] = useState<IMovieOptions | null>(null);
   const [alert, setAlert] = useState<{
@@ -45,7 +44,7 @@ export function ModalNovaSessao({
     open: boolean;
   }>({ message: "", open: false, severity: "success" });
 
-  const findUsersService = async (search: string | null) => {
+  const findMovieService = async (search: string | null) => {
     try {
       setLoading(true);
       const { searchMovies } = await getSearchMovies({
@@ -68,10 +67,17 @@ export function ModalNovaSessao({
     }
   };
 
-  const handleClickAddUsuario = async (userId: number) => {
+  const handleClickCreateSession = async (
+    movieId: number,
+    assistedInId: string
+  ) => {
     try {
       setLoadingButton(true);
-      console.log({ groupId, userId });
+      await createGroupSession({
+        groupId,
+        movieId: movieId.toString(),
+        assistedInId,
+      });
       setAlert({
         message: "Membro adicionado com sucesso",
         open: true,
@@ -86,18 +92,18 @@ export function ModalNovaSessao({
       });
     } finally {
       setLoadingButton(false);
+      setSearchMovie(null);
     }
   };
 
   const handleCloseAlert = () => {
     setAlert({ message: "", open: false, severity: "success" });
-    setSearchUser(null);
     handleClose();
   };
 
   useEffect(() => {
-    if (searchUser) findUsersService(searchUser);
-  }, [searchUser]);
+    if (searchMovie) findMovieService(searchMovie);
+  }, [searchMovie]);
 
   return (
     <>
@@ -116,37 +122,37 @@ export function ModalNovaSessao({
         </Alert>
       </Snackbar>
       <Dialog open={open} onClose={handleClose}>
-        <Grid container maxWidth="480px" spacing={2} p={2}>
-          <Grid
-            item
-            xs={12}
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
+        <Grid container maxWidth="480px" spacing={1} p={2}>
+          <Grid item xs={12} display="flex" justifyContent="flex-start">
             <Typography variant="h5" fontWeight="bold">
-              Adicionar novo usuário
+              Configurar sessão
             </Typography>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} display="flex" justifyContent="flex-start">
+            <Typography variant="body1" pt={2}>
+              Filme a ser assistido na sessão
+            </Typography>
+          </Grid>
+          <Grid item xs={12} pb={3}>
             <Autocomplete
               options={movies}
               value={movie}
               onChange={(_, option: IMovieOptions) => setMovie(option)}
               onInputChange={(_, searchValue) => {
-                setSearchUser(searchValue);
+                setSearchMovie(searchValue);
               }}
-              inputValue={searchUser}
+              inputValue={searchMovie}
               isOptionEqualToValue={(
                 option: IMovieOptions,
                 value: IMovieOptions
-              ) => option.id === value.id}
-              noOptionsText="Digite o username do membro"
+              ) => option?.id === value?.id}
+              noOptionsText="Não foi encontrado um filme com o nome buscado"
               loading={loading}
+              loadingText="Buscando..."
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="Busque por username do membro"
+                  label="Digite o nome do filme"
                   required
                   size="medium"
                   fullWidth
@@ -162,7 +168,12 @@ export function ModalNovaSessao({
             alignItems="center"
             justifyContent="center"
           >
-            <Button variant="contained" size="large" onClick={handleClose}>
+            <Button
+              variant="contained"
+              size="large"
+              fullWidth
+              onClick={handleClose}
+            >
               Cancelar
             </Button>
           </Grid>
@@ -176,10 +187,11 @@ export function ModalNovaSessao({
           >
             <LoadingButton
               variant="contained"
+              fullWidth
               disabled={!movie}
               size="large"
               onClick={() => {
-                handleClickAddUsuario(movie.id);
+                handleClickCreateSession(movie.id, "");
               }}
               loading={loadingButton}
               loadingPosition="start"
