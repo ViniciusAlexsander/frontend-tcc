@@ -15,7 +15,7 @@ import { GroupAdd } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 
 import { getSearchMovies } from "../../../services/movies/searchMovies";
-import { createGroupSession } from "../../../services/bff/createGroupSession";
+import { createGroupSession } from "../../../services/bff/session";
 
 export interface ModalNovaSessaoProps {
   open: boolean;

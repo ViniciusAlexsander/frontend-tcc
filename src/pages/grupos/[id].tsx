@@ -23,6 +23,7 @@ import {
   checkAdminGroup,
   checkAdminGroupServerSide,
 } from "../../services/bff/checkAdminGroup";
+import { findGroupSessions, ISession } from "../../services/bff/session";
 
 interface DetalheGrupoProps {
   id: string;
@@ -48,6 +49,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
   const [openModalNovaSessao, setOpenModalNovaSessao] =
     useState<boolean>(false);
   const [grupo, setGrupo] = useState<IDetalheGroup | null>(null);
+  const [sessions, setSessions] = useState<ISession[]>([]);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
@@ -66,39 +68,41 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
     setOpenModalNovoMembro(false);
   };
 
-  const getGroupDetails = async () => {
-    let isAdmin: boolean;
-    try {
-      const checkAdminGroupResponse = await checkAdminGroup({
-        groupId: id as string,
-      });
-      isAdmin = checkAdminGroupResponse.isAdmin;
-    } catch (error) {
-      isAdmin = false;
-    }
-    const response = await findGroups({ id: id as string });
-    const grupoResponse = response[0];
-    setGrupo({
-      id,
-      isAdmin,
-      title: grupoResponse.title,
-      description: grupoResponse.description,
-      users: grupoResponse.users.map((user) => {
-        return {
-          ...user,
-          joinedAt: new Date(user.joinedAt).toLocaleDateString("pt-BR", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-          }),
-        };
-      }),
-    });
-  };
-
   useEffect(() => {
+    const getGroupDetails = async () => {
+      let isAdmin: boolean;
+      try {
+        const checkAdminGroupResponse = await checkAdminGroup({
+          groupId: id as string,
+        });
+        isAdmin = checkAdminGroupResponse.isAdmin;
+      } catch (error) {
+        isAdmin = false;
+      }
+      const sessions = await findGroupSessions({ groupId: id as string });
+      setSessions(sessions);
+
+      const response = await findGroups({ id: id as string });
+      const grupoResponse = response[0];
+      setGrupo({
+        id,
+        isAdmin,
+        title: grupoResponse.title,
+        description: grupoResponse.description,
+        users: grupoResponse.users.map((user) => {
+          return {
+            ...user,
+            joinedAt: new Date(user.joinedAt).toLocaleDateString("pt-BR", {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+            }),
+          };
+        }),
+      });
+    };
     if (!openModalNovoMembro) getGroupDetails();
-  }, [openModalNovoMembro]);
+  }, [id, openModalNovoMembro]);
 
   return (
     <>
@@ -212,6 +216,27 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                 >
                   Criar sessão
                 </Button>
+              )}
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-end"
+            >
+              {sessions.length > 0 && (
+                <Carousel
+                  responsive={responsive}
+                  titulo="Próximos Lançamentos"
+                  arrows
+                  mostrarPontos={!isMobile}
+                  mostrarProximo
+                >
+                  {sessions.map((session) => (
+                    <div key={session.id}>{session.movie.title}</div>
+                  ))}
+                </Carousel>
               )}
             </Grid>
           </Grid>

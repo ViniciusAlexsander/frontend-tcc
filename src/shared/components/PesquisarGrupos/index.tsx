@@ -14,7 +14,7 @@ import {
 import { SentimentVeryDissatisfied } from "@mui/icons-material";
 
 export const PesquisarGrupos = () => {
-  const [searchGroup, setSearchGroup] = useState<string | null>(null);
+  const [searchGroup, setSearchGroup] = useState<string | undefined>(undefined);
   const [myGroups, setMyGroups] = useState<IFindGroupResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [cardInformativoData, setCardInformativoData] = useState<{
@@ -23,7 +23,7 @@ export const PesquisarGrupos = () => {
   }>({ message: "", tipo: "info" });
   const theme = useTheme();
 
-  const findGroupService = async (searchGroup: string | null) => {
+  const findGroupService = async (searchGroup: string | undefined) => {
     try {
       setLoading(true);
       const groups = await findGroups({ title: searchGroup });
@@ -44,7 +44,7 @@ export const PesquisarGrupos = () => {
 
   useEffect(() => {
     if (searchGroup) findGroupService(searchGroup);
-    else findGroupService(null);
+    else findGroupService(undefined);
   }, [searchGroup]);
 
   return (
