@@ -11,7 +11,7 @@ import {
   AlertColor,
   Autocomplete,
 } from "@mui/material";
-import { GroupAdd } from "@mui/icons-material";
+import { AddCircleOutlineSharp } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 
 import { getSearchMovies } from "../../../services/movies/searchMovies";
@@ -195,9 +195,9 @@ export function ModalNovaSessao({
               }}
               loading={loadingButton}
               loadingPosition="start"
-              startIcon={<GroupAdd />}
+              startIcon={<AddCircleOutlineSharp />}
             >
-              Adicionar usuário
+              Criar sessão
             </LoadingButton>
           </Grid>
         </Grid>

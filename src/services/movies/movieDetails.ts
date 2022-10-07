@@ -1,3 +1,4 @@
+import { IGenre } from "../../shared/utils/movieGenres";
 import { axiosMovies, axiosMoviesUrl } from "../apiMovieDb";
 
 export interface IMovieDetails {
@@ -5,10 +6,7 @@ export interface IMovieDetails {
   backdrop_path?: string;
   belongs_to_collection: any | null;
   budget: number;
-  genres: {
-    id: number;
-    name: string;
-  }[];
+  genres: IGenre[];
   homepage: string | null;
   id: number;
   imdb_id: string | null;

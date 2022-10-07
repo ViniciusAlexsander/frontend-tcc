@@ -2,7 +2,6 @@ import { axiosMovies, axiosMoviesUrl } from "../apiMovieDb";
 
 export type popularMovie = {
   poster_path: string | null;
-  banner_path: string | null;
   adult: boolean;
   overview: string;
   release_date: Date;
