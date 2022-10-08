@@ -60,7 +60,7 @@ export function ModalDetalhesFilme({
           <Box
             display="flex"
             justifyContent="space-between"
-            alignItems="end"
+            alignItems="center"
             width="100%"
             marginBottom="10px"
             paddingX="10px"
@@ -73,7 +73,7 @@ export function ModalDetalhesFilme({
                 borderRadius: "5px 20px",
                 padding: "5px 15px",
                 display: "flex",
-                alignItems: "center",
+                alignItems: "end",
                 maxWidth: "80%",
               }}
             >
