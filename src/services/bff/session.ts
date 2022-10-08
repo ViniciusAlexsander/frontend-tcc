@@ -1,4 +1,5 @@
 import { red } from "@mui/material/colors";
+import { Dayjs } from "dayjs";
 import { api } from "../apiClient";
 import { getMovieDetails, IMovieDetails } from "../movies/movieDetails";
 
@@ -6,10 +7,15 @@ export type ICreateGroupSessionRequest = {
   groupId: string;
   movieId: string;
   assistedInId: string;
+  sessionDay: Dayjs;
 };
 
 export type IFindGroupSessionsRequest = {
   groupId: string;
+};
+
+export type IJoinSessionRequest = {
+  sessionId: string;
 };
 
 export type IFindGroupSessionsResponse = {
@@ -17,6 +23,7 @@ export type IFindGroupSessionsResponse = {
   movieId: string;
   groupId: string;
   assistedInId: string;
+  sessionDay: Date;
   createdAt: Date;
 };
 
@@ -25,6 +32,7 @@ export interface ISession {
   groupId: string;
   assistedInId: string;
   createdAt: Date;
+  sessionDay: Date;
   movie: IMovieDetails;
 }
 
@@ -32,11 +40,13 @@ export async function createGroupSession({
   groupId,
   movieId,
   assistedInId,
+  sessionDay,
 }: ICreateGroupSessionRequest) {
   const { data } = await api.post("/sessions", {
     groupId,
     movieId,
     assistedInId,
+    sessionDay,
   });
   return data;
 }
@@ -48,8 +58,6 @@ export async function findGroupSessions({
     params: { groupId },
   });
 
-  console.log("findGroupSessions", data);
-
   let sessions: ISession[] = [];
 
   if (data.length > 0) {
@@ -60,6 +68,7 @@ export async function findGroupSessions({
             sessions.push({
               id: session.id,
               assistedInId: session.assistedInId,
+              sessionDay: session.sessionDay,
               createdAt: session.createdAt,
               groupId: session.groupId,
               movie: {
@@ -93,4 +102,10 @@ export async function findGroupSessions({
   }
 
   return sessions;
+}
+
+export async function joinSession({ sessionId }: IJoinSessionRequest) {
+  await api.post("/sessions/join", {
+    sessionId,
+  });
 }

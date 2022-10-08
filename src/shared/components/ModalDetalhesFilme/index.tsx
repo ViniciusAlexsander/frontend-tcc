@@ -7,6 +7,7 @@ import {
   Avatar,
   useTheme,
   useMediaQuery,
+  AlertColor,
 } from "@mui/material";
 import { GroupAddSharp } from "@mui/icons-material";
 import Image from "next/image";
@@ -18,6 +19,8 @@ import {
   stringToColor,
   minutosParaHoras,
 } from "../../utils/utils";
+import { joinSession } from "../../../services/bff/session";
+import { LoadingButton } from "@mui/lab";
 
 interface ModalDetalhesFilmeProps {
   movie: IMovie;
@@ -59,8 +62,35 @@ export function ModalDetalhesFilme({
   handleClose,
   session,
 }: ModalDetalhesFilmeProps) {
+  const [loadingButton, setLoadingButton] = useState(false);
+  const [alert, setAlert] = useState<{
+    message: string;
+    severity: AlertColor;
+    open: boolean;
+  }>({ message: "", open: false, severity: "success" });
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+
+  const handleClickJoinSession = async (sessionId: string) => {
+    try {
+      setLoadingButton(true);
+      await joinSession({ sessionId });
+      setAlert({
+        message: "Você entrou na sessão com sucesso",
+        open: true,
+        severity: "success",
+      });
+    } catch (error) {
+      setAlert({
+        message: "Erro ao entrar na sessão, tente novamente mais tarde",
+        open: true,
+        severity: "error",
+      });
+    } finally {
+      setLoadingButton(false);
+    }
+  };
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -172,13 +202,16 @@ export function ModalDetalhesFilme({
                 alignItems="center"
                 justifyContent="flex-end"
               >
-                <Button
+                <LoadingButton
                   variant="contained"
-                  size="medium"
+                  size="large"
+                  onClick={() => handleClickJoinSession(session.id)}
+                  loading={loadingButton}
+                  loadingPosition="start"
                   startIcon={<GroupAddSharp />}
                 >
                   Participar da sessão
-                </Button>
+                </LoadingButton>
               </Grid>
             </>
           )}

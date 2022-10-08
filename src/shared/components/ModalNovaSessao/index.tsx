@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Dayjs } from "dayjs";
 import {
   Grid,
   Typography,
@@ -11,6 +12,8 @@ import {
   AlertColor,
   Autocomplete,
 } from "@mui/material";
+import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { AddCircleOutlineSharp } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 
@@ -43,6 +46,11 @@ export function ModalNovaSessao({
     severity: AlertColor;
     open: boolean;
   }>({ message: "", open: false, severity: "success" });
+  const [dateTime, setDateTime] = useState<Dayjs | undefined>(undefined);
+
+  const handleChangeDateTime = (dateTime: Dayjs | null) => {
+    setDateTime(dateTime);
+  };
 
   const findMovieService = async (search: string | null) => {
     try {
@@ -59,7 +67,7 @@ export function ModalNovaSessao({
     } catch (error) {
       setAlert({
         open: true,
-        message: "Ocorreu um erro ao buscar usuário",
+        message: "Ocorreu um erro ao buscar pelo filme",
         severity: "error",
       });
     } finally {
@@ -73,20 +81,21 @@ export function ModalNovaSessao({
   ) => {
     try {
       setLoadingButton(true);
-      await createGroupSession({
-        groupId,
-        movieId: movieId.toString(),
-        assistedInId,
-      });
+      if (dateTime)
+        await createGroupSession({
+          groupId,
+          movieId: movieId.toString(),
+          assistedInId,
+          sessionDay: dateTime,
+        });
       setAlert({
-        message: "Membro adicionado com sucesso",
+        message: "Sessão criada com sucesso",
         open: true,
         severity: "success",
       });
     } catch (error) {
       setAlert({
-        message:
-          "Erro ao adicionar membro ao grupo, tente novamente mais tarde",
+        message: "Erro ao criar sessão, tente novamente mais tarde",
         open: true,
         severity: "error",
       });
@@ -160,6 +169,16 @@ export function ModalNovaSessao({
               )}
             />
           </Grid>
+          <Grid item xs={12} pb={3}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DateTimePicker
+                label="Escolha a data e hora da sessão"
+                value={dateTime}
+                onChange={handleChangeDateTime}
+                renderInput={(params) => <TextField {...params} fullWidth />}
+              />
+            </LocalizationProvider>
+          </Grid>
           <Grid
             item
             xs={12}
@@ -188,7 +207,7 @@ export function ModalNovaSessao({
             <LoadingButton
               variant="contained"
               fullWidth
-              disabled={!movie}
+              disabled={!movie || !dateTime}
               size="large"
               onClick={() => {
                 handleClickCreateSession(movie.id, "");

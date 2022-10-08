@@ -21,6 +21,7 @@ import { findGroups } from "../../services/bff/findGroup";
 import { stringAvatar, stringToColor } from "../../shared/utils/utils";
 import { checkAdminGroup } from "../../services/bff/checkAdminGroup";
 import { findGroupSessions, ISession } from "../../services/bff/session";
+import dayjs from "dayjs";
 
 interface DetalheGrupoProps {
   id: string;
@@ -224,31 +225,77 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
               {sessions.length > 0 && (
                 <Carousel
                   responsive={responsiveSessions}
-                  titulo="Próximos Lançamentos"
+                  titulo="Filmes à assistir"
                   arrows
                   mostrarPontos={!isMobile}
                   mostrarProximo
                 >
-                  {sessions.map((session) => (
-                    <CardFilme
-                      key={session.id}
-                      movie={session.movie}
-                      session={{
-                        ...session,
-                        participants: [
-                          { id: "1", name: "José da silva" },
-                          { id: "2", name: "Nayla" },
-                          { id: "3", name: "Vinicius Alexsander" },
-                          { id: "4", name: "José da silva" },
-                          { id: "5", name: "Nayla" },
-                          { id: "6", name: "Vinicius Alexsander" },
-                          { id: "7", name: "José da silva" },
-                          { id: "8", name: "Nayla" },
-                          { id: "9", name: "Vinicius Alexsander" },
-                        ],
-                      }}
-                    />
-                  ))}
+                  {sessions
+                    .filter((session) =>
+                      dayjs().isBefore(dayjs(session.sessionDay))
+                    )
+                    .map((session) => (
+                      <CardFilme
+                        key={session.id}
+                        movie={session.movie}
+                        session={{
+                          ...session,
+                          participants: [
+                            { id: "1", name: "José da silva" },
+                            { id: "2", name: "Nayla" },
+                            { id: "3", name: "Vinicius Alexsander" },
+                            { id: "4", name: "José da silva" },
+                            { id: "5", name: "Nayla" },
+                            { id: "6", name: "Vinicius Alexsander" },
+                            { id: "7", name: "José da silva" },
+                            { id: "8", name: "Nayla" },
+                            { id: "9", name: "Vinicius Alexsander" },
+                          ],
+                        }}
+                      />
+                    ))}
+                </Carousel>
+              )}
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-end"
+            >
+              {sessions.length > 0 && (
+                <Carousel
+                  responsive={responsiveSessions}
+                  titulo="Filmes assistidos"
+                  arrows
+                  mostrarPontos={!isMobile}
+                  mostrarProximo
+                >
+                  {sessions
+                    .filter((session) =>
+                      dayjs().isAfter(dayjs(session.sessionDay))
+                    )
+                    .map((session) => (
+                      <CardFilme
+                        key={session.id}
+                        movie={session.movie}
+                        session={{
+                          ...session,
+                          participants: [
+                            { id: "1", name: "José da silva" },
+                            { id: "2", name: "Nayla" },
+                            { id: "3", name: "Vinicius Alexsander" },
+                            { id: "4", name: "José da silva" },
+                            { id: "5", name: "Nayla" },
+                            { id: "6", name: "Vinicius Alexsander" },
+                            { id: "7", name: "José da silva" },
+                            { id: "8", name: "Nayla" },
+                            { id: "9", name: "Vinicius Alexsander" },
+                          ],
+                        }}
+                      />
+                    ))}
                 </Carousel>
               )}
             </Grid>
