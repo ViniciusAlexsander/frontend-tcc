@@ -60,7 +60,7 @@ export function ModalDetalhesFilme({
           <Box
             display="flex"
             justifyContent="space-between"
-            alignItems="center"
+            alignItems="end"
             width="100%"
             marginBottom="10px"
             paddingX="10px"
@@ -77,7 +77,7 @@ export function ModalDetalhesFilme({
                 maxWidth: "80%",
               }}
             >
-              <Typography variant="h5" fontWeight="bold" lineHeight="1">
+              <Typography variant="h4" fontWeight="bold" lineHeight="1">
                 {movie.title}
               </Typography>
               <Typography
@@ -103,7 +103,7 @@ export function ModalDetalhesFilme({
                   },
                 }}
               >
-                <FavoriteBorder fontSize="medium" htmlColor="#fff" />
+                <FavoriteBorder fontSize="large" htmlColor="#fff" />
               </IconButton>
               <IconButton
                 sx={{
@@ -116,7 +116,7 @@ export function ModalDetalhesFilme({
                   },
                 }}
               >
-                <Add htmlColor="#fff" fontSize="medium" />
+                <Add htmlColor="#fff" fontSize="large" />
               </IconButton>
             </Box>
           </Box>
@@ -167,7 +167,6 @@ export function ModalDetalhesFilme({
             justifyContent="flex-end"
           >
             <Button
-              sx={{ ":hover": { backgroundColor: "#353FA0" } }}
               variant="contained"
               size="medium"
               endIcon={<ArrowRight />}

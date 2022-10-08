@@ -49,7 +49,7 @@ export const PesquisarGrupos = () => {
 
   return (
     <Grid container>
-      <Grid item xs={6}>
+      <Grid item xs={12}>
         <TextField
           required
           size="medium"
