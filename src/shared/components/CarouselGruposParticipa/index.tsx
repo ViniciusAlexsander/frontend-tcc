@@ -90,11 +90,6 @@ export const CarouselGruposParticipa = () => {
         </Grid>
       ) : (
         <>
-          <Grid item xs={12} mb={4}>
-            <Typography variant="h5" fontWeight={700}>
-              Seus grupos
-            </Typography>
-          </Grid>
           {myGroups && myGroups.length > 0 ? (
             <Carousel
               responsive={responsive}

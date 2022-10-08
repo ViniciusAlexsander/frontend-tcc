@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Grid, Button } from "@mui/material";
+import { Grid, Button, Typography } from "@mui/material";
 import { GroupAdd, People, PersonSearch } from "@mui/icons-material";
 import {
   ModalNovoGrupo,
@@ -33,8 +33,11 @@ export default function Grupos() {
           xs={12}
           display="flex"
           alignItems="center"
-          justifyContent="flex-end"
+          justifyContent="space-between"
         >
+          <Typography variant="h5" fontWeight={700}>
+            Seus grupos
+          </Typography>
           <Button
             variant="contained"
             size="medium"
