@@ -7,11 +7,7 @@ import {
   IconButton,
   useTheme,
 } from "@mui/material";
-import {
-  Add,
-  ArrowRight,
-  FavoriteBorder,
-} from "@mui/icons-material";
+import { Add, ArrowRight, FavoriteBorder } from "@mui/icons-material";
 import Image from "next/image";
 import { findGenresNamesByIds } from "../../utils/movieGenres";
 
@@ -47,39 +43,42 @@ export function ModalDetalhesFilme({
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <Box sx={{ backgroundColor: "#1a1a1a" }}> 
-        <Image
-          alt={"poster do filme" + movie.title}
-          src={movie.backdrop_path}
-          width="880px"
-          height="400px"
-          style={{ borderRadius: "8px 8px 0px 0px" }}
-        />
+      <Box sx={{ backgroundColor: "#1a1a1a" }}>
         <Box
           sx={{
-            position: "absolute",
-            top: "225px",
-            left: "15px",
-            width: "95%",
+            backgroundImage: `url(${movie.backdrop_path})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            height: "300px",
+            width: "100%",
           }}
+          width="100%"
+          height="300px"
+          display="flex"
+          alignItems="end"
         >
+          {/* TITULO E BOTOES */}
           <Box
             display="flex"
             justifyContent="space-between"
             alignItems="center"
+            width="100%"
+            marginBottom="10px"
+            paddingX="10px"
           >
-            {/* rgba(0, 0, 0, 0.7) */}
+            {/* TITULO E DATA */}
             <Box
               sx={{
                 backgroundColor: "#1a1a1a",
                 border: "1px solid rgba(255, 255, 255, 0.5)",
                 borderRadius: "5px 20px",
-                padding: "2px 15px",
+                padding: "5px 15px",
                 display: "flex",
                 alignItems: "center",
+                maxWidth: "80%",
               }}
             >
-              <Typography variant="h5" fontWeight="bold">
+              <Typography variant="h5" fontWeight="bold" lineHeight="1">
                 {movie.title}
               </Typography>
               <Typography
@@ -91,7 +90,7 @@ export function ModalDetalhesFilme({
                 {new Date(movie.release_date).getFullYear()}
               </Typography>
             </Box>
-
+            {/* BOTOES */}
             <Box>
               <IconButton
                 sx={{
@@ -123,7 +122,8 @@ export function ModalDetalhesFilme({
             </Box>
           </Box>
         </Box>
-        <Grid container px={2} py={1}>
+
+        <Grid container padding="0.5rem 1rem 1rem 1rem">
           <Grid item xs={12} sm={8}>
             <Box display="flex" alignItems="flex-end" mr={2}>
               <Typography variant="body1" mr={3}>
@@ -144,20 +144,17 @@ export function ModalDetalhesFilme({
             xs={12}
             sm={4}
             display="flex"
-            alignItems={{ xs: "center", sm: "flex-start" }}
+            alignItems={{ xs: "center", sm: "end" }}
             flexDirection={{ xs: "row", sm: "column" }}
             justifyContent={{ xs: "start" }}
+            textAlign={{ xs: "left", sm: "right" }}
           >
             <Typography variant="body1" mr={{ xs: 3, sm: 0 }}>
               <strong>Genêro: </strong>
               {findGenresNamesByIds(movie.genre_ids)}
             </Typography>
-
-            {/* <Typography variant="body1">
-              <strong>Atores: </strong>Tom roland
-            </Typography> */}
           </Grid>
-          <Grid container item xs={12} mt={{ xs: 2, sm: 4 }}>
+          <Grid container item xs={12} mt={{ xs: 1, sm: 2 }}>
             <Typography variant="body2" textAlign="justify">
               {movie.overview}
             </Typography>
@@ -165,12 +162,17 @@ export function ModalDetalhesFilme({
           <Grid
             item
             xs={12}
-            mt={3}
+            mt={2}
             display="flex"
             alignItems="center"
             justifyContent="flex-end"
           >
-            <Button variant="contained" size="medium" endIcon={<ArrowRight />}>
+            <Button
+              sx={{ ":hover": { backgroundColor: "#353FA0" } }}
+              variant="contained"
+              size="medium"
+              endIcon={<ArrowRight />}
+            >
               Ver Mais
             </Button>
           </Grid>
