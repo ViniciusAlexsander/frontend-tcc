@@ -8,7 +8,6 @@ import {
   useTheme,
 } from "@mui/material";
 import { Add, ArrowRight, FavoriteBorder } from "@mui/icons-material";
-import Image from "next/image";
 import { findGenresNamesByIds } from "../../utils/movieGenres";
 
 interface ModalDetalhesFilmeProps {
