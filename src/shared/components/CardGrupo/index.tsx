@@ -21,7 +21,7 @@ type grupo = {
 
 type users = {
   id: string;
-  name: string;
+  username: string;
 };
 
 export function CardGrupo({ grupo }: CardGrupoProps) {
@@ -83,9 +83,9 @@ export function CardGrupo({ grupo }: CardGrupoProps) {
           {grupo.users.slice(0, 4).map((user) => (
             <Avatar
               key={user.id}
-              {...stringAvatar(user.name)}
+              {...stringAvatar(user.username)}
               sx={{
-                bgcolor: stringToColor(user.name),
+                bgcolor: stringToColor(user.username),
               }}
             />
           ))}

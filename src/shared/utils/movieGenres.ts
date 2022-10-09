@@ -91,3 +91,8 @@ export const movieGenres = [
     name: "Faroeste",
   },
 ];
+
+export interface IGenre {
+  id: number;
+  name: string;
+}

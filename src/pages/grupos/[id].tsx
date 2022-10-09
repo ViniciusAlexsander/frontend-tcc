@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import {
   Box,
@@ -21,13 +20,15 @@ import {
   Carousel,
   ResponsiveType,
   ModalNovoMembro,
+  ModalNovaSessao,
+  CardFilme,
 } from "../../shared/components";
-import { findGroups, findGroupsServerSide } from "../../services/bff/findGroup";
+import { findGroups } from "../../services/bff/findGroup";
 import { stringAvatar, stringToColor } from "../../shared/utils/utils";
-import {
-  checkAdminGroup,
-  checkAdminGroupServerSide,
-} from "../../services/bff/checkAdminGroup";
+import { checkAdminGroup } from "../../services/bff/checkAdminGroup";
+import { findGroupSessions, ISession } from "../../services/bff/session";
+import dayjs from "dayjs";
+
 
 interface DetalheGrupoProps {
   id: string;
@@ -43,59 +44,68 @@ interface IDetalheGroup {
 
 interface IUsersGroup {
   id: string;
-  name: string;
-  joinedAt: string;
+  username: string;
 }
 
 export default function DetalheGrupo({ id }: DetalheGrupoProps) {
   const [openModalNovoMembro, setOpenModalNovoMembro] =
     useState<boolean>(false);
+  const [openModalNovaSessao, setOpenModalNovaSessao] =
+    useState<boolean>(false);
   const [grupo, setGrupo] = useState<IDetalheGroup | null>(null);
+  const [sessions, setSessions] = useState<ISession[]>([]);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
-  const router = useRouter();
 
   const handleClickNovoMembro = () => {
     setOpenModalNovoMembro(true);
   };
-  const handleClose = () => {
+  const handleClickCriarSessao = () => {
+    setOpenModalNovaSessao(true);
+  };
+  const handleCloseModalCriarSessao = () => {
+    setOpenModalNovaSessao(false);
+  };
+  const handleCloseModalNovoMembro = () => {
     setOpenModalNovoMembro(false);
   };
 
-  const getGroupDetails = async () => {
-    let isAdmin: boolean;
-    try {
-      const checkAdminGroupResponse = await checkAdminGroup({
-        groupId: id as string,
-      });
-      isAdmin = checkAdminGroupResponse.isAdmin;
-    } catch (error) {
-      isAdmin = false;
-    }
-    const response = await findGroups({ id: id as string });
-    const grupoResponse = response[0];
-    setGrupo({
-      id,
-      isAdmin,
-      title: grupoResponse.title,
-      description: grupoResponse.description,
-      users: grupoResponse.users.map((user) => {
-        return {
-          ...user,
-          joinedAt: new Date(user.joinedAt).toLocaleDateString("pt-BR", {
-            day: "2-digit",
-            month: "long",
-            year: "numeric",
-          }),
-        };
-      }),
-    });
-  };
-
   useEffect(() => {
+    const getGroupDetails = async () => {
+      let isAdmin: boolean;
+      try {
+        const checkAdminGroupResponse = await checkAdminGroup({
+          groupId: id as string,
+        });
+        isAdmin = checkAdminGroupResponse.isAdmin;
+      } catch (error) {
+        isAdmin = false;
+      }
+      const sessions = await findGroupSessions({ groupId: id as string });
+      setSessions(sessions);
+
+      const response = await findGroups({ id: id as string });
+      const grupoResponse = response[0];
+      setGrupo({
+        id,
+        isAdmin,
+        title: grupoResponse.title,
+        description: grupoResponse.description,
+        users: grupoResponse.users.map((user) => {
+          return {
+            ...user,
+            joinedAt: new Date(user.joinedAt).toLocaleDateString("pt-BR", {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+            }),
+          };
+        }),
+      });
+    };
     if (!openModalNovoMembro) getGroupDetails();
-  }, [openModalNovoMembro]);
+  }, [id, openModalNovoMembro]);
 
   return (
     <>
@@ -103,7 +113,12 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
         <>
           <ModalNovoMembro
             open={openModalNovoMembro}
-            handleClose={handleClose}
+            handleClose={handleCloseModalNovoMembro}
+            groupId={grupo?.id}
+          />
+          <ModalNovaSessao
+            open={openModalNovaSessao}
+            handleClose={handleCloseModalCriarSessao}
             groupId={grupo?.id}
           />
           <Grid container spacing={2}>
@@ -186,16 +201,16 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                     }}
                   >
                     <Avatar
-                      {...stringAvatar(user.name)}
+                      {...stringAvatar(user.username)}
                       sx={{
-                        bgcolor: stringToColor(user.name),
+                        bgcolor: stringToColor(user.username),
                         width: 100,
                         height: 100,
                         fontSize: "2.25rem",
                         marginBottom: 2,
                       }}
                     />
-                    <Typography variant="body1">{user.name}</Typography>
+                    <Typography variant="body1">{user.username}</Typography>
                   </Box>
                 ))}
               </Carousel>
@@ -212,10 +227,72 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                   variant="contained"
                   size="medium"
                   startIcon={<EventSeat />}
-                  onClick={handleClickNovoMembro}
+                  onClick={handleClickCriarSessao}
                 >
                   Criar sessão
                 </Button>
+              )}
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-end"
+            >
+              {sessions.length > 0 && (
+                <Carousel
+                  responsive={responsiveSessions}
+                  titulo="Filmes à assistir"
+                  arrows
+                  mostrarPontos={!isMobile}
+                  mostrarProximo
+                >
+                  {sessions
+                    .filter((session) =>
+                      dayjs().isBefore(dayjs(session.sessionDay))
+                    )
+                    .map((session) => (
+                      <CardFilme
+                        key={session.id}
+                        movie={session.movie}
+                        session={{
+                          ...session,
+                        }}
+                      />
+                    ))}
+                </Carousel>
+              )}
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              display="flex"
+              alignItems="center"
+              justifyContent="flex-end"
+            >
+              {sessions.length > 0 && (
+                <Carousel
+                  responsive={responsiveSessions}
+                  titulo="Filmes assistidos"
+                  arrows
+                  mostrarPontos={!isMobile}
+                  mostrarProximo
+                >
+                  {sessions
+                    .filter((session) =>
+                      dayjs().isAfter(dayjs(session.sessionDay))
+                    )
+                    .map((session) => (
+                      <CardFilme
+                        key={session.id}
+                        movie={session.movie}
+                        session={{
+                          ...session,
+                        }}
+                      />
+                    ))}
+                </Carousel>
               )}
             </Grid>
           </Grid>
@@ -235,17 +312,45 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 const responsive: ResponsiveType = {
   xl: {
     breakpoint: { max: 3000, min: 1536 },
-    items: 8,
+    items: 7,
     slidesToSlide: 7,
   },
   lg: {
     breakpoint: { max: 1535, min: 1200 },
-    items: 6,
+    items: 5,
     slidesToSlide: 5,
   },
   md: {
     breakpoint: { max: 1199, min: 900 },
+    items: 4,
+    slidesToSlide: 4,
+  },
+  sm: {
+    breakpoint: { max: 899, min: 600 },
+    items: 3,
+    slidesToSlide: 3,
+  },
+  xs: {
+    breakpoint: { max: 599, min: 0 },
+    items: 3,
+    slidesToSlide: 2,
+  },
+};
+
+const responsiveSessions: ResponsiveType = {
+  xl: {
+    breakpoint: { max: 3000, min: 1536 },
+    items: 7,
+    slidesToSlide: 7,
+  },
+  lg: {
+    breakpoint: { max: 1535, min: 1200 },
     items: 5,
+    slidesToSlide: 5,
+  },
+  md: {
+    breakpoint: { max: 1199, min: 900 },
+    items: 4,
     slidesToSlide: 4,
   },
   sm: {
@@ -255,7 +360,7 @@ const responsive: ResponsiveType = {
   },
   xs: {
     breakpoint: { max: 599, min: 0 },
-    items: 3,
+    items: 2,
     slidesToSlide: 2,
   },
 };

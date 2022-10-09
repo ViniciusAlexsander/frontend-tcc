@@ -3,42 +3,94 @@ import {
   Typography,
   Dialog,
   Box,
-  Button,
-  IconButton,
+  Avatar,
   useTheme,
+  useMediaQuery,
+  AlertColor,
+  IconButton,
 } from "@mui/material";
+import { GroupAddSharp } from "@mui/icons-material";
+import React, { useState } from "react";
+import { findGenresNamesByIds, IGenre } from "../../utils/movieGenres";
+import { Carousel, ResponsiveType } from "../index";
+import {
+  stringAvatar,
+  stringToColor,
+  minutosParaHoras,
+} from "../../utils/utils";
+import { joinSession } from "../../../services/bff/session";
+import { LoadingButton } from "@mui/lab";
 import { Add, ArrowRight, FavoriteBorder } from "@mui/icons-material";
-import { findGenresNamesByIds } from "../../utils/movieGenres";
 
 interface ModalDetalhesFilmeProps {
-  movie: movie;
+  movie: IMovie;
+  session?: ISessions;
   open: boolean;
   handleClose: () => void;
 }
 
-type movie = {
-  poster_path: string | null;
-  adult: boolean;
-  overview: string;
-  release_date: Date;
-  genre_ids: number[];
+type ISessions = {
+  id: string;
+  groupId: string;
+  assistedInId: string;
+  createdAt: Date;
+  users: IUser[];
+};
+
+type IUser = {
+  id: string;
+  username: string;
+};
+
+type IMovie = {
+  backdrop_path?: string;
+  genres?: IGenre[];
+  genre_ids?: number[];
   id: number;
   original_title: string;
-  original_language: string;
-  title: string;
-  backdrop_path?: string | null;
+  overview: string;
   popularity: number;
-  vote_count: number;
-  video: boolean;
-  vote_average: number;
+  poster_path?: string | null;
+  release_date: Date;
+  runtime?: number | null;
+  title: string;
 };
 
 export function ModalDetalhesFilme({
   movie,
   open,
   handleClose,
+  session,
 }: ModalDetalhesFilmeProps) {
+  const [loadingButton, setLoadingButton] = useState(false);
+  const [alert, setAlert] = useState<{
+    message: string;
+    severity: AlertColor;
+    open: boolean;
+  }>({ message: "", open: false, severity: "success" });
+
   const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+
+  const handleClickJoinSession = async (sessionId: string) => {
+    try {
+      setLoadingButton(true);
+      await joinSession({ sessionId });
+      setAlert({
+        message: "Você entrou na sessão com sucesso",
+        open: true,
+        severity: "success",
+      });
+    } catch (error) {
+      setAlert({
+        message: "Erro ao entrar na sessão, tente novamente mais tarde",
+        open: true,
+        severity: "error",
+      });
+    } finally {
+      setLoadingButton(false);
+    }
+  };
 
   return (
     <Dialog open={open} onClose={handleClose}>
@@ -134,9 +186,17 @@ export function ModalDetalhesFilme({
             <Box display="flex" alignItems="center">
               <Typography variant="body1">
                 <strong>Popularidade: </strong>
-                {movie.vote_average}
+                {movie.popularity}
               </Typography>
             </Box>
+            {movie.runtime && (
+              <Box display="flex" alignItems="center">
+                <Typography variant="body1">
+                  <strong>Duração: </strong>
+                  {minutosParaHoras(movie.runtime)}
+                </Typography>
+              </Box>
+            )}
           </Grid>
           <Grid
             item
@@ -150,7 +210,9 @@ export function ModalDetalhesFilme({
           >
             <Typography variant="body1" mr={{ xs: 3, sm: 0 }}>
               <strong>Genêro: </strong>
-              {findGenresNamesByIds(movie.genre_ids)}
+              {movie.genre_ids && findGenresNamesByIds(movie.genre_ids)}
+              {movie.genres &&
+                movie.genres.map((gender) => gender.name).join(", ")}
             </Typography>
           </Grid>
           <Grid container item xs={12} mt={{ xs: 1, sm: 2 }}>
@@ -158,24 +220,95 @@ export function ModalDetalhesFilme({
               {movie.overview}
             </Typography>
           </Grid>
-          <Grid
-            item
-            xs={12}
-            mt={2}
-            display="flex"
-            alignItems="center"
-            justifyContent="flex-end"
-          >
-            <Button
-              variant="contained"
-              size="medium"
-              endIcon={<ArrowRight />}
-            >
-              Ver Mais
-            </Button>
-          </Grid>
+          {session && session.id && (
+            <>
+              <Grid container item xs={12} mt={{ xs: 2, sm: 4 }}>
+                <Carousel
+                  titulo="Participantes"
+                  responsive={responsive}
+                  arrows
+                  mostrarPontos={!isMobile}
+                  mostrarProximo
+                >
+                  {session?.users?.length > 0 &&
+                    session?.users.map((participant) => (
+                      <Box
+                        key={participant.id}
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          flexDirection: "column",
+                          marginRight: 2,
+                        }}
+                      >
+                        <Avatar
+                          {...stringAvatar(participant.username)}
+                          sx={{
+                            bgcolor: stringToColor(participant.username),
+                            width: { xs: 60, sm: 80 },
+                            height: { xs: 60, sm: 80 },
+                            fontSize: { xs: "1.5rem", sm: "2rem" },
+                            marginBottom: 2,
+                          }}
+                        />
+                        <Typography variant="body1" textAlign="center">
+                          {participant.username}
+                        </Typography>
+                      </Box>
+                    ))}
+                </Carousel>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                mt={{ xs: 1, sm: 3 }}
+                display="flex"
+                alignItems="center"
+                justifyContent="flex-end"
+              >
+                <LoadingButton
+                  variant="contained"
+                  size="large"
+                  onClick={() => handleClickJoinSession(session.id)}
+                  loading={loadingButton}
+                  loadingPosition="start"
+                  startIcon={<GroupAddSharp />}
+                >
+                  Participar da sessão
+                </LoadingButton>
+              </Grid>
+            </>
+          )}
         </Grid>
       </Box>
     </Dialog>
   );
 }
+
+const responsive: ResponsiveType = {
+  xl: {
+    breakpoint: { max: 3000, min: 1536 },
+    items: 5,
+    slidesToSlide: 7,
+  },
+  lg: {
+    breakpoint: { max: 1535, min: 1200 },
+    items: 5,
+    slidesToSlide: 5,
+  },
+  md: {
+    breakpoint: { max: 1199, min: 900 },
+    items: 5,
+    slidesToSlide: 4,
+  },
+  sm: {
+    breakpoint: { max: 899, min: 600 },
+    items: 5,
+    slidesToSlide: 3,
+  },
+  xs: {
+    breakpoint: { max: 599, min: 0 },
+    items: 3,
+    slidesToSlide: 2,
+  },
+};

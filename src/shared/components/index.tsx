@@ -10,3 +10,4 @@ export * from "./ModalNovoGrupo";
 export * from "./CardGrupo";
 export * from "./PesquisarGrupos";
 export * from "./ModalNovoMembro";
+export * from "./ModalNovaSessao";
