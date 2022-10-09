@@ -73,7 +73,7 @@ export function ModalNovoGrupo({ handleClose, open }: ModalNovoGrupoProps) {
         </Alert>
       </Snackbar>
       <Dialog open={open} onClose={handleClose}>
-        <Grid container maxWidth="450px" spacing={2} p={2}>
+        <Grid container maxWidth="450px" spacing={2} p={2} sx={{ backgroundColor: '#1c1c1c' }}>
           <Grid
             item
             xs={12}
@@ -117,7 +117,12 @@ export function ModalNovoGrupo({ handleClose, open }: ModalNovoGrupoProps) {
             alignItems="center"
             justifyContent="center"
           >
-            <Button variant="contained" size="large" onClick={handleClose}>
+            <Button
+              variant="contained"
+              size="large"
+              fullWidth
+              onClick={handleClose}
+            >
               Cancelar
             </Button>
           </Grid>
@@ -131,8 +136,9 @@ export function ModalNovoGrupo({ handleClose, open }: ModalNovoGrupoProps) {
           >
             <LoadingButton
               variant="contained"
-              disabled={!title || !description}
               size="large"
+              fullWidth
+              disabled={!title || !description}
               onClick={handleClickAddGroup}
               loading={loadingButton}
               loadingPosition="start"

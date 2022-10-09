@@ -9,7 +9,13 @@ import {
   Avatar,
   Button,
 } from "@mui/material";
-import { People, Groups, PersonAdd, EventSeat } from "@mui/icons-material";
+import {
+  People,
+  Groups,
+  PersonAdd,
+  EventSeat,
+  Check,
+} from "@mui/icons-material";
 import {
   Carousel,
   ResponsiveType,
@@ -115,36 +121,48 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
             handleClose={handleCloseModalCriarSessao}
             groupId={grupo?.id}
           />
-          <Grid container spacing={3}>
-            <Grid item xs={3} sm={2} lg={1.5}>
+          <Grid container spacing={2}>
+            <Grid item xs={3} textAlign="center">
               <Groups
                 sx={{
                   fontSize: "5rem",
-                  width: "100%",
-                  height: "auto",
-                  borderRadius: "25%",
+                  width: "80%",
+                  height: "100%",
+                  borderRadius: "50%",
                   backgroundColor: theme.palette.primary.main,
                 }}
               />
             </Grid>
-            <Grid item container xs={6}>
+            <Grid item container xs={9}>
               <Grid item xs={12}>
                 <Typography variant="h4" fontWeight="bold">
                   {grupo?.title}
                 </Typography>
               </Grid>
-              <Grid item xs={12} sx={{ display: "flex", alignItems: "center" }}>
-                <People sx={{ marginRight: 2 }} />
-                <Typography variant="body1" mr={3}>
-                  <strong>{grupo?.users?.length}</strong>{" "}
-                  {grupo?.users?.length > 0
-                    ? " Participantes"
-                    : " Participante"}
-                </Typography>
-              </Grid>
-              <Typography variant="body1" mr={3}>
+
+              <Typography variant="body1" my={2}>
                 {grupo?.description}
               </Typography>
+
+              <Grid item container alignItems="end">
+                <Grid item container sm={12} md={3}>
+                  <Check sx={{ marginRight: 1 }} />
+                  <Typography variant="body1">
+                    <span>{grupo?.users?.length}</span>{" "}
+                    {grupo?.users?.length > 0 ? " Assistidos" : " Assistido"}
+                  </Typography>
+                </Grid>
+
+                <Grid item container sm={12} md={3}>
+                  <People sx={{ marginRight: 1 }} />
+                  <Typography variant="body1">
+                    <span>{grupo?.users?.length}</span>{" "}
+                    {grupo?.users?.length > 0
+                      ? " Participantes"
+                      : " Participante"}
+                  </Typography>
+                </Grid>
+              </Grid>
             </Grid>
             <Grid
               item

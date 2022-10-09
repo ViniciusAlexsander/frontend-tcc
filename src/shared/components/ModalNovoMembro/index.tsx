@@ -157,7 +157,7 @@ export function ModalNovoMembro({
             alignItems="center"
             justifyContent="center"
           >
-            <Button variant="contained" size="large" onClick={handleClose}>
+            <Button variant="contained" fullWidth size="large" onClick={handleClose}>
               Cancelar
             </Button>
           </Grid>
@@ -170,9 +170,10 @@ export function ModalNovoMembro({
             justifyContent="center"
           >
             <LoadingButton
+              fullWidth
               variant="contained"
-              disabled={!user}
               size="large"
+              disabled={!user}
               onClick={() => {
                 handleClickAddUsuario(user.id);
               }}
@@ -180,7 +181,7 @@ export function ModalNovoMembro({
               loadingPosition="start"
               startIcon={<GroupAdd />}
             >
-              Carregar mais
+              Adicionar
             </LoadingButton>
           </Grid>
         </Grid>

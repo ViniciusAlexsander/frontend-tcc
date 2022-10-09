@@ -58,7 +58,7 @@ export default function Home({
   return (
     <Stack spacing={2} sx={{ margin: 1 }}>
       <TituloComIcone
-        titulo="Veja os filmes populares, filmes disponíveis no cinema e os próximos lançamentos"
+        titulo="Seja bem-vindo!"
         icon={<LocalMovies />}
       />
       <Box>

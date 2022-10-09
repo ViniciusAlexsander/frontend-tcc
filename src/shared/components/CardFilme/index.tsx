@@ -65,25 +65,27 @@ export function CardFilme({ movie, session }: MovieCardProps) {
           flexDirection: "column",
           alignItems: "flex-start",
           marginLeft: "21px",
-          backgroundColor: theme.palette.primary.main,
+          // backgroundColor: theme.palette.primary.main,
           color: theme.palette.primary.contrastText,
         }}
       >
-        <div>
-          <Image
-            alt={"poster do filme" + movie.title}
-            src={movie.poster_path}
-            width="150px"
-            height="225px"
-            style={{ borderRadius: "8px 8px 0px 0px" }}
-          />
+        <Box display="flex" flexDirection='column' justifyContent="space-between" height='100%'>
+          <Box>
+            <Image
+              alt={"Poster do filme" + movie.title}
+              src={movie.poster_path}
+              width="150px"
+              height="225px"
+              style={{ borderRadius: "8px 8px 0px 0px" }}
+            />
+            <Typography variant="body1" fontWeight="bold" p={0.5}>
+              {movie.title}
+            </Typography>
+          </Box>
           <Typography variant="body2" p={0.5}>
             Nota: {movie.vote_average}
           </Typography>
-        </div>
-        <Typography variant="body1" fontWeight="bold" p={0.5}>
-          {movie.title}
-        </Typography>
+        </Box>
       </CardActionArea>
     </>
   );

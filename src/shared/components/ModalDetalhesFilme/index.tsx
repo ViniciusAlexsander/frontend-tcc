@@ -3,14 +3,13 @@ import {
   Typography,
   Dialog,
   Box,
-  Button,
   Avatar,
   useTheme,
   useMediaQuery,
   AlertColor,
+  IconButton,
 } from "@mui/material";
 import { GroupAddSharp } from "@mui/icons-material";
-import Image from "next/image";
 import React, { useState } from "react";
 import { findGenresNamesByIds, IGenre } from "../../utils/movieGenres";
 import { Carousel, ResponsiveType } from "../index";
@@ -21,6 +20,7 @@ import {
 } from "../../utils/utils";
 import { joinSession } from "../../../services/bff/session";
 import { LoadingButton } from "@mui/lab";
+import { Add, ArrowRight, FavoriteBorder } from "@mui/icons-material";
 
 interface ModalDetalhesFilmeProps {
   movie: IMovie;
@@ -94,30 +94,95 @@ export function ModalDetalhesFilme({
 
   return (
     <Dialog open={open} onClose={handleClose}>
-      <Box sx={{ backgroundColor: "#595959" }}>
-        <Image
-          alt={"poster do filme" + movie.title}
-          src={movie.backdrop_path}
-          width="600px"
-          height="240px"
-          style={{ borderRadius: "8px 8px 0px 0px" }}
-        />
-        <Grid container px={{ xs: 1, sm: 2 }} py={{ xs: 1, sm: 2 }}>
-          <Grid item xs={12} sm={8}>
-            <Box display="flex" alignItems="flex-end" mr={2}>
-              <Typography variant="h5" fontWeight="bold" mr={3}>
+      <Box sx={{ backgroundColor: "#1a1a1a" }}>
+        <Box
+          sx={{
+            backgroundImage: `url(${movie.backdrop_path})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            height: "300px",
+            width: "100%",
+          }}
+          width="100%"
+          height="300px"
+          display="flex"
+          alignItems="end"
+        >
+          {/* TITULO E BOTOES */}
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            width="100%"
+            marginBottom="10px"
+            paddingX="10px"
+          >
+            {/* TITULO E DATA */}
+            <Box
+              sx={{
+                backgroundColor: "#1a1a1a",
+                border: "1px solid rgba(255, 255, 255, 0.5)",
+                borderRadius: "5px 20px",
+                padding: "5px 15px",
+                display: "flex",
+                alignItems: "end",
+                maxWidth: "80%",
+              }}
+            >
+              <Typography variant="h4" fontWeight="bold" lineHeight="1">
                 {movie.title}
               </Typography>
-              <Typography variant="body1">
+              <Typography
+                ml={2}
+                fontWeight="800"
+                variant="body1"
+                color="#FFEC5B"
+              >
                 {new Date(movie.release_date).getFullYear()}
               </Typography>
             </Box>
-            <Box display="flex" alignItems="center">
+            {/* BOTOES */}
+            <Box>
+              <IconButton
+                sx={{
+                  marginRight: "0.5rem",
+                  padding: "5px",
+                  backgroundColor: "#343434",
+                  border: "1px solid rgba(255, 255, 255, 0.5)",
+                  ":hover": {
+                    backgroundColor: "#1a1a1a",
+                    borderColor: "rgba(255, 255, 255, 1)",
+                  },
+                }}
+              >
+                <FavoriteBorder fontSize="large" htmlColor="#fff" />
+              </IconButton>
+              <IconButton
+                sx={{
+                  padding: "5px",
+                  backgroundColor: "#343434",
+                  border: "1px solid rgba(255, 255, 255, 0.5)",
+                  ":hover": {
+                    backgroundColor: "#1a1a1a",
+                    borderColor: "rgba(255, 255, 255, 1)",
+                  },
+                }}
+              >
+                <Add htmlColor="#fff" fontSize="large" />
+              </IconButton>
+            </Box>
+          </Box>
+        </Box>
+
+        <Grid container padding="0.5rem 1rem 1rem 1rem">
+          <Grid item xs={12} sm={8}>
+            <Box display="flex" alignItems="flex-end" mr={2}>
               <Typography variant="body1" mr={3}>
                 <strong>Título original: </strong>
                 {movie.original_title}
               </Typography>
             </Box>
+
             <Box display="flex" alignItems="center">
               <Typography variant="body1">
                 <strong>Popularidade: </strong>
@@ -138,9 +203,10 @@ export function ModalDetalhesFilme({
             xs={12}
             sm={4}
             display="flex"
-            alignItems={{ xs: "center", sm: "flex-start" }}
+            alignItems={{ xs: "center", sm: "end" }}
             flexDirection={{ xs: "row", sm: "column" }}
             justifyContent={{ xs: "start" }}
+            textAlign={{ xs: "left", sm: "right" }}
           >
             <Typography variant="body1" mr={{ xs: 3, sm: 0 }}>
               <strong>Genêro: </strong>
@@ -148,13 +214,11 @@ export function ModalDetalhesFilme({
               {movie.genres &&
                 movie.genres.map((gender) => gender.name).join(", ")}
             </Typography>
-
-            {/* <Typography variant="body1">
-              <strong>Atores: </strong>Tom roland
-            </Typography> */}
           </Grid>
-          <Grid container item xs={12} mt={{ xs: 2, sm: 4 }}>
-            <Typography variant="body2">{movie.overview}</Typography>
+          <Grid container item xs={12} mt={{ xs: 1, sm: 2 }}>
+            <Typography variant="body2" textAlign="justify">
+              {movie.overview}
+            </Typography>
           </Grid>
           {session && session.id && (
             <>
