@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -13,6 +13,7 @@ import {
   IFindGroupResponse,
 } from "../../../services/bff/findGroup";
 import { SentimentVeryDissatisfied } from "@mui/icons-material";
+
 
 export const CarouselGruposParticipa = () => {
   const [myGroups, setMyGroups] = useState<IFindGroupResponse[]>([]);

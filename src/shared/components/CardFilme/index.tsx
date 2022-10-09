@@ -14,12 +14,12 @@ type ISessions = {
   groupId: string;
   assistedInId: string;
   createdAt: Date;
-  participants: IParticipants[];
+  users: IUser[];
 };
 
-type IParticipants = {
+type IUser = {
   id: string;
-  name: string;
+  username: string;
 };
 
 type IMovie = {

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GetServerSideProps } from "next";
 import {
   Box,
@@ -23,6 +23,7 @@ import { checkAdminGroup } from "../../services/bff/checkAdminGroup";
 import { findGroupSessions, ISession } from "../../services/bff/session";
 import dayjs from "dayjs";
 
+
 interface DetalheGrupoProps {
   id: string;
 }
@@ -37,8 +38,7 @@ interface IDetalheGroup {
 
 interface IUsersGroup {
   id: string;
-  name: string;
-  joinedAt: string;
+  username: string;
 }
 
 export default function DetalheGrupo({ id }: DetalheGrupoProps) {
@@ -183,16 +183,16 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                     }}
                   >
                     <Avatar
-                      {...stringAvatar(user.name)}
+                      {...stringAvatar(user.username)}
                       sx={{
-                        bgcolor: stringToColor(user.name),
+                        bgcolor: stringToColor(user.username),
                         width: 100,
                         height: 100,
                         fontSize: "2.25rem",
                         marginBottom: 2,
                       }}
                     />
-                    <Typography variant="body1">{user.name}</Typography>
+                    <Typography variant="body1">{user.username}</Typography>
                   </Box>
                 ))}
               </Carousel>
@@ -240,17 +240,6 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                         movie={session.movie}
                         session={{
                           ...session,
-                          participants: [
-                            { id: "1", name: "José da silva" },
-                            { id: "2", name: "Nayla" },
-                            { id: "3", name: "Vinicius Alexsander" },
-                            { id: "4", name: "José da silva" },
-                            { id: "5", name: "Nayla" },
-                            { id: "6", name: "Vinicius Alexsander" },
-                            { id: "7", name: "José da silva" },
-                            { id: "8", name: "Nayla" },
-                            { id: "9", name: "Vinicius Alexsander" },
-                          ],
                         }}
                       />
                     ))}
@@ -282,17 +271,6 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                         movie={session.movie}
                         session={{
                           ...session,
-                          participants: [
-                            { id: "1", name: "José da silva" },
-                            { id: "2", name: "Nayla" },
-                            { id: "3", name: "Vinicius Alexsander" },
-                            { id: "4", name: "José da silva" },
-                            { id: "5", name: "Nayla" },
-                            { id: "6", name: "Vinicius Alexsander" },
-                            { id: "7", name: "José da silva" },
-                            { id: "8", name: "Nayla" },
-                            { id: "9", name: "Vinicius Alexsander" },
-                          ],
                         }}
                       />
                     ))}

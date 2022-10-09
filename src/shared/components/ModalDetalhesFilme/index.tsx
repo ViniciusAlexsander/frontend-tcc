@@ -34,12 +34,12 @@ type ISessions = {
   groupId: string;
   assistedInId: string;
   createdAt: Date;
-  participants: IParticipants[];
+  users: IUser[];
 };
 
-type IParticipants = {
+type IUser = {
   id: string;
-  name: string;
+  username: string;
 };
 
 type IMovie = {
@@ -166,8 +166,8 @@ export function ModalDetalhesFilme({
                   mostrarPontos={!isMobile}
                   mostrarProximo
                 >
-                  {session?.participants?.length > 0 &&
-                    session?.participants.map((participant) => (
+                  {session?.users?.length > 0 &&
+                    session?.users.map((participant) => (
                       <Box
                         key={participant.id}
                         sx={{
@@ -178,9 +178,9 @@ export function ModalDetalhesFilme({
                         }}
                       >
                         <Avatar
-                          {...stringAvatar(participant.name)}
+                          {...stringAvatar(participant.username)}
                           sx={{
-                            bgcolor: stringToColor(participant.name),
+                            bgcolor: stringToColor(participant.username),
                             width: { xs: 60, sm: 80 },
                             height: { xs: 60, sm: 80 },
                             fontSize: { xs: "1.5rem", sm: "2rem" },
@@ -188,7 +188,7 @@ export function ModalDetalhesFilme({
                           }}
                         />
                         <Typography variant="body1" textAlign="center">
-                          {participant.name}
+                          {participant.username}
                         </Typography>
                       </Box>
                     ))}

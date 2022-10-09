@@ -1,4 +1,3 @@
-import { red } from "@mui/material/colors";
 import { Dayjs } from "dayjs";
 import { api } from "../apiClient";
 import { getMovieDetails, IMovieDetails } from "../movies/movieDetails";
@@ -24,8 +23,14 @@ export type IFindGroupSessionsResponse = {
   groupId: string;
   assistedInId: string;
   sessionDay: Date;
+  users: IUser[];
   createdAt: Date;
 };
+
+export type IUser = {
+  id: string;
+  username: string;
+}
 
 export interface ISession {
   id: string;
@@ -33,6 +38,7 @@ export interface ISession {
   assistedInId: string;
   createdAt: Date;
   sessionDay: Date;
+  users: IUser[];
   movie: IMovieDetails;
 }
 
@@ -71,6 +77,7 @@ export async function findGroupSessions({
               sessionDay: session.sessionDay,
               createdAt: session.createdAt,
               groupId: session.groupId,
+              users: session.users,
               movie: {
                 adult: res.movieDetails.adult,
                 backdrop_path: res.movieDetails.backdrop_path,
