@@ -71,6 +71,15 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
     setOpenModalNovoMembro(false);
   };
 
+  let sessoesFuturas = sessions
+  .filter((session) =>
+    dayjs().isBefore(dayjs(session.sessionDay))
+  );
+  let sessoesPassadas = sessions
+  .filter((session) =>
+    dayjs().isAfter(dayjs(session.sessionDay))
+  );
+
   useEffect(() => {
     const getGroupDetails = async () => {
       let isAdmin: boolean;
@@ -84,6 +93,14 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
       }
       const sessions = await findGroupSessions({ groupId: id as string });
       setSessions(sessions);
+      sessoesFuturas = sessions
+        .filter((session) =>
+          dayjs().isBefore(dayjs(session.sessionDay))
+        );
+      sessoesPassadas = sessions
+        .filter((session) =>
+          dayjs().isAfter(dayjs(session.sessionDay))
+        );
 
       const response = await findGroups({ id: id as string });
       const grupoResponse = response[0];
@@ -106,6 +123,8 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
     };
     if (!openModalNovoMembro) getGroupDetails();
   }, [id, openModalNovoMembro]);
+
+
 
   return (
     <>
@@ -240,7 +259,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
               alignItems="center"
               justifyContent="flex-end"
             >
-              {sessions.length > 0 && (
+              {sessoesFuturas.length > 0 && (
                 <Carousel
                   responsive={responsiveSessions}
                   titulo="Filmes à assistir"
@@ -248,10 +267,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                   mostrarPontos={!isMobile}
                   mostrarProximo
                 >
-                  {sessions
-                    .filter((session) =>
-                      dayjs().isBefore(dayjs(session.sessionDay))
-                    )
+                  {sessoesFuturas
                     .map((session) => (
                       <CardFilme
                         key={session.id}
@@ -271,7 +287,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
               alignItems="center"
               justifyContent="flex-end"
             >
-              {sessions.length > 0 && (
+              {sessoesPassadas.length > 0 && (
                 <Carousel
                   responsive={responsiveSessions}
                   titulo="Filmes assistidos"
@@ -279,10 +295,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                   mostrarPontos={!isMobile}
                   mostrarProximo
                 >
-                  {sessions
-                    .filter((session) =>
-                      dayjs().isAfter(dayjs(session.sessionDay))
-                    )
+                  {sessoesPassadas
                     .map((session) => (
                       <CardFilme
                         key={session.id}
