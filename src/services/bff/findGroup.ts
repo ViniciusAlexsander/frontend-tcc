@@ -3,7 +3,7 @@ import { setupAPIClient } from "../api";
 
 export type IFindGroupUsersResponse = {
   id: string;
-  name: string;
+  username: string;
   joinedAt: Date;
 };
 

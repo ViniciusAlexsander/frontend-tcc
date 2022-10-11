@@ -43,6 +43,9 @@ const StyledMultiCarousel = styled(MultiCarousel)(({ theme }) => ({
       borderColor: theme.palette.primary.light,
     },
   },
+  "& .react-multi-carousel-list": {
+    padding: "8px",
+  },
 }));
 
 export const Carousel: React.FC<ICarouselProps> = ({
@@ -71,9 +74,9 @@ export const Carousel: React.FC<ICarouselProps> = ({
   if (isXl) deviceType = "xl";
 
   return (
-    <Grid container padding={2}>
+    <Grid container padding={{ xs: 0, sm: 2 }}>
       {titulo && (
-        <Grid item xs={12} mb={4}>
+        <Grid item xs={12} mb={{ xs: 1, sm: 4 }}>
           <Typography variant="h5" fontWeight={700}>
             {titulo}
           </Typography>
