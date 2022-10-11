@@ -21,6 +21,7 @@ export interface IMovieDetails {
   video: boolean;
   vote_average: number;
   vote_count: number;
+  tagline: string | null;
 }
 
 export type GetMovieDetailsResponse = {
