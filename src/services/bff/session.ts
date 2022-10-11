@@ -30,7 +30,7 @@ export type IFindGroupSessionsResponse = {
 export type IUser = {
   id: string;
   username: string;
-}
+};
 
 export interface ISession {
   id: string;
@@ -98,6 +98,7 @@ export async function findGroupSessions({
                 video: res.movieDetails.video,
                 vote_average: res.movieDetails.vote_average,
                 vote_count: res.movieDetails.vote_count,
+                tagline: res.movieDetails.tagline,
               },
             })
           )
