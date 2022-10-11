@@ -3,8 +3,7 @@ export enum RotasEnum {
   INICIO = "/",
   CADASTRO = "/cadastro",
   FILMES = "/filmes",
-  FILMES_ASSISTIDOS = "/filmes/assistidos",
-  FILMES_ASSISTIR = "/filmes/assistir",
+  MEUS_FILMES = "/filmes/meus-filmes",
   PERFIL = "/perfil",
   GRUPOS = "/grupos",
 }

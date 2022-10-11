@@ -39,15 +39,9 @@ export const routes: IRoute[] = [
         exibirMenuLateral: true,
       },
       {
-        label: "Assistidos",
-        rota: RotasEnum.FILMES_ASSISTIDOS,
+        label: "Meus Filmes",
+        rota: RotasEnum.MEUS_FILMES,
         icon: <CheckCircle />,
-        exibirMenuLateral: true,
-      },
-      {
-        label: "À assistir",
-        rota: RotasEnum.FILMES_ASSISTIR,
-        icon: <FeaturedPlayList />,
         exibirMenuLateral: true,
       },
     ],

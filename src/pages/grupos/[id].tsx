@@ -28,7 +28,7 @@ import { stringAvatar, stringToColor } from "../../shared/utils/utils";
 import { checkAdminGroup } from "../../services/bff/checkAdminGroup";
 import { findGroupSessions, ISession } from "../../services/bff/session";
 import dayjs from "dayjs";
-
+import { withSSRAuth } from "../../shared/utils/withSSRAuth";
 
 interface DetalheGrupoProps {
   id: string;
@@ -71,12 +71,10 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
     setOpenModalNovoMembro(false);
   };
 
-  let sessoesFuturas = sessions
-  .filter((session) =>
+  let sessoesFuturas = sessions.filter((session) =>
     dayjs().isBefore(dayjs(session.sessionDay))
   );
-  let sessoesPassadas = sessions
-  .filter((session) =>
+  let sessoesPassadas = sessions.filter((session) =>
     dayjs().isAfter(dayjs(session.sessionDay))
   );
 
@@ -93,14 +91,12 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
       }
       const sessions = await findGroupSessions({ groupId: id as string });
       setSessions(sessions);
-      sessoesFuturas = sessions
-        .filter((session) =>
-          dayjs().isBefore(dayjs(session.sessionDay))
-        );
-      sessoesPassadas = sessions
-        .filter((session) =>
-          dayjs().isAfter(dayjs(session.sessionDay))
-        );
+      sessoesFuturas = sessions.filter((session) =>
+        dayjs().isBefore(dayjs(session.sessionDay))
+      );
+      sessoesPassadas = sessions.filter((session) =>
+        dayjs().isAfter(dayjs(session.sessionDay))
+      );
 
       const response = await findGroups({ id: id as string });
       const grupoResponse = response[0];
@@ -123,8 +119,6 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
     };
     if (!openModalNovoMembro) getGroupDetails();
   }, [id, openModalNovoMembro]);
-
-
 
   return (
     <>
@@ -267,16 +261,15 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                   mostrarPontos={!isMobile}
                   mostrarProximo
                 >
-                  {sessoesFuturas
-                    .map((session) => (
-                      <CardFilme
-                        key={session.id}
-                        movie={session.movie}
-                        session={{
-                          ...session,
-                        }}
-                      />
-                    ))}
+                  {sessoesFuturas.map((session) => (
+                    <CardFilme
+                      key={session.id}
+                      movie={session.movie}
+                      session={{
+                        ...session,
+                      }}
+                    />
+                  ))}
                 </Carousel>
               )}
             </Grid>
@@ -295,16 +288,15 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                   mostrarPontos={!isMobile}
                   mostrarProximo
                 >
-                  {sessoesPassadas
-                    .map((session) => (
-                      <CardFilme
-                        key={session.id}
-                        movie={session.movie}
-                        session={{
-                          ...session,
-                        }}
-                      />
-                    ))}
+                  {sessoesPassadas.map((session) => (
+                    <CardFilme
+                      key={session.id}
+                      movie={session.movie}
+                      session={{
+                        ...session,
+                      }}
+                    />
+                  ))}
                 </Carousel>
               )}
             </Grid>
@@ -315,12 +307,12 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps = withSSRAuth(async (ctx) => {
   const { params } = ctx;
   const { id } = params;
 
   return { props: { id } };
-};
+});
 
 const responsive: ResponsiveType = {
   xl: {
