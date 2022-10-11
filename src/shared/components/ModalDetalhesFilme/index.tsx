@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import {
   Grid,
   Typography,
@@ -8,9 +9,12 @@ import {
   useMediaQuery,
   AlertColor,
   IconButton,
+  Button,
 } from "@mui/material";
 import { GroupAddSharp } from "@mui/icons-material";
-import React, { useState } from "react";
+import { LoadingButton } from "@mui/lab";
+import { Add, ArrowRight, FavoriteBorder } from "@mui/icons-material";
+import Router from "next/router";
 import { findGenresNamesByIds, IGenre } from "../../utils/movieGenres";
 import { Carousel, ResponsiveType } from "../index";
 import {
@@ -19,8 +23,7 @@ import {
   minutosParaHoras,
 } from "../../utils/utils";
 import { joinSession } from "../../../services/bff/session";
-import { LoadingButton } from "@mui/lab";
-import { Add, ArrowRight, FavoriteBorder } from "@mui/icons-material";
+import { RotasEnum } from "../../utils/rotas";
 
 interface ModalDetalhesFilmeProps {
   movie: IMovie;
@@ -90,6 +93,10 @@ export function ModalDetalhesFilme({
     } finally {
       setLoadingButton(false);
     }
+  };
+
+  const handleClickVerMais = (id: number) => {
+    Router.push(`${RotasEnum.FILMES}/${id}`);
   };
 
   return (
@@ -219,6 +226,22 @@ export function ModalDetalhesFilme({
             <Typography variant="body2" textAlign="justify">
               {movie.overview}
             </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            mt={{ xs: 1, sm: 3 }}
+            display="flex"
+            alignItems="center"
+            justifyContent="flex-end"
+          >
+            <Button
+              variant="contained"
+              size="large"
+              onClick={() => handleClickVerMais(movie.id)}
+            >
+              Ver mais
+            </Button>
           </Grid>
           {session && session.id && (
             <>
