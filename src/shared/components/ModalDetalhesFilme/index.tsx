@@ -41,14 +41,15 @@ export function ModalDetalhesFilme({
   const theme = useTheme();
 
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClose} 
+      maxWidth="md">
       <Box sx={{ backgroundColor: "#1a1a1a" }}>
         <Box
           sx={{
             backgroundImage: `url(${movie.backdrop_path})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            height: "300px",
+            height: "350px",
             width: "100%",
           }}
           width="100%"
@@ -84,7 +85,6 @@ export function ModalDetalhesFilme({
                 ml={2}
                 fontWeight="800"
                 variant="body1"
-                color="#FFEC5B"
               >
                 {new Date(movie.release_date).getFullYear()}
               </Typography>
@@ -94,7 +94,7 @@ export function ModalDetalhesFilme({
               <IconButton
                 sx={{
                   marginRight: "0.5rem",
-                  padding: "5px",
+                  padding: "0.5rem",
                   backgroundColor: "#343434",
                   border: "1px solid rgba(255, 255, 255, 0.5)",
                   ":hover": {
@@ -103,11 +103,11 @@ export function ModalDetalhesFilme({
                   },
                 }}
               >
-                <FavoriteBorder fontSize="large" htmlColor="#fff" />
+                <FavoriteBorder fontSize="medium" htmlColor="#fff" />
               </IconButton>
               <IconButton
                 sx={{
-                  padding: "5px",
+                  padding: "0.5rem",
                   backgroundColor: "#343434",
                   border: "1px solid rgba(255, 255, 255, 0.5)",
                   ":hover": {
@@ -116,7 +116,7 @@ export function ModalDetalhesFilme({
                   },
                 }}
               >
-                <Add htmlColor="#fff" fontSize="large" />
+                <Add htmlColor="#fff" fontSize="medium" />
               </IconButton>
             </Box>
           </Box>
@@ -154,7 +154,7 @@ export function ModalDetalhesFilme({
             </Typography>
           </Grid>
           <Grid container item xs={12} mt={{ xs: 1, sm: 2 }}>
-            <Typography variant="body2" textAlign="justify">
+            <Typography variant="body1"  textAlign="justify">
               {movie.overview}
             </Typography>
           </Grid>
@@ -166,11 +166,7 @@ export function ModalDetalhesFilme({
             alignItems="center"
             justifyContent="flex-end"
           >
-            <Button
-              variant="contained"
-              size="medium"
-              endIcon={<ArrowRight />}
-            >
+            <Button variant="contained" size="medium" endIcon={<ArrowRight />}>
               Ver Mais
             </Button>
           </Grid>
