@@ -5,9 +5,12 @@ const theme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      light: "#7179C9",
-      main: "#353FA0",
-      dark: "#1E2888",
+      light: "#9BA2E0",
+      main: "#7179C9",
+      dark: "#353FA0",
+      // light: "#7179C9",
+      // main: "#353FA0",
+      // dark: "#1E2888",
       contrastText: "#fff",
     },
     secondary: {
@@ -38,19 +41,12 @@ const theme = createTheme({
         },
       },
     },
-    MuiTextField: {
+    MuiButton: {
       styleOverrides: {
         root: {
-          "& label.Mui-focused": {
-            color: "#7179C9",
-          },
-          "& .MuiOutlinedInput-root": {
-            "&:hover fieldset": {
-              borderColor: "#7179C9",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "#7179C9",
-            },
+          backgroundColor: "#353FA0",
+          ":hover": {
+            backgroundColor: "#1E2888",
           },
         },
       },

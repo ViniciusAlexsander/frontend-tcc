@@ -13,6 +13,8 @@ export function TituloComIcone({ icon, titulo }: TituloComIconeProps) {
       <Grid item xs={12}>
         <Box display="flex" alignItems="center" mb={2}>
           <Box
+            display="flex"
+            alignItems="center"
             sx={{
               marginRight: 2,
               "& svg": {

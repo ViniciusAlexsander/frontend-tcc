@@ -70,9 +70,9 @@ export function HeaderBuscarFilmes({
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
+      <Grid item xs={12} alignItems="center">
         <TituloComIcone
-          titulo="Pesquise ou descubra um novo filme"
+          titulo="Pesquise ou descubra um filme"
           icon={<Search />}
         />
       </Grid>
@@ -80,6 +80,7 @@ export function HeaderBuscarFilmes({
         <TextField
           size="medium"
           fullWidth
+          variant="outlined"
           label="Digite o nome de um filme"
           value={search}
           onChange={(e) => {

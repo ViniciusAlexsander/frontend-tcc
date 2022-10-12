@@ -35,11 +35,11 @@ const StyledMultiCarousel = styled(MultiCarousel)(({ theme }) => ({
   },
   ".dotClass": {
     "& button": {
-      borderColor: theme.palette.primary.light,
+      borderColor: theme.palette.primary.main,
       borderWidth: "1px",
     },
     "& .react-multi-carousel-dot--active button": {
-      background: theme.palette.primary.light,
+      background: theme.palette.primary.main,
       borderColor: theme.palette.primary.light,
     },
   },
@@ -115,6 +115,30 @@ export const Carousel: React.FC<ICarouselProps> = ({
           swipeable
           ssr={true} // means to render carousel on server-side.
           deviceType={deviceType}
+          sx={{
+            "button": {
+              margin: "auto"
+            },
+            ".react-multiple-carousel__arrow": {
+              top: "30%",
+              minHeight: "40px",
+              minWidth: "40px",
+              borderRadius: "50%",
+              padding: 0,
+              backgroundColor: theme.palette.primary.main,
+              "&:hover": {
+                backgroundColor: theme.palette.primary.dark
+              },
+            },
+            ".react-multiple-carousel__arrow--left": {
+              left: "0",
+              right: "auto",
+            },
+            ".react-multiple-carousel__arrow--right": {
+              right: "0",
+              left: "auto",
+            },
+          }}
         >
           {children}
         </StyledMultiCarousel>

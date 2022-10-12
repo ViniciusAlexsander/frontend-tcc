@@ -129,7 +129,7 @@ export default function Filmes() {
   };
 
   return (
-    <Grid container spacing={2} padding={2}>
+    <Grid container spacing={2}>
       <Grid item xs={12}>
         <HeaderBuscarFilmes
           handleClickClean={handleClickClean}
@@ -164,7 +164,18 @@ export default function Filmes() {
         <>
           {movies && movies.length > 0 ? (
             movies.map((movie) => (
-              <Grid item xs={6} sm={3} lg={2} xl={1.5} key={movie.id} mt={2}>
+              <Grid
+                item
+                xs={6}
+                sm={3}
+                lg={2}
+                xl={1.5}
+                key={movie.id}
+                mt={2}
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+              >
                 <CardFilme
                   movie={{
                     ...movie,

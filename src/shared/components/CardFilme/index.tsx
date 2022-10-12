@@ -64,8 +64,10 @@ export function CardFilme({ movie, session }: MovieCardProps) {
           justifyContent: "space-between",
           flexDirection: "column",
           alignItems: "flex-start",
-          marginLeft: "21px",
-          // backgroundColor: theme.palette.primary.main,
+          "&:hover": {
+            boxShadow: "5px 5px 0 -2px rgba(53,63,160,1)",
+            
+          },
           color: theme.palette.primary.contrastText,
         }}
       >

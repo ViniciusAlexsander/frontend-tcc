@@ -191,7 +191,7 @@ export function ModalDetalhesFilme({
               <Typography variant="h4" fontWeight="bold" lineHeight="1">
                 {movie.title}
               </Typography>
-              <Typography ml={2} fontWeight="800" variant="body1">
+              <Typography ml={2} fontWeight="800" variant="body1" color={theme.palette.primary.main}>
                 {new Date(movie.release_date).getFullYear()}
               </Typography>
             </Box>

@@ -35,8 +35,8 @@ export default function Home({
     },
     lg: {
       breakpoint: { max: 1535, min: 1200 },
-      items: 5,
-      slidesToSlide: 5,
+      items: 6,
+      slidesToSlide: 6,
     },
     md: {
       breakpoint: { max: 1199, min: 900 },
