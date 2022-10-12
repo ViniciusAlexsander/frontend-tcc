@@ -41,7 +41,7 @@ export default function DetalheFilme({
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={4} display="flex">
         <Box
           sx={{
             display: "flex",
@@ -91,34 +91,55 @@ export default function DetalheFilme({
           {movieProviders?.flatrate && (
             <Stack direction="column" spacing={2} alignItems="baseline">
               <Typography variant="h6">Stream</Typography>
-              <Stack>
+              <Stack direction="row" spacing={2}>
                 {movieProviders?.flatrate.map((stream) => (
-                  <Image
-                    key={stream.provider_id}
-                    alt={"Logo do provider" + stream.provider_name}
-                    src={stream.logo_path}
-                    width="50px"
-                    height="50px"
-                    style={{ borderRadius: "4px" }}
-                  />
+                  <Box key={stream.provider_id}>
+                    <Image
+                      alt={"Logo do provider" + stream.provider_name}
+                      src={stream.logo_path}
+                      width="50px"
+                      height="50px"
+                      style={{ borderRadius: "4px" }}
+                    />
+                  </Box>
                 ))}
               </Stack>
             </Stack>
           )}
           {movieProviders.rent && (
             <Stack direction="column" spacing={2} alignItems="baseline">
-              <Typography variant="h6">Comprar</Typography>
-              <Typography variant="body1" fontWeight="400">
-                {movieDetails.overview}
-              </Typography>
+              <Typography variant="h6">Alugar</Typography>
+              <Stack direction="row" spacing={2} alignItems="baseline">
+                {movieProviders?.rent.map((rent) => (
+                  <Box key={rent.provider_id}>
+                    <Image
+                      alt={"Logo do provider" + rent.provider_name}
+                      src={rent.logo_path}
+                      width="50px"
+                      height="50px"
+                      style={{ borderRadius: "4px" }}
+                    />
+                  </Box>
+                ))}
+              </Stack>
             </Stack>
           )}
           {movieProviders.buy && (
             <Stack direction="column" spacing={2} alignItems="baseline">
               <Typography variant="h6">Comprar</Typography>
-              <Typography variant="body1" fontWeight="400">
-                {movieDetails.overview}
-              </Typography>
+              <Stack direction="row" spacing={2} alignItems="baseline">
+                {movieProviders?.buy.map((buy) => (
+                  <Box key={buy.provider_id}>
+                    <Image
+                      alt={"Logo do provider" + buy.provider_name}
+                      src={buy.logo_path}
+                      width="50px"
+                      height="50px"
+                      style={{ borderRadius: "4px", marginRight: "8px" }}
+                    />
+                  </Box>
+                ))}
+              </Stack>
             </Stack>
           )}
         </Stack>
@@ -181,34 +202,6 @@ const responsive: ResponsiveType = {
   xs: {
     breakpoint: { max: 599, min: 0 },
     items: 3,
-    slidesToSlide: 2,
-  },
-};
-
-const responsiveSessions: ResponsiveType = {
-  xl: {
-    breakpoint: { max: 3000, min: 1536 },
-    items: 7,
-    slidesToSlide: 7,
-  },
-  lg: {
-    breakpoint: { max: 1535, min: 1200 },
-    items: 5,
-    slidesToSlide: 5,
-  },
-  md: {
-    breakpoint: { max: 1199, min: 900 },
-    items: 4,
-    slidesToSlide: 4,
-  },
-  sm: {
-    breakpoint: { max: 899, min: 600 },
-    items: 4,
-    slidesToSlide: 3,
-  },
-  xs: {
-    breakpoint: { max: 599, min: 0 },
-    items: 2,
     slidesToSlide: 2,
   },
 };

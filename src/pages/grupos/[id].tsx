@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { GetServerSideProps } from "next";
 import {
   Box,
   Grid,
@@ -30,6 +29,7 @@ import { stringAvatar, stringToColor } from "../../shared/utils/utils";
 import { checkAdminGroup } from "../../services/bff/checkAdminGroup";
 import { findGroupSessions, ISession } from "../../services/bff/session";
 import dayjs from "dayjs";
+import { withSSRAuth } from "../../shared/utils/withSSRAuth";
 
 interface DetalheGrupoProps {
   id: string;
@@ -242,7 +242,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Typography variant="h4"  fontWeight="bold">
+              <Typography variant="h4" fontWeight="bold">
                 Filmes à assistir
               </Typography>
               {grupo?.isAdmin && (
@@ -324,12 +324,12 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
+export const getServerSideProps = withSSRAuth(async (ctx) => {
   const { params } = ctx;
   const { id } = params;
 
   return { props: { id } };
-};
+});
 
 const responsive: ResponsiveType = {
   xl: {
