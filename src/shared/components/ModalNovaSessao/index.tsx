@@ -38,21 +38,21 @@ export function ModalNovaSessao({
 }: ModalNovaSessaoProps) {
   const [loadingButton, setLoadingButton] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [searchMovie, setSearchMovie] = useState<string | null>(null);
+  const [searchMovie, setSearchMovie] = useState<string | undefined>(undefined);
   const [movies, setMovies] = useState<IMovieOptions[]>([]);
-  const [movie, setMovie] = useState<IMovieOptions | null>(null);
+  const [movie, setMovie] = useState<IMovieOptions | undefined>(undefined);
   const [alert, setAlert] = useState<{
     message: string;
     severity: AlertColor;
     open: boolean;
   }>({ message: "", open: false, severity: "success" });
-  const [dateTime, setDateTime] = useState<Dayjs | undefined>(undefined);
+  const [dateTime, setDateTime] = useState<Dayjs | null>(null);
 
   const handleChangeDateTime = (dateTime: Dayjs | null) => {
     setDateTime(dateTime);
   };
 
-  const findMovieService = async (search: string | null) => {
+  const findMovieService = async (search: string | undefined) => {
     try {
       setLoading(true);
       const { searchMovies } = await getSearchMovies({
@@ -88,6 +88,7 @@ export function ModalNovaSessao({
           assistedInId,
           sessionDay: dateTime,
         });
+
       setAlert({
         message: "Sessão criada com sucesso",
         open: true,
@@ -107,6 +108,12 @@ export function ModalNovaSessao({
 
   const handleCloseAlert = () => {
     setAlert({ message: "", open: false, severity: "success" });
+    handleCloseModal();
+  };
+
+  const handleCloseModal = () => {
+    setMovie(undefined);
+    setDateTime(null);
     handleClose();
   };
 
@@ -130,7 +137,7 @@ export function ModalNovaSessao({
           {alert.message}
         </Alert>
       </Snackbar>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleCloseModal}>
         <Grid container maxWidth="480px" spacing={1} p={2}>
           <Grid item xs={12} display="flex" justifyContent="flex-start">
             <Typography variant="h5" fontWeight="bold">
@@ -191,7 +198,7 @@ export function ModalNovaSessao({
               variant="contained"
               size="large"
               fullWidth
-              onClick={handleClose}
+              onClick={handleCloseModal}
             >
               Cancelar
             </Button>

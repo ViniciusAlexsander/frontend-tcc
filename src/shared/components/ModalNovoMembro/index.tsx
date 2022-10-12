@@ -85,8 +85,13 @@ export function ModalNovoMembro({
   };
 
   const handleCloseAlert = () => {
+    handleCloseModal();
+  };
+
+  const handleCloseModal = () => {
     setAlert({ message: "", open: false, severity: "success" });
     setSearchUser(null);
+    setUser(null);
     handleClose();
   };
 
@@ -110,7 +115,7 @@ export function ModalNovoMembro({
           {alert.message}
         </Alert>
       </Snackbar>
-      <Dialog open={open} onClose={handleClose}>
+      <Dialog open={open} onClose={handleCloseModal}>
         <Grid container maxWidth="450px" spacing={2} p={2}>
           <Grid
             item
@@ -157,7 +162,12 @@ export function ModalNovoMembro({
             alignItems="center"
             justifyContent="center"
           >
-            <Button variant="contained" fullWidth size="large" onClick={handleClose}>
+            <Button
+              variant="contained"
+              fullWidth
+              size="large"
+              onClick={handleCloseModal}
+            >
               Cancelar
             </Button>
           </Grid>
