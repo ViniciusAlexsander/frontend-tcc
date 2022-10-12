@@ -6,8 +6,8 @@ const theme = createTheme({
     mode: "dark",
     primary: {
       light: "#7179C9",
-      main: "#4e57b0",
-      dark: "#353FA0",
+      main: "#353FA0",
+      dark: "#1E2888",
       contrastText: "#fff",
     },
     secondary: {
@@ -30,7 +30,30 @@ const theme = createTheme({
       defaultProps: {
         fontFamily: "'Source Sans Pro', sans-serif",
       },
-      styleOverrides: {},
+      styleOverrides: {
+        h4: {
+          "@media (max-width:600px)": {
+            fontSize: "1.5rem",
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& label.Mui-focused": {
+            color: "#7179C9",
+          },
+          "& .MuiOutlinedInput-root": {
+            "&:hover fieldset": {
+              borderColor: "#7179C9",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "#7179C9",
+            },
+          },
+        },
+      },
     },
   },
 });

@@ -25,8 +25,8 @@ const CardInformativo = ({
         corBackground: "rgba(2, 196, 211, 0.1)",
       },
       info: {
-        corTexto: "info.main",
-        corBackground: "rgba(39, 111, 191, 0.1)",
+        corTexto: "primary.light",
+        corBackground: "rgba(113, 121, 201, 0.2)",
       },
       error: {
         corTexto: "error.main",
@@ -46,7 +46,6 @@ const CardInformativo = ({
           bgcolor={corPorTipo[tipo].corBackground}
           display="inline-flex"
           py={2}
-          px={3}
           justifyContent="center"
           alignItems="center"
           width="100%"

@@ -15,6 +15,7 @@ import {
   PersonAdd,
   EventSeat,
   Check,
+  SentimentVeryDissatisfied,
 } from "@mui/icons-material";
 import {
   Carousel,
@@ -22,13 +23,13 @@ import {
   ModalNovoMembro,
   ModalNovaSessao,
   CardFilme,
+  CardInformativo,
 } from "../../shared/components";
 import { findGroups } from "../../services/bff/findGroup";
 import { stringAvatar, stringToColor } from "../../shared/utils/utils";
 import { checkAdminGroup } from "../../services/bff/checkAdminGroup";
 import { findGroupSessions, ISession } from "../../services/bff/session";
 import dayjs from "dayjs";
-
 
 interface DetalheGrupoProps {
   id: string;
@@ -71,12 +72,10 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
     setOpenModalNovoMembro(false);
   };
 
-  let sessoesFuturas = sessions
-  .filter((session) =>
+  let sessoesFuturas = sessions.filter((session) =>
     dayjs().isBefore(dayjs(session.sessionDay))
   );
-  let sessoesPassadas = sessions
-  .filter((session) =>
+  let sessoesPassadas = sessions.filter((session) =>
     dayjs().isAfter(dayjs(session.sessionDay))
   );
 
@@ -93,14 +92,12 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
       }
       const sessions = await findGroupSessions({ groupId: id as string });
       setSessions(sessions);
-      sessoesFuturas = sessions
-        .filter((session) =>
-          dayjs().isBefore(dayjs(session.sessionDay))
-        );
-      sessoesPassadas = sessions
-        .filter((session) =>
-          dayjs().isAfter(dayjs(session.sessionDay))
-        );
+      sessoesFuturas = sessions.filter((session) =>
+        dayjs().isBefore(dayjs(session.sessionDay))
+      );
+      sessoesPassadas = sessions.filter((session) =>
+        dayjs().isAfter(dayjs(session.sessionDay))
+      );
 
       const response = await findGroups({ id: id as string });
       const grupoResponse = response[0];
@@ -123,8 +120,6 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
     };
     if (!openModalNovoMembro) getGroupDetails();
   }, [id, openModalNovoMembro]);
-
-
 
   return (
     <>
@@ -183,13 +178,18 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                 </Grid>
               </Grid>
             </Grid>
+            {/* margin dependendo do tamanho da tela */}
             <Grid
               item
-              xs={12}
+              container
+              margin={isMobile ? "1rem 0 1rem 0" : "2rem 0 1rem 0"}
               display="flex"
               alignItems="center"
-              justifyContent="flex-end"
+              justifyContent="space-between"
             >
+              <Typography variant="h4" fontWeight="bold">
+                Membros
+              </Typography>
               {grupo?.isAdmin && (
                 <Button
                   variant="contained"
@@ -203,7 +203,6 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
             </Grid>
             <Grid item xs={12}>
               <Carousel
-                titulo="Membros"
                 responsive={responsive}
                 arrows
                 mostrarPontos={!isMobile}
@@ -235,12 +234,17 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
               </Carousel>
             </Grid>
             <Grid
+              container
               item
               xs={12}
+              margin={isMobile ? "1rem 0 1rem 0" : "2rem 0 1rem 0"}
               display="flex"
               alignItems="center"
-              justifyContent="flex-end"
+              justifyContent="space-between"
             >
+              <Typography variant="h4"  fontWeight="bold">
+                Filmes à assistir
+              </Typography>
               {grupo?.isAdmin && (
                 <Button
                   variant="contained"
@@ -259,25 +263,31 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
               alignItems="center"
               justifyContent="flex-end"
             >
-              {sessoesFuturas.length > 0 && (
+              {sessoesFuturas.length > 0 ? (
                 <Carousel
                   responsive={responsiveSessions}
-                  titulo="Filmes à assistir"
                   arrows
                   mostrarPontos={!isMobile}
                   mostrarProximo
                 >
-                  {sessoesFuturas
-                    .map((session) => (
-                      <CardFilme
-                        key={session.id}
-                        movie={session.movie}
-                        session={{
-                          ...session,
-                        }}
-                      />
-                    ))}
+                  {sessoesFuturas.map((session) => (
+                    <CardFilme
+                      key={session.id}
+                      movie={session.movie}
+                      session={{
+                        ...session,
+                      }}
+                    />
+                  ))}
                 </Carousel>
+              ) : (
+                <CardInformativo
+                  mensagem={
+                    "Nenhum filme marcado para assistir. Clique no botão acima para criar uma sessão."
+                  }
+                  tipo="info"
+                  icon={<SentimentVeryDissatisfied />}
+                />
               )}
             </Grid>
             <Grid
@@ -295,16 +305,15 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                   mostrarPontos={!isMobile}
                   mostrarProximo
                 >
-                  {sessoesPassadas
-                    .map((session) => (
-                      <CardFilme
-                        key={session.id}
-                        movie={session.movie}
-                        session={{
-                          ...session,
-                        }}
-                      />
-                    ))}
+                  {sessoesPassadas.map((session) => (
+                    <CardFilme
+                      key={session.id}
+                      movie={session.movie}
+                      session={{
+                        ...session,
+                      }}
+                    />
+                  ))}
                 </Carousel>
               )}
             </Grid>
