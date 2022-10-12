@@ -1,7 +1,14 @@
 import React from "react";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
-import { Grid, Typography, Stack, Box } from "@mui/material";
+import {
+  Grid,
+  Typography,
+  Stack,
+  Box,
+  useTheme,
+  useMediaQuery,
+} from "@mui/material";
 import {
   getMovieDetails,
   IMovieDetails,
@@ -11,16 +18,27 @@ import {
   getMovieProvidersDetails,
   IMovieProviders,
 } from "../../services/movies/movieProviders";
+import {
+  getMovieCredits,
+  IMovieCast,
+} from "../../services/movies/movieCredits";
+import { Carousel, ResponsiveType } from "../../shared/components/Carousel";
+import { CardCast } from "../../shared/components";
 
 interface DetalheFilmeProps {
   movieDetails: IMovieDetails;
   movieProviders: IMovieProviders;
+  movieCast: IMovieCast[];
 }
 
 export default function DetalheFilme({
   movieDetails,
   movieProviders,
+  movieCast,
 }: DetalheFilmeProps) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={4}>
@@ -105,6 +123,19 @@ export default function DetalheFilme({
           )}
         </Stack>
       </Grid>
+      <Grid item xs={12}>
+        <Carousel
+          titulo="Elenco"
+          responsive={responsive}
+          arrows
+          mostrarPontos={!isMobile}
+          mostrarProximo
+        >
+          {movieCast?.map((cast) => (
+            <CardCast key={cast.id} cast={{ ...cast }} />
+          ))}
+        </Carousel>
+      </Grid>
     </Grid>
   );
 }
@@ -115,11 +146,69 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const { movieDetails } = await getMovieDetails(id as string);
   const movieProviders = await getMovieProvidersDetails(id as string);
+  const { cast } = await getMovieCredits(id as string);
 
   return {
     props: {
       movieDetails: JSON.parse(JSON.stringify(movieDetails)),
       movieProviders: JSON.parse(JSON.stringify(movieProviders)),
+      movieCast: JSON.parse(JSON.stringify(cast)),
     },
   };
+};
+
+const responsive: ResponsiveType = {
+  xl: {
+    breakpoint: { max: 3000, min: 1536 },
+    items: 7,
+    slidesToSlide: 7,
+  },
+  lg: {
+    breakpoint: { max: 1535, min: 1200 },
+    items: 5,
+    slidesToSlide: 5,
+  },
+  md: {
+    breakpoint: { max: 1199, min: 900 },
+    items: 4,
+    slidesToSlide: 4,
+  },
+  sm: {
+    breakpoint: { max: 899, min: 600 },
+    items: 3,
+    slidesToSlide: 3,
+  },
+  xs: {
+    breakpoint: { max: 599, min: 0 },
+    items: 3,
+    slidesToSlide: 2,
+  },
+};
+
+const responsiveSessions: ResponsiveType = {
+  xl: {
+    breakpoint: { max: 3000, min: 1536 },
+    items: 7,
+    slidesToSlide: 7,
+  },
+  lg: {
+    breakpoint: { max: 1535, min: 1200 },
+    items: 5,
+    slidesToSlide: 5,
+  },
+  md: {
+    breakpoint: { max: 1199, min: 900 },
+    items: 4,
+    slidesToSlide: 4,
+  },
+  sm: {
+    breakpoint: { max: 899, min: 600 },
+    items: 4,
+    slidesToSlide: 3,
+  },
+  xs: {
+    breakpoint: { max: 599, min: 0 },
+    items: 2,
+    slidesToSlide: 2,
+  },
 };
