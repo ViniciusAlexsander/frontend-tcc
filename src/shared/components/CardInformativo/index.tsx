@@ -41,11 +41,11 @@ const CardInformativo = ({
 
   return (
     <Grid container alignItems="center" justifyContent="center">
-      <Grid item xs={12} md={fullWidth ? 12 : 7} style={{ padding: "0px" }}>
+      <Box display='flex' justifyContent="center" gap={2}>
         <Box
           bgcolor={corPorTipo[tipo].corBackground}
           display="inline-flex"
-          py={2}
+          p={2}
           justifyContent="center"
           alignItems="center"
           width="100%"
@@ -55,7 +55,6 @@ const CardInformativo = ({
             <Icon
               sx={{
                 color: corPorTipo[tipo].corTexto,
-                marginRight: "10px",
               }}
             >
               {icon}
@@ -63,13 +62,13 @@ const CardInformativo = ({
           )}
           <Typography
             variant="body2"
-            align="left"
+            ml={1}
             sx={{ color: tipo ? corPorTipo[tipo].corTexto : "textSecondary" }}
           >
             {mensagem}
           </Typography>
         </Box>
-      </Grid>
+      </Box>
     </Grid>
   );
 };
