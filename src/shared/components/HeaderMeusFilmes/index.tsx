@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import { TituloComIcone } from "../";
-import { movieGenres } from "../../utils/movieGenres";
+import { movieStatus } from "../../utils/movieStatus";
 
 interface HeaderMeusFilmesProps {
   handleClickClean: () => void;
@@ -21,8 +21,8 @@ interface HeaderMeusFilmesProps {
   totalResults: number;
   search: string | null;
   handleSearch: (search: string | null) => void;
-  genders: string[];
-  handleGenders: (genders: string[]) => void;
+  moviesStatus: string[];
+  handleMoviesStatus: (moviesStatus: string[]) => void;
 }
 
 export function HeaderMeusFilmes({
@@ -30,8 +30,8 @@ export function HeaderMeusFilmes({
   handleClickFilter,
   search,
   handleSearch,
-  genders,
-  handleGenders,
+  moviesStatus,
+  handleMoviesStatus,
   totalResults,
 }: HeaderMeusFilmesProps) {
   const MenuProps = {
@@ -46,34 +46,23 @@ export function HeaderMeusFilmes({
     <Grid container spacing={2}>
       <Grid item xs={12}>
         <TituloComIcone
-          titulo="Pesquise ou descubra um novo filme"
+          titulo="Pesquise em sua lista de filmes"
           icon={<Search />}
         />
       </Grid>
-      <Grid item xs={12} sm={6}>
-        <TextField
-          size="medium"
-          fullWidth
-          label="Digite o nome de um filme"
-          value={search}
-          onChange={(e) => {
-            handleSearch(e.target.value);
-          }}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={12}>
         <FormControl fullWidth>
           <InputLabel id="status-label">Status do filme</InputLabel>
           <Select
             labelId="status-label"
             multiple
-            value={genders}
+            value={moviesStatus}
             label="Status do filme"
             onChange={(e) => {
               const {
                 target: { value },
               } = e;
-              handleGenders(
+              handleMoviesStatus(
                 typeof value === "string" ? value.split("|") : value
               );
             }}
@@ -86,7 +75,7 @@ export function HeaderMeusFilmes({
             )}
             MenuProps={MenuProps}
           >
-            {movieGenres.map((s) => (
+            {movieStatus.map((s) => (
               <MenuItem key={s.id} value={s.name}>
                 {s.name}
               </MenuItem>

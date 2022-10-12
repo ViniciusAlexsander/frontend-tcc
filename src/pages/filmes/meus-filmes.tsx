@@ -5,98 +5,50 @@ import {
   CardInformativo,
   HeaderMeusFilmes,
 } from "../../shared/components";
-import { SentimentVeryDissatisfied, Search } from "@mui/icons-material";
-import { getDiscoverMovies } from "../../services/movies/discoverMovies";
-import { getSearchMovies } from "../../services/movies/searchMovies";
-import { sortByOptions } from "../../shared/utils/movieDiscover";
-import { LoadingButton } from "@mui/lab";
-import { IMovie } from "../../shared/models/movies/IMovie";
+import { SentimentVeryDissatisfied } from "@mui/icons-material";
 import { withSSRAuth } from "../../shared/utils/withSSRAuth";
+import { getUserMovies, IUserMovies } from "../../services/bff/getUserMovies";
 
 export default function MeusFilmes() {
-  const [page, setPage] = useState(1);
-  const [search, setSearch] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<string>(sortByOptions[0].value);
-  const [providers, setProviders] = useState<string[]>([]);
-  const [genders, setGenders] = useState<string[]>([]);
-  const [releaseYear, setReleaseYear] = useState<Date | null>(null);
-  const [movies, setMovies] = useState<IMovie[]>([]);
+  const [search, setSearch] = useState<string | undefined>(undefined);
+  const [moviesStatus, setMoviesStatus] = useState<string[]>([]);
+  const [movies, setMovies] = useState<IUserMovies[]>([]);
   const [totalResults, setTotalResults] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [loadingButton, setLoadingButton] = useState(false);
-  const [isRandomFilm, setIsRandomFilm] = useState(false);
 
-  const getMovies = async (
-    page: number,
-    sortBy: string | null,
-    providers: string[],
-    genders: string[],
-    releaseYear: Date | null,
-    randomFilm: boolean = false
-  ) => {
-    setIsRandomFilm(randomFilm);
-    if (page === 1) setLoading(true);
-    const { discoverMovies, totalResults, totalPages } =
-      await getDiscoverMovies({
-        page,
-        sortBy,
-        providers,
-        genders,
-        releaseYear: releaseYear ? new Date(releaseYear).getFullYear() : null,
-      });
-    if (randomFilm) setMovies([discoverMovies[1]]);
-    else setMovies(page > 1 ? movies.concat(discoverMovies) : discoverMovies);
-    setTotalResults(totalResults);
-    setTotalPages(totalPages);
-    setLoading(false);
-    setLoadingButton(false);
-  };
-
-  const getSearchMoviesFunc = async (page: number, search: string | null) => {
-    if (page === 1) setLoading(true);
-    const { searchMovies, totalResults, totalPages } = await getSearchMovies({
-      page,
+  const getSearchMoviesFunc = async () => {
+    console.log("getSearchMoviesFunc");
+    setLoading(true);
+    const movies = await getUserMovies({
       search,
+      moviesStatus,
     });
-    setMovies(page > 1 ? movies.concat(searchMovies) : searchMovies);
-    setTotalResults(totalResults);
-    setTotalPages(totalPages);
+    setMovies(movies);
+    setTotalResults(movies.length);
     setLoading(false);
-    setLoadingButton(false);
   };
 
   useEffect(() => {
-    getMovies(page, sortBy, providers, genders, releaseYear);
+    getSearchMoviesFunc();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page]);
-
-  useEffect(() => {
-    if (search) getSearchMoviesFunc(1, search);
-    else getMovies(page, sortBy, providers, genders, releaseYear);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, []);
 
   const handleSearch = (search: string | null) => {
     setSearch(search);
   };
 
-  const handleGenders = (genders: string[]) => {
-    setGenders(genders);
+  const handleMoviesStatus = (moviesStatus: string[]) => {
+    setMoviesStatus(moviesStatus);
   };
 
   const handleClickClean = () => {
-    setSortBy(sortByOptions[0].value);
-    setProviders([]);
-    setGenders([]);
-    setReleaseYear(null);
-    setPage(1);
-    getMovies(page, sortByOptions[0].value, [], [], null);
+    setSearch(undefined);
+    setMoviesStatus([]);
+    getSearchMoviesFunc();
   };
 
   const handleClickFilter = () => {
-    setPage(1);
-    getMovies(1, sortBy, providers, genders, releaseYear);
+    getSearchMoviesFunc();
   };
 
   return (
@@ -107,8 +59,8 @@ export default function MeusFilmes() {
           handleClickFilter={handleClickFilter}
           handleSearch={handleSearch}
           search={search}
-          genders={genders}
-          handleGenders={handleGenders}
+          moviesStatus={moviesStatus}
+          handleMoviesStatus={handleMoviesStatus}
           totalResults={totalResults}
         />
       </Grid>
@@ -148,30 +100,6 @@ export default function MeusFilmes() {
             </Grid>
           )}
         </>
-      )}
-      {!(totalPages === page) && movies && movies.length > 0 && !isRandomFilm && (
-        <Grid
-          item
-          xs={12}
-          mt={2}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          <LoadingButton
-            variant="contained"
-            size="large"
-            onClick={() => {
-              setLoadingButton(true);
-              setPage(page + 1);
-            }}
-            loading={loadingButton}
-            loadingPosition="start"
-            startIcon={<Search />}
-          >
-            Carregar mais
-          </LoadingButton>
-        </Grid>
       )}
     </Grid>
   );
