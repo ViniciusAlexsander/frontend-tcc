@@ -79,7 +79,7 @@ export function ModalDetalhesFilme({
   open,
   handleClose,
   session,
-  setAtualizaParticipantes
+  setAtualizaParticipantes,
 }: ModalDetalhesFilmeProps) {
   const [loadingButton, setLoadingButton] = useState(false);
   const [watchedButton, setWatchedButton] = useState(null);
@@ -96,7 +96,6 @@ export function ModalDetalhesFilme({
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const { isAuthenticated } = useContext(AuthContext);
 
-  
   useEffect(() => {
     if (movie?.id && open && isAuthenticated) {
       getUserMovieInfo(movie.id);
@@ -346,14 +345,14 @@ export function ModalDetalhesFilme({
                 )}
               </Box>
               <Grid container item xs={12} mt={{ xs: 2, sm: 4 }}>
-                {session?.users?.length > 0 &&
-                  session?.users.map((participant) => (
-                    <Carousel
-                      responsive={responsive}
-                      arrows
-                      mostrarPontos={!isMobile}
-                      mostrarProximo
-                    >
+                {session?.users?.length > 0 && (
+                  <Carousel
+                    responsive={responsive}
+                    arrows
+                    mostrarPontos={!isMobile}
+                    mostrarProximo
+                  >
+                    {session?.users.map((participant) => (
                       <Box
                         key={participant.id}
                         sx={{
@@ -377,13 +376,16 @@ export function ModalDetalhesFilme({
                           {participant.username}
                         </Typography>
                       </Box>
-                    </Carousel>
-                  ))}
+                    ))}
+                  </Carousel>
+                )}
 
                 {session?.users?.length === 0 && (
                   <CardInformativo
                     mensagem={
-                      isSessionOpen ? "Ninguém ingressou nessa sessão ainda, mas você pode ser o primeiro!" : "Ninguém participou dessa sessão"
+                      isSessionOpen
+                        ? "Ninguém ingressou nessa sessão ainda, mas você pode ser o primeiro!"
+                        : "Ninguém participou dessa sessão"
                     }
                     tipo="info"
                     icon={<SentimentVeryDissatisfied />}
