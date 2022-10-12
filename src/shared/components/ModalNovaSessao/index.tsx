@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Dayjs } from "dayjs";
+import "dayjs/locale/pt-br";
 import {
   Grid,
   Typography,
@@ -177,7 +178,7 @@ export function ModalNovaSessao({
             />
           </Grid>
           <Grid item xs={12} pb={3}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <LocalizationProvider dateAdapter={AdapterDayjs} locale="pt-br">
               <DateTimePicker
                 label="Escolha a data e hora da sessão"
                 value={dateTime}
