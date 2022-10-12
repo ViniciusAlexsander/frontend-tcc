@@ -11,7 +11,7 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import { Check, GroupAddSharp, Remove } from "@mui/icons-material";
+import { Check, Favorite, GroupAddSharp, Remove } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { Add, ArrowRight, FavoriteBorder } from "@mui/icons-material";
 import Router from "next/router";
@@ -73,6 +73,7 @@ export function ModalDetalhesFilme({
 }: ModalDetalhesFilmeProps) {
   const [loadingButton, setLoadingButton] = useState(false);
   const [watchedButton, setWatchedButton] = useState(null);
+  const [favoriteButton, setFavoriteButton] = useState(false);
   const [alert, setAlert] = useState<{
     message: string;
     severity: AlertColor;
@@ -116,9 +117,10 @@ export function ModalDetalhesFilme({
   const getUserMovieInfo = async (movieId: number) => {
     const { movie } = await findOneUserMovie({ movieId });
     setWatchedButton(movie.watched);
+    setFavoriteButton(movie.favorite);
   };
 
-  const handleClickAddMovieToUserList = async (movieId: number) => {
+  const handleUpdateMovieInUserList = async (movieId: number) => {
     try {
       const { watched } = await updateMovieInUserList({
         movieId,
@@ -127,7 +129,23 @@ export function ModalDetalhesFilme({
       setWatchedButton(watched);
     } catch (error) {
       setAlert({
-        message: "Erro ao adicionar filme a lista, tente novamente mais tarde",
+        message: "Erro ao tentar atualizar o filme, tente novamente mais tarde",
+        open: true,
+        severity: "error",
+      });
+    }
+  };
+
+  const handleUpdateMovieInUserListFavorite = async (movieId: number) => {
+    try {
+      const { favorite } = await updateMovieInUserList({
+        movieId,
+        favorite: !favoriteButton,
+      });
+      setFavoriteButton(favorite);
+    } catch (error) {
+      setAlert({
+        message: "Erro ao tentar favoritar o filme, tente novamente mais tarde",
         open: true,
         severity: "error",
       });
@@ -181,12 +199,21 @@ export function ModalDetalhesFilme({
             {/* BOTOES */}
             {isAuthenticated && (
               <Box>
-                <IconButton sx={iconButtonsStyles}>
-                  <FavoriteBorder fontSize="medium" htmlColor="#fff" />
+                <IconButton
+                  sx={iconButtonsStyles}
+                  onClick={() => handleUpdateMovieInUserListFavorite(movie.id)}
+                >
+                  {favoriteButton && (
+                    <Favorite fontSize="medium" htmlColor={theme.palette.primary.light} />
+                  )}
+
+                  {!favoriteButton && (
+                    <FavoriteBorder fontSize="medium" htmlColor="#fff" />
+                  )}
                 </IconButton>
                 <IconButton
                   sx={iconButtonsStyles}
-                  onClick={() => handleClickAddMovieToUserList(movie.id)}
+                  onClick={() => handleUpdateMovieInUserList(movie.id)}
                 >
                   {watchedButton === null && (
                     <Add htmlColor="#fff" fontSize="medium" />
