@@ -152,16 +152,18 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                 }}
               />
             </Grid>
-            <Grid item container xs={9}>
-              <Grid item xs={12}>
+            <Grid item container maxHeight="50%" xs={9}>
+              <Grid item xs={12} height="fit-content">
                 <Typography variant="h4" fontWeight="bold">
                   {grupo?.title}
                 </Typography>
               </Grid>
 
-              <Typography variant="body1" my={2}>
-                {grupo?.description}
-              </Typography>
+              <Grid item xs={12}>
+                <Typography variant="body1" mb={2}>
+                  {grupo?.description}
+                </Typography>
+              </Grid>
 
               <Grid item container alignItems="end">
                 <Grid item container sm={12} md={3}>
@@ -192,7 +194,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Typography variant="h4" fontWeight="bold">
+              <Typography variant="h5" fontWeight="bold">
                 Membros
               </Typography>
               {grupo?.isAdmin && (
@@ -208,8 +210,8 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
             </Grid>
             <Grid item xs={12}>
               <Carousel
-                responsive={responsive}
                 arrows
+                responsive={responsive}
                 mostrarPontos={!isMobile}
                 mostrarProximo
               >
@@ -220,15 +222,14 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                       display: "flex",
                       alignItems: "center",
                       flexDirection: "column",
-                      marginRight: 2,
                     }}
                   >
                     <Avatar
                       {...stringAvatar(user.username)}
                       sx={{
                         bgcolor: stringToColor(user.username),
-                        width: 100,
-                        height: 100,
+                        width: 70,
+                        height: 70,
                         fontSize: "2.25rem",
                         marginBottom: 2,
                       }}
@@ -242,12 +243,11 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
               container
               item
               xs={12}
-              margin={isMobile ? "1rem 0 1rem 0" : "2rem 0 1rem 0"}
               display="flex"
               alignItems="center"
               justifyContent="space-between"
             >
-              <Typography variant="h4" fontWeight="bold">
+              <Typography variant="h5" fontWeight="bold">
                 Filmes à assistir
               </Typography>
               {grupo?.isAdmin && (
@@ -261,32 +261,26 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                 </Button>
               )}
             </Grid>
-            <Grid
-              item
-              xs={12}
-              display="flex"
-              alignItems="center"
-              justifyContent="flex-end"
-            >
-              {sessoesFuturas.length > 0 ? (
-                <Carousel
-                  responsive={responsiveSessions}
-                  arrows
-                  mostrarPontos={!isMobile}
-                  mostrarProximo
-                >
-                  {sessoesFuturas.map((session) => (
-                    <CardFilme
-                      key={session.id}
-                      movie={session.movie}
-                      setAtualizaParticipantes={setAtualizaParticipantes}
-                      session={{
-                        ...session,
-                      }}
-                    />
-                  ))}
-                </Carousel>
-              ) : (
+            {sessoesFuturas.length > 0 ? (
+              <Carousel
+                responsive={responsiveSessions}
+                arrows
+                mostrarPontos={!isMobile}
+                mostrarProximo
+              >
+                {sessoesFuturas.map((session) => (
+                  <CardFilme
+                    key={session.id}
+                    movie={session.movie}
+                    setAtualizaParticipantes={setAtualizaParticipantes}
+                    session={{
+                      ...session,
+                    }}
+                  />
+                ))}
+              </Carousel>
+            ) : (
+              <Box mt={2}>
                 <CardInformativo
                   mensagem={
                     "Nenhum filme marcado para assistir. Clique no botão acima para criar uma sessão."
@@ -294,19 +288,24 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                   tipo="info"
                   icon={<SentimentVeryDissatisfied />}
                 />
-              )}
-            </Grid>
-            <Grid
-              item
-              xs={12}
-              display="flex"
-              alignItems="center"
-              justifyContent="flex-end"
-            >
-              {sessoesPassadas.length > 0 && (
+              </Box>
+            )}
+
+            {sessoesPassadas.length > 0 && (
+              <Grid
+                item
+                container
+                xs={12}
+                display="flex"
+                alignItems="center"
+                justifyContent="flex-start"
+              >
+                <Typography variant="h5" fontWeight="bold">
+                  Filmes assistidos
+                </Typography>
+
                 <Carousel
                   responsive={responsiveSessions}
-                  titulo="Filmes assistidos"
                   arrows
                   mostrarPontos={!isMobile}
                   mostrarProximo
@@ -321,8 +320,8 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                     />
                   ))}
                 </Carousel>
-              )}
-            </Grid>
+              </Grid>
+            )}
           </Grid>
         </>
       )}

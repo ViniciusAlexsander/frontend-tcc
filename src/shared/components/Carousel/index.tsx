@@ -1,12 +1,6 @@
-import { FormEvent, useContext, useState } from "react";
-import Image from "next/image";
 import {
   Grid,
-  Box,
-  Button,
-  TextField,
   Typography,
-  Link,
   useTheme,
   useMediaQuery,
   styled,
@@ -30,7 +24,6 @@ export type { ResponsiveType };
 
 const StyledMultiCarousel = styled(MultiCarousel)(({ theme }) => ({
   ".itemClass": {
-    // marginLeft: "20px", // margem entre os itens
     marginBottom: "32px",
   },
   ".dotClass": {
@@ -116,8 +109,8 @@ export const Carousel: React.FC<ICarouselProps> = ({
           ssr={true} // means to render carousel on server-side.
           deviceType={deviceType}
           sx={{
-            "button": {
-              margin: "auto"
+            button: {
+              margin: "auto",
             },
             ".react-multiple-carousel__arrow": {
               top: "30%",
@@ -127,7 +120,7 @@ export const Carousel: React.FC<ICarouselProps> = ({
               padding: 0,
               backgroundColor: theme.palette.primary.main,
               "&:hover": {
-                backgroundColor: theme.palette.primary.dark
+                backgroundColor: theme.palette.primary.dark,
               },
             },
             ".react-multiple-carousel__arrow--left": {

@@ -59,37 +59,45 @@ export function CardGrupo({ grupo }: CardGrupoProps) {
           {...stringAvatar(grupo.title)}
           sx={{
             bgcolor: stringToColor(grupo.title),
-            width: 100,
-            height: 100,
+            width: 70,
+            height: 70,
             fontSize: "2.25rem",
-            marginBottom: 2,
           }}
         />
       </Box>
 
-      <Box width="100%">
-        <Typography variant="body1" fontWeight="bold">
+      <Box
+        width="100%"
+        height="100%"
+        display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        mt={2}
+      >
+        <Typography variant="body1" fontWeight="bold" textAlign="center">
           {grupo.title}
         </Typography>
-        <Typography variant="body1">Participantes:</Typography>
-        <AvatarGroup
-          total={grupo.users.length}
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: 2,
-          }}
-        >
-          {grupo.users.slice(0, 4).map((user) => (
-            <Avatar
-              key={user.id}
-              {...stringAvatar(user.username)}
-              sx={{
-                bgcolor: stringToColor(user.username),
-              }}
-            />
-          ))}
-        </AvatarGroup>
+        
+        <Box>
+          <Typography variant="body1" mb={1}>Participantes:</Typography>
+          <AvatarGroup
+            total={grupo.users.length}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            {grupo.users.slice(0, 4).map((user) => (
+              <Avatar
+                key={user.id}
+                {...stringAvatar(user.username)}
+                sx={{
+                  bgcolor: stringToColor(user.username),
+                }}
+              />
+            ))}
+          </AvatarGroup>
+        </Box>
       </Box>
     </CardActionArea>
   );
