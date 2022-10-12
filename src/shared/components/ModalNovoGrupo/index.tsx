@@ -46,11 +46,8 @@ export function ModalNovoGrupo({ handleClose, open }: ModalNovoGrupoProps) {
       });
     } finally {
       setLoadingButton(false);
+      handleCloseModal();
     }
-  };
-
-  const handleCloseAlert = () => {
-    handleCloseModal();
   };
 
   const handleCloseModal = () => {
@@ -65,14 +62,9 @@ export function ModalNovoGrupo({ handleClose, open }: ModalNovoGrupoProps) {
       <Snackbar
         open={alert.open}
         autoHideDuration={3000}
-        onClose={handleCloseAlert}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
       >
-        <Alert
-          severity={alert.severity}
-          sx={{ width: "100%" }}
-          onClose={handleCloseAlert}
-        >
+        <Alert severity={alert.severity} sx={{ width: "100%" }}>
           {alert.message}
         </Alert>
       </Snackbar>

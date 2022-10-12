@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Button, Typography } from "@mui/material";
 import { GroupAdd, People, PersonSearch } from "@mui/icons-material";
 import {
@@ -13,11 +13,13 @@ import { RotasEnum } from "../../shared/utils/rotas";
 
 export default function Grupos() {
   const [openModalNovoGrupo, setOpenModalNovoGrupo] = useState<boolean>(false);
+  const [atualizarGrupos, setAtualizarGrupos] = useState<boolean>(false);
 
   const handleClickNovoGrupo = () => {
     setOpenModalNovoGrupo(true);
   };
   const handleClose = () => {
+    setAtualizarGrupos(true);
     setOpenModalNovoGrupo(false);
   };
 
@@ -49,7 +51,10 @@ export default function Grupos() {
         </Grid>
 
         <Grid item xs={12}>
-          <CarouselGruposParticipa />
+          <CarouselGruposParticipa
+            atualizarGrupos={atualizarGrupos}
+            setAtualizarGrupos={setAtualizarGrupos}
+          />
         </Grid>
         <Grid item xs={12}>
           <TituloComIcone

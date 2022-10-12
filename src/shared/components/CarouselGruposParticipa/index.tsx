@@ -14,8 +14,15 @@ import {
 } from "../../../services/bff/findGroup";
 import { SentimentVeryDissatisfied } from "@mui/icons-material";
 
+interface CarouselGruposParticipaProps {
+  atualizarGrupos: boolean;
+  setAtualizarGrupos: (atualizarGrupos: boolean) => void;
+}
 
-export const CarouselGruposParticipa = () => {
+export const CarouselGruposParticipa = ({
+  atualizarGrupos,
+  setAtualizarGrupos,
+}: CarouselGruposParticipaProps) => {
   const [myGroups, setMyGroups] = useState<IFindGroupResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [cardInformativoData, setCardInformativoData] = useState<{
@@ -53,28 +60,29 @@ export const CarouselGruposParticipa = () => {
     },
   };
 
-  const findGroupService = async () => {
-    try {
-      setLoading(true);
-      const groups = await findGroups({ isMember: true });
-      setMyGroups(groups);
-      setCardInformativoData({
-        message: "Você ainda não faz parte de nenhum grupo",
-        tipo: "info",
-      });
-    } catch (error) {
-      setCardInformativoData({
-        message: "Ocorreu um erro ao buscar os seus grupos",
-        tipo: "error",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    console.log("carousel-atualizarGrupos", atualizarGrupos);
+    const findGroupService = async () => {
+      try {
+        setLoading(true);
+        const groups = await findGroups({ isMember: true });
+        setMyGroups(groups);
+        setCardInformativoData({
+          message: "Você ainda não faz parte de nenhum grupo",
+          tipo: "info",
+        });
+      } catch (error) {
+        setCardInformativoData({
+          message: "Ocorreu um erro ao buscar os seus grupos",
+          tipo: "error",
+        });
+      } finally {
+        setLoading(false);
+        setAtualizarGrupos(false);
+      }
+    };
     findGroupService();
-  }, []);
+  }, [atualizarGrupos, setAtualizarGrupos]);
 
   return (
     <Box>

@@ -42,7 +42,6 @@ interface ModalDetalhesFilmeProps {
   session?: ISessions;
   open: boolean;
   handleClose: () => void;
-  setAtualizaParticipantes?: (value: boolean) => void;
 }
 
 type ISessions = {
@@ -79,7 +78,6 @@ export function ModalDetalhesFilme({
   open,
   handleClose,
   session,
-  setAtualizaParticipantes
 }: ModalDetalhesFilmeProps) {
   const [loadingButton, setLoadingButton] = useState(false);
   const [watchedButton, setWatchedButton] = useState(null);
@@ -106,7 +104,6 @@ export function ModalDetalhesFilme({
     try {
       setLoadingButton(true);
       await joinSession({ sessionId });
-      setAtualizaParticipantes(true);
 
       setAlert({
         message: "Você entrou na sessão com sucesso",
