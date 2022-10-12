@@ -79,7 +79,7 @@ export function ModalDetalhesFilme({
   open,
   handleClose,
   session,
-  setAtualizaParticipantes,
+  setAtualizaParticipantes
 }: ModalDetalhesFilmeProps) {
   const [loadingButton, setLoadingButton] = useState(false);
   const [watchedButton, setWatchedButton] = useState(null);
@@ -101,8 +101,6 @@ export function ModalDetalhesFilme({
       getUserMovieInfo(movie.id);
     }
   }, [open]);
-
-  console.log("isAuthenticated", isAuthenticated);
 
   const handleClickJoinSession = async (sessionId: string) => {
     try {

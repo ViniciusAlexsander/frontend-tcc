@@ -19,6 +19,7 @@ type SignInCredentials = {
 
 type AuthContextData = {
   signIn(credentials: SignInCredentials): Promise<void>;
+  signOut(): void;
   isAuthenticated: boolean;
   user: User;
 };
@@ -86,8 +87,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  function signOut() {
+    destroyCookie(undefined, "nextauth.token");
+    destroyCookie(undefined, "nextauth.refreshToken");
+    setUser(null);
+
+    typeof window !== "undefined" && Router.push(RotasEnum.LOGIN);
+  }
+
   return (
-    <AuthContext.Provider value={{ signIn, isAuthenticated, user }}>
+    <AuthContext.Provider value={{ signIn, signOut, isAuthenticated, user }}>
       {children}
     </AuthContext.Provider>
   );

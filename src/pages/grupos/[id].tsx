@@ -53,7 +53,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
     useState<boolean>(false);
   const [openModalNovaSessao, setOpenModalNovaSessao] =
     useState<boolean>(false);
-    const [atualizaParticipante, setAtualizaParticipante] =
+  const [atualizaParticipante, setAtualizaParticipantes] =
     useState<boolean>(false);
   const [grupo, setGrupo] = useState<IDetalheGroup | null>(null);
   const [sessions, setSessions] = useState<ISession[]>([]);
@@ -68,6 +68,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
     setOpenModalNovaSessao(true);
   };
   const handleCloseModalCriarSessao = () => {
+    getGroupDetails();
     setOpenModalNovaSessao(false);
   };
   const handleCloseModalNovoMembro = () => {
@@ -82,47 +83,48 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
   );
 
   useEffect(() => {
-    const getGroupDetails = async () => {
-      let isAdmin: boolean;
-      try {
-        const checkAdminGroupResponse = await checkAdminGroup({
-          groupId: id as string,
-        });
-        isAdmin = checkAdminGroupResponse.isAdmin;
-      } catch (error) {
-        isAdmin = false;
-      }
-      const sessions = await findGroupSessions({ groupId: id as string });
-      setSessions(sessions);
-      
-      sessoesFuturas = sessions.filter((session) =>
-        dayjs().isBefore(dayjs(session.sessionDay))
-      );
-      sessoesPassadas = sessions.filter((session) =>
-        dayjs().isAfter(dayjs(session.sessionDay))
-      );
-
-      const response = await findGroups({ id: id as string });
-      const grupoResponse = response[0];
-      setGrupo({
-        id,
-        isAdmin,
-        title: grupoResponse.title,
-        description: grupoResponse.description,
-        users: grupoResponse.users.map((user) => {
-          return {
-            ...user,
-            joinedAt: new Date(user.joinedAt).toLocaleDateString("pt-BR", {
-              day: "2-digit",
-              month: "long",
-              year: "numeric",
-            }),
-          };
-        }),
-      });
-    };
     if (!openModalNovoMembro) getGroupDetails();
   }, [id, openModalNovoMembro, atualizaParticipante]);
+
+  const getGroupDetails = async () => {
+    let isAdmin: boolean;
+    try {
+      const checkAdminGroupResponse = await checkAdminGroup({
+        groupId: id as string,
+      });
+      isAdmin = checkAdminGroupResponse.isAdmin;
+    } catch (error) {
+      isAdmin = false;
+    }
+    const sessions = await findGroupSessions({ groupId: id as string });
+    setSessions(sessions);
+
+    sessoesFuturas = sessions.filter((session) =>
+      dayjs().isBefore(dayjs(session.sessionDay))
+    );
+    sessoesPassadas = sessions.filter((session) =>
+      dayjs().isAfter(dayjs(session.sessionDay))
+    );
+
+    const response = await findGroups({ id: id as string });
+    const grupoResponse = response[0];
+    setGrupo({
+      id,
+      isAdmin,
+      title: grupoResponse.title,
+      description: grupoResponse.description,
+      users: grupoResponse.users.map((user) => {
+        return {
+          ...user,
+          joinedAt: new Date(user.joinedAt).toLocaleDateString("pt-BR", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric",
+          }),
+        };
+      }),
+    });
+  };
 
   return (
     <>
@@ -135,8 +137,8 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
           />
           <ModalNovaSessao
             open={openModalNovaSessao}
-            handleClose={handleCloseModalCriarSessao}
             groupId={grupo?.id}
+            handleClose={handleCloseModalCriarSessao}
           />
           <Grid container spacing={2}>
             <Grid item xs={3} textAlign="center">
@@ -165,8 +167,8 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                 <Grid item container sm={12} md={3}>
                   <Check sx={{ marginRight: 1 }} />
                   <Typography variant="body1">
-                    <span>{grupo?.users?.length}</span>{" "}
-                    {grupo?.users?.length > 0 ? " Assistidos" : " Assistido"}
+                    <span>{sessoesPassadas?.length}</span>{" "}
+                    {sessoesPassadas?.length > 0 ? " Assistidos" : " Assistido"}
                   </Typography>
                 </Grid>
 
@@ -277,7 +279,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                     <CardFilme
                       key={session.id}
                       movie={session.movie}
-                      setAtualizaParticipantes={setAtualizaParticipante}
+                      setAtualizaParticipantes={setAtualizaParticipantes}
                       session={{
                         ...session,
                       }}

@@ -26,7 +26,7 @@ import {
   Menu,
 } from "@mui/icons-material";
 import { routes } from "../../utils/routes";
-import { AuthContext, signOut } from "../../../context/AuthContext";
+import { AuthContext } from "../../../context/AuthContext";
 import { RotasEnum } from "../../utils/rotas";
 
 export interface MenuLateralProps {
@@ -37,7 +37,7 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [open, setOpen] = useState(true);
 
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, signOut } = useContext(AuthContext);
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));

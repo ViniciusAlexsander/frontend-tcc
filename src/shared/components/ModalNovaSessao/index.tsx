@@ -23,8 +23,8 @@ import { createGroupSession } from "../../../services/bff/session";
 
 export interface ModalNovaSessaoProps {
   open: boolean;
-  handleClose: () => void;
   groupId: string;
+  handleClose: () => void;
 }
 
 export interface IMovieOptions {
@@ -33,9 +33,9 @@ export interface IMovieOptions {
 }
 
 export function ModalNovaSessao({
-  handleClose,
   open,
   groupId,
+  handleClose,
 }: ModalNovaSessaoProps) {
   const [loadingButton, setLoadingButton] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -104,12 +104,12 @@ export function ModalNovaSessao({
     } finally {
       setLoadingButton(false);
       setSearchMovie(null);
+      handleCloseModal();
     }
   };
 
   const handleCloseAlert = () => {
     setAlert({ message: "", open: false, severity: "success" });
-    handleCloseModal();
   };
 
   const handleCloseModal = () => {
