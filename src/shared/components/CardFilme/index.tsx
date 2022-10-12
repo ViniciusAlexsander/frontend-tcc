@@ -7,6 +7,7 @@ import { IGenre } from "../../utils/movieGenres";
 interface MovieCardProps {
   movie: IMovie;
   session?: ISessions;
+  setAtualizaParticipantes?: (value: boolean) => void;
 }
 
 type ISessions = {
@@ -36,7 +37,7 @@ type IMovie = {
   title: string;
   vote_average: number;
 };
-export function CardFilme({ movie, session }: MovieCardProps) {
+export function CardFilme({ movie, session, setAtualizaParticipantes }: MovieCardProps) {
   const [openModalDetalhes, setOpenModalDetalhes] = useState<boolean>(false);
   const theme = useTheme();
 
@@ -53,6 +54,7 @@ export function CardFilme({ movie, session }: MovieCardProps) {
         handleClose={handleClose}
         movie={{ ...movie }}
         session={{ ...session }}
+        setAtualizaParticipantes={setAtualizaParticipantes}
       />
       <CardActionArea
         onClick={handleClickCard}

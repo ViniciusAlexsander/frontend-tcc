@@ -53,6 +53,8 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
     useState<boolean>(false);
   const [openModalNovaSessao, setOpenModalNovaSessao] =
     useState<boolean>(false);
+    const [atualizaParticipante, setAtualizaParticipante] =
+    useState<boolean>(false);
   const [grupo, setGrupo] = useState<IDetalheGroup | null>(null);
   const [sessions, setSessions] = useState<ISession[]>([]);
 
@@ -92,6 +94,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
       }
       const sessions = await findGroupSessions({ groupId: id as string });
       setSessions(sessions);
+      
       sessoesFuturas = sessions.filter((session) =>
         dayjs().isBefore(dayjs(session.sessionDay))
       );
@@ -119,7 +122,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
       });
     };
     if (!openModalNovoMembro) getGroupDetails();
-  }, [id, openModalNovoMembro]);
+  }, [id, openModalNovoMembro, atualizaParticipante]);
 
   return (
     <>
@@ -274,6 +277,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                     <CardFilme
                       key={session.id}
                       movie={session.movie}
+                      setAtualizaParticipantes={setAtualizaParticipante}
                       session={{
                         ...session,
                       }}
