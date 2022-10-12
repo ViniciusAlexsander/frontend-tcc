@@ -50,6 +50,10 @@ export function ModalNovoGrupo({ handleClose, open }: ModalNovoGrupoProps) {
   };
 
   const handleCloseAlert = () => {
+    handleCloseModal();
+  };
+
+  const handleCloseModal = () => {
     setAlert({ message: "", open: false, severity: "success" });
     setDescription(null);
     setTitle(null);
@@ -72,8 +76,14 @@ export function ModalNovoGrupo({ handleClose, open }: ModalNovoGrupoProps) {
           {alert.message}
         </Alert>
       </Snackbar>
-      <Dialog open={open} onClose={handleClose}>
-        <Grid container maxWidth="450px" spacing={2} p={2} sx={{ backgroundColor: '#1c1c1c' }}>
+      <Dialog open={open} onClose={handleCloseModal}>
+        <Grid
+          container
+          maxWidth="450px"
+          spacing={2}
+          p={2}
+          sx={{ backgroundColor: "#1c1c1c" }}
+        >
           <Grid
             item
             xs={12}
@@ -121,7 +131,7 @@ export function ModalNovoGrupo({ handleClose, open }: ModalNovoGrupoProps) {
               variant="contained"
               size="large"
               fullWidth
-              onClick={handleClose}
+              onClick={handleCloseModal}
             >
               Cancelar
             </Button>
