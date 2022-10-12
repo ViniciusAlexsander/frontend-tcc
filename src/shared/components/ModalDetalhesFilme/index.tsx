@@ -11,12 +11,18 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import { Check, Favorite, GroupAddSharp, Remove } from "@mui/icons-material";
+import {
+  Check,
+  Favorite,
+  GroupAddSharp,
+  Remove,
+  SentimentVeryDissatisfied,
+} from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { Add, ArrowRight, FavoriteBorder } from "@mui/icons-material";
 import Router from "next/router";
 import { findGenresNamesByIds, IGenre } from "../../utils/movieGenres";
-import { Carousel, ResponsiveType } from "../index";
+import { CardInformativo, Carousel, ResponsiveType } from "../index";
 import {
   stringAvatar,
   stringToColor,
@@ -29,6 +35,7 @@ import {
   updateMovieInUserList,
 } from "../../../services/bff/userMovies";
 import { AuthContext } from "../../../context/AuthContext";
+import dayjs from "dayjs";
 
 interface ModalDetalhesFilmeProps {
   movie: IMovie;
@@ -42,6 +49,7 @@ type ISessions = {
   groupId: string;
   assistedInId: string;
   createdAt: Date;
+  sessionDay?: Date;
   users: IUser[];
 };
 
@@ -193,7 +201,12 @@ export function ModalDetalhesFilme({
               <Typography variant="h4" fontWeight="bold" lineHeight="1">
                 {movie.title}
               </Typography>
-              <Typography ml={2} fontWeight="800" variant="body1" color={theme.palette.primary.main}>
+              <Typography
+                ml={2}
+                fontWeight="800"
+                variant="body1"
+                color={theme.palette.primary.main}
+              >
                 {new Date(movie.release_date).getFullYear()}
               </Typography>
             </Box>
@@ -301,16 +314,39 @@ export function ModalDetalhesFilme({
           </Grid>
           {session && session.id && (
             <>
+              <Box
+                width="100%"
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                mt={3}
+              >
+                <Typography variant="h5" fontWeight={700}>
+                  Participantes
+                </Typography>
+
+                {dayjs().isBefore(dayjs(session.sessionDay)) && (
+                  <LoadingButton
+                    variant="contained"
+                    size="large"
+                    onClick={() => handleClickJoinSession(session.id)}
+                    loading={loadingButton}
+                    loadingPosition="start"
+                    startIcon={<GroupAddSharp />}
+                  >
+                    Participar da sessão
+                  </LoadingButton>
+                )}
+              </Box>
               <Grid container item xs={12} mt={{ xs: 2, sm: 4 }}>
-                <Carousel
-                  titulo="Participantes"
-                  responsive={responsive}
-                  arrows
-                  mostrarPontos={!isMobile}
-                  mostrarProximo
-                >
-                  {session?.users?.length > 0 &&
-                    session?.users.map((participant) => (
+                {session?.users?.length > 0 &&
+                  session?.users.map((participant) => (
+                    <Carousel
+                      responsive={responsive}
+                      arrows
+                      mostrarPontos={!isMobile}
+                      mostrarProximo
+                    >
                       <Box
                         key={participant.id}
                         sx={{
@@ -334,27 +370,18 @@ export function ModalDetalhesFilme({
                           {participant.username}
                         </Typography>
                       </Box>
-                    ))}
-                </Carousel>
-              </Grid>
-              <Grid
-                item
-                xs={12}
-                mt={{ xs: 1, sm: 3 }}
-                display="flex"
-                alignItems="center"
-                justifyContent="flex-end"
-              >
-                <LoadingButton
-                  variant="contained"
-                  size="large"
-                  onClick={() => handleClickJoinSession(session.id)}
-                  loading={loadingButton}
-                  loadingPosition="start"
-                  startIcon={<GroupAddSharp />}
-                >
-                  Participar da sessão
-                </LoadingButton>
+                    </Carousel>
+                  ))}
+
+                {session?.users?.length === 0 && (
+                  <CardInformativo
+                    mensagem={
+                      "Ninguem participou dessa sessão"
+                    }
+                    tipo="info"
+                    icon={<SentimentVeryDissatisfied />}
+                  />
+                )}
               </Grid>
             </>
           )}
