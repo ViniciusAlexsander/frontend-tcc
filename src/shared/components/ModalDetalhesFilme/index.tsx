@@ -89,9 +89,12 @@ export function ModalDetalhesFilme({
   }>({ message: "", open: false, severity: "success" });
 
   const theme = useTheme();
+
+  const isSessionOpen = dayjs().isBefore(dayjs(session.sessionDay));
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
   const { isAuthenticated } = useContext(AuthContext);
 
+  
   useEffect(() => {
     if (movie?.id && open && isAuthenticated) {
       getUserMovieInfo(movie.id);
@@ -104,6 +107,7 @@ export function ModalDetalhesFilme({
     try {
       setLoadingButton(true);
       await joinSession({ sessionId });
+      
       setAlert({
         message: "Você entrou na sessão com sucesso",
         open: true,
@@ -325,7 +329,7 @@ export function ModalDetalhesFilme({
                   Participantes
                 </Typography>
 
-                {dayjs().isBefore(dayjs(session.sessionDay)) && (
+                {isSessionOpen && (
                   <LoadingButton
                     variant="contained"
                     size="large"
@@ -376,7 +380,7 @@ export function ModalDetalhesFilme({
                 {session?.users?.length === 0 && (
                   <CardInformativo
                     mensagem={
-                      "Ninguem participou dessa sessão"
+                      isSessionOpen ? "Ninguém ingressou nessa sessão ainda, mas você pode ser o primeiro!" : "Ninguém participou dessa sessão"
                     }
                     tipo="info"
                     icon={<SentimentVeryDissatisfied />}
