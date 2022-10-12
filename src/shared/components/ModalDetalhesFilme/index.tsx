@@ -90,6 +90,8 @@ export function ModalDetalhesFilme({
     }
   }, [open]);
 
+  console.log("isAuthenticated", isAuthenticated);
+
   const handleClickJoinSession = async (sessionId: string) => {
     try {
       setLoadingButton(true);
@@ -204,7 +206,10 @@ export function ModalDetalhesFilme({
                   onClick={() => handleUpdateMovieInUserListFavorite(movie.id)}
                 >
                   {favoriteButton && (
-                    <Favorite fontSize="medium" htmlColor={theme.palette.primary.light} />
+                    <Favorite
+                      fontSize="medium"
+                      htmlColor={theme.palette.primary.light}
+                    />
                   )}
 
                   {!favoriteButton && (
