@@ -36,9 +36,10 @@ export async function getUserMovies({
       : undefined;
   let assistidos = moviesStatus.find((status) => status === "Assistidos");
   let assistir = moviesStatus.find((status) => status === "Á assistir");
-  let watched = 0;
+  let watched = null;
   if (assistidos && !assistir) watched = 1;
   if (!assistidos && assistir) watched = 2;
+  if (assistidos && assistir) watched = 0;
 
   const { data } = await api.get<IGetUserMoviesResponse>("/users-movies", {
     params: {
