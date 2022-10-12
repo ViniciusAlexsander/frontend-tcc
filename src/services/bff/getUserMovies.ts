@@ -30,19 +30,20 @@ export async function getUserMovies({
   search,
   moviesStatus,
 }: IGetUserMoviesRequest): Promise<IUserMovies[]> {
-  let favorite = moviesStatus.filter((status) => status === "Favoritos");
-  let assistidos = moviesStatus.filter((status) => status === "Assistidos");
-  let assistir = moviesStatus.filter((status) => status === "Á assistir");
-  let watched = !!assistir && !!assistidos;
-  watched = !watched && (assistir || assistidos) ? false : true;
-
-  console.log("favorite", favorite);
-  console.log("watched", watched);
+  let favorite =
+    moviesStatus.find((status) => status === "Favoritos") !== undefined
+      ? true
+      : undefined;
+  let assistidos = moviesStatus.find((status) => status === "Assistidos");
+  let assistir = moviesStatus.find((status) => status === "Á assistir");
+  let watched = 0;
+  if (assistidos && !assistir) watched = 1;
+  if (!assistidos && assistir) watched = 2;
 
   const { data } = await api.get<IGetUserMoviesResponse>("/users-movies", {
     params: {
       search,
-      favorite: !!favorite,
+      favorite: favorite,
       watched: watched,
     },
   });

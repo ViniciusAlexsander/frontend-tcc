@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Grid,
   Typography,
@@ -11,7 +11,7 @@ import {
   IconButton,
   Button,
 } from "@mui/material";
-import { GroupAddSharp } from "@mui/icons-material";
+import { Check, Favorite, GroupAddSharp, Remove } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { Add, ArrowRight, FavoriteBorder } from "@mui/icons-material";
 import Router from "next/router";
@@ -24,6 +24,11 @@ import {
 } from "../../utils/utils";
 import { joinSession } from "../../../services/bff/session";
 import { RotasEnum } from "../../utils/rotas";
+import {
+  findOneUserMovie,
+  updateMovieInUserList,
+} from "../../../services/bff/userMovies";
+import { AuthContext } from "../../../context/AuthContext";
 
 interface ModalDetalhesFilmeProps {
   movie: IMovie;
@@ -50,6 +55,7 @@ type IMovie = {
   genres?: IGenre[];
   genre_ids?: number[];
   id: number;
+  watched?: boolean;
   original_title: string;
   overview: string;
   popularity: number;
@@ -66,6 +72,8 @@ export function ModalDetalhesFilme({
   session,
 }: ModalDetalhesFilmeProps) {
   const [loadingButton, setLoadingButton] = useState(false);
+  const [watchedButton, setWatchedButton] = useState(null);
+  const [favoriteButton, setFavoriteButton] = useState(false);
   const [alert, setAlert] = useState<{
     message: string;
     severity: AlertColor;
@@ -74,6 +82,13 @@ export function ModalDetalhesFilme({
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
+  const { isAuthenticated } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (movie?.id && open && isAuthenticated) {
+      getUserMovieInfo(movie.id);
+    }
+  }, [open]);
 
   const handleClickJoinSession = async (sessionId: string) => {
     try {
@@ -99,15 +114,51 @@ export function ModalDetalhesFilme({
     Router.push(`${RotasEnum.FILMES}/${id}`);
   };
 
+  const getUserMovieInfo = async (movieId: number) => {
+    const { movie } = await findOneUserMovie({ movieId });
+    setWatchedButton(movie.watched);
+    setFavoriteButton(movie.favorite);
+  };
+
+  const handleUpdateMovieInUserList = async (movieId: number) => {
+    try {
+      const { watched } = await updateMovieInUserList({
+        movieId,
+        watched: watchedButton === null ? false : !watchedButton ? true : null,
+      });
+      setWatchedButton(watched);
+    } catch (error) {
+      setAlert({
+        message: "Erro ao tentar atualizar o filme, tente novamente mais tarde",
+        open: true,
+        severity: "error",
+      });
+    }
+  };
+
+  const handleUpdateMovieInUserListFavorite = async (movieId: number) => {
+    try {
+      const { favorite } = await updateMovieInUserList({
+        movieId,
+        favorite: !favoriteButton,
+      });
+      setFavoriteButton(favorite);
+    } catch (error) {
+      setAlert({
+        message: "Erro ao tentar favoritar o filme, tente novamente mais tarde",
+        open: true,
+        severity: "error",
+      });
+    }
+  };
+
   return (
-    <Dialog open={open} onClose={handleClose} 
-      maxWidth="md">
+    <Dialog open={open} onClose={handleClose} maxWidth="md">
       <Box sx={{ backgroundColor: "#1a1a1a" }}>
         <Box
           sx={{
             backgroundImage: `url(${movie.backdrop_path})`,
             backgroundSize: "cover",
-            backgroundPosition: "center",
             height: "350px",
             width: "100%",
           }}
@@ -140,44 +191,44 @@ export function ModalDetalhesFilme({
               <Typography variant="h4" fontWeight="bold" lineHeight="1">
                 {movie.title}
               </Typography>
-              <Typography
-                ml={2}
-                fontWeight="800"
-                variant="body1"
-              >
+              <Typography ml={2} fontWeight="800" variant="body1">
                 {new Date(movie.release_date).getFullYear()}
               </Typography>
             </Box>
+
             {/* BOTOES */}
-            <Box>
-              <IconButton
-                sx={{
-                  marginRight: "0.5rem",
-                  padding: "0.5rem",
-                  backgroundColor: "#343434",
-                  border: "1px solid rgba(255, 255, 255, 0.5)",
-                  ":hover": {
-                    backgroundColor: "#1a1a1a",
-                    borderColor: "rgba(255, 255, 255, 1)",
-                  },
-                }}
-              >
-                <FavoriteBorder fontSize="medium" htmlColor="#fff" />
-              </IconButton>
-              <IconButton
-                sx={{
-                  padding: "0.5rem",
-                  backgroundColor: "#343434",
-                  border: "1px solid rgba(255, 255, 255, 0.5)",
-                  ":hover": {
-                    backgroundColor: "#1a1a1a",
-                    borderColor: "rgba(255, 255, 255, 1)",
-                  },
-                }}
-              >
-                <Add htmlColor="#fff" fontSize="medium" />
-              </IconButton>
-            </Box>
+            {isAuthenticated && (
+              <Box>
+                <IconButton
+                  sx={iconButtonsStyles}
+                  onClick={() => handleUpdateMovieInUserListFavorite(movie.id)}
+                >
+                  {favoriteButton && (
+                    <Favorite fontSize="medium" htmlColor={theme.palette.primary.light} />
+                  )}
+
+                  {!favoriteButton && (
+                    <FavoriteBorder fontSize="medium" htmlColor="#fff" />
+                  )}
+                </IconButton>
+                <IconButton
+                  sx={iconButtonsStyles}
+                  onClick={() => handleUpdateMovieInUserList(movie.id)}
+                >
+                  {watchedButton === null && (
+                    <Add htmlColor="#fff" fontSize="medium" />
+                  )}
+
+                  {watchedButton === false && (
+                    <Remove htmlColor="#fff" fontSize="medium" />
+                  )}
+
+                  {watchedButton === true && (
+                    <Check htmlColor="#fff" fontSize="medium" />
+                  )}
+                </IconButton>
+              </Box>
+            )}
           </Box>
         </Box>
 
@@ -223,7 +274,7 @@ export function ModalDetalhesFilme({
             </Typography>
           </Grid>
           <Grid container item xs={12} mt={{ xs: 1, sm: 2 }}>
-            <Typography variant="body1"  textAlign="justify">
+            <Typography variant="body1" textAlign="justify">
               {movie.overview}
             </Typography>
           </Grid>
@@ -307,6 +358,17 @@ export function ModalDetalhesFilme({
     </Dialog>
   );
 }
+
+const iconButtonsStyles = {
+  marginRight: "0.5rem",
+  padding: "0.5rem",
+  backgroundColor: "#343434",
+  border: "1px solid rgba(255, 255, 255, 0.5)",
+  ":hover": {
+    backgroundColor: "#1a1a1a",
+    borderColor: "rgba(255, 255, 255, 1)",
+  },
+};
 
 const responsive: ResponsiveType = {
   xl: {

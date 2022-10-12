@@ -15,6 +15,7 @@ import {
   PersonAdd,
   EventSeat,
   Check,
+  SentimentVeryDissatisfied,
 } from "@mui/icons-material";
 import {
   Carousel,
@@ -22,6 +23,7 @@ import {
   ModalNovoMembro,
   ModalNovaSessao,
   CardFilme,
+  CardInformativo,
 } from "../../shared/components";
 import { findGroups } from "../../services/bff/findGroup";
 import { stringAvatar, stringToColor } from "../../shared/utils/utils";
@@ -177,13 +179,18 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                 </Grid>
               </Grid>
             </Grid>
+            {/* margin dependendo do tamanho da tela */}
             <Grid
               item
-              xs={12}
+              container
+              margin={isMobile ? "1rem 0 1rem 0" : "2rem 0 1rem 0"}
               display="flex"
               alignItems="center"
-              justifyContent="flex-end"
+              justifyContent="space-between"
             >
+              <Typography variant="h4" fontWeight="bold">
+                Membros
+              </Typography>
               {grupo?.isAdmin && (
                 <Button
                   variant="contained"
@@ -197,7 +204,6 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
             </Grid>
             <Grid item xs={12}>
               <Carousel
-                titulo="Membros"
                 responsive={responsive}
                 arrows
                 mostrarPontos={!isMobile}
@@ -229,12 +235,17 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
               </Carousel>
             </Grid>
             <Grid
+              container
               item
               xs={12}
+              margin={isMobile ? "1rem 0 1rem 0" : "2rem 0 1rem 0"}
               display="flex"
               alignItems="center"
-              justifyContent="flex-end"
+              justifyContent="space-between"
             >
+              <Typography variant="h4"  fontWeight="bold">
+                Filmes à assistir
+              </Typography>
               {grupo?.isAdmin && (
                 <Button
                   variant="contained"
@@ -253,10 +264,9 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
               alignItems="center"
               justifyContent="flex-end"
             >
-              {sessoesFuturas.length > 0 && (
+              {sessoesFuturas.length > 0 ? (
                 <Carousel
                   responsive={responsiveSessions}
-                  titulo="Filmes à assistir"
                   arrows
                   mostrarPontos={!isMobile}
                   mostrarProximo
@@ -271,6 +281,14 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                     />
                   ))}
                 </Carousel>
+              ) : (
+                <CardInformativo
+                  mensagem={
+                    "Nenhum filme marcado para assistir. Clique no botão acima para criar uma sessão."
+                  }
+                  tipo="info"
+                  icon={<SentimentVeryDissatisfied />}
+                />
               )}
             </Grid>
             <Grid
