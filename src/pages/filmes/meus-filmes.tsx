@@ -16,8 +16,10 @@ export default function MeusFilmes() {
   const [totalResults, setTotalResults] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const getSearchMoviesFunc = async () => {
-    console.log("getSearchMoviesFunc");
+  const getSearchMoviesFunc = async (
+    search: string | undefined,
+    moviesStatus: string[]
+  ) => {
     setLoading(true);
     const movies = await getUserMovies({
       search,
@@ -29,7 +31,7 @@ export default function MeusFilmes() {
   };
 
   useEffect(() => {
-    getSearchMoviesFunc();
+    getSearchMoviesFunc(search, moviesStatus);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -44,11 +46,11 @@ export default function MeusFilmes() {
   const handleClickClean = () => {
     setSearch(undefined);
     setMoviesStatus([]);
-    getSearchMoviesFunc();
+    getSearchMoviesFunc(undefined, []);
   };
 
   const handleClickFilter = () => {
-    getSearchMoviesFunc();
+    getSearchMoviesFunc(search, moviesStatus);
   };
 
   return (

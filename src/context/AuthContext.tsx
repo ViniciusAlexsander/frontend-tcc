@@ -5,9 +5,11 @@ import { api } from "../services/apiClient";
 import { RotasEnum } from "../shared/utils/rotas";
 
 type User = {
+  id?: string;
+  name?: string;
+  userName?: string;
   email: string;
-  permissions: string[];
-  roles: string[];
+  createdAt?: Date;
 };
 
 type SignInCredentials = {
@@ -42,16 +44,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const { "nextauth.token": token } = parseCookies();
 
     if (token) {
-      // api
-      //   .get("/me")
-      //   .then((response) => {
-      //     console.log("res", response);
-      //     const { email, permissions, roles } = response?.data;
-      //     setUser({ email, permissions, roles });
-      //   })
-      //   .catch(() => {
-      //     signOut();
-      //   });
+      api
+        .get("/users/me")
+        .then((response) => {
+          const { id, name, userName, email, createdAt } = response?.data;
+          setUser({ id, name, userName, email, createdAt });
+        })
+        .catch(() => {
+          signOut();
+        });
     }
   }, []);
 
@@ -62,7 +63,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         password: senha,
       });
 
-      const { token, refreshToken, permissions, roles } = response.data;
+      const { token, refreshToken } = response.data;
 
       setCookie(undefined, "nextauth.token", token, {
         maxAge: 60 * 60 * 24 * 30, // 30 days
@@ -75,8 +76,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       setUser({
         email,
-        permissions,
-        roles,
       });
 
       api.defaults.headers["Authorization"] = `Bearer ${token}`;

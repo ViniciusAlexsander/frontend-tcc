@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { GetServerSideProps } from "next";
 import {
   Box,
   Grid,
@@ -243,7 +242,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
               alignItems="center"
               justifyContent="space-between"
             >
-              <Typography variant="h4"  fontWeight="bold">
+              <Typography variant="h4" fontWeight="bold">
                 Filmes à assistir
               </Typography>
               {grupo?.isAdmin && (
