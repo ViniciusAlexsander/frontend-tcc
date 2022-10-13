@@ -63,7 +63,9 @@ export default function Login() {
         sx={{ height: "50%" }}
       >
         <Grid item xs={12}>
-          <Typography variant="h3">Login</Typography>
+          <Typography variant="h4" fontWeight={700}>
+            LOGIN
+          </Typography>
         </Grid>
         <Grid item xs={12}>
           <TextField
@@ -98,7 +100,8 @@ export default function Login() {
         </Grid>
         <Grid item xs={12}>
           <Typography variant="body2">
-            Clique aqui e <Link href={RotasEnum.CADASTRO}>cadastre-se</Link>
+            Não possui conta?{" "}
+            <Link href={RotasEnum.CADASTRO}>Clique aqui e cadastre-se.</Link>
           </Typography>
         </Grid>
       </Grid>
