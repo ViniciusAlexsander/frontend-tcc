@@ -248,7 +248,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
               justifyContent="space-between"
             >
               <Typography variant="h5" fontWeight="bold">
-                Filmes à assistir
+                Sessões disponíveis
               </Typography>
               {grupo?.isAdmin && (
                 <Button
@@ -301,7 +301,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                 justifyContent="flex-start"
               >
                 <Typography variant="h5" fontWeight="bold">
-                  Filmes assistidos
+                  Sessões passadas
                 </Typography>
 
                 <Carousel
