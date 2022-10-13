@@ -1,32 +1,45 @@
-import { Box, Typography, CardActionArea } from "@mui/material";
+import { Box, Typography, CardActionArea, useTheme } from "@mui/material";
 import { ModalDetalhesFilme } from "../";
 import Image from "next/image";
 import { useState } from "react";
+import { IGenre } from "../../utils/movieGenres";
 
 interface MovieCardProps {
-  movie: movie;
+  movie: IMovie;
+  session?: ISessions;
+  setAtualizaParticipantes?: (value: boolean) => void;
 }
 
-type movie = {
-  poster_path: string | null;
-  banner_path: string | null;
-  adult: boolean;
-  overview: string;
-  release_date: Date;
-  genre_ids: number[];
-  id: number;
-  original_title: string;
-  original_language: string;
-  title: string;
-  backdrop_path?: string;
-  popularity: number;
-  vote_count: number;
-  video: boolean;
-  vote_average: number;
+type ISessions = {
+  id: string;
+  groupId: string;
+  assistedInId: string;
+  createdAt: Date;
+  users: IUser[];
 };
 
-export function CardFilme({ movie }: MovieCardProps) {
+type IUser = {
+  id: string;
+  username: string;
+};
+
+type IMovie = {
+  backdrop_path?: string;
+  genres?: IGenre[];
+  genre_ids?: number[];
+  id: number;
+  original_title: string;
+  overview: string;
+  popularity: number;
+  poster_path?: string | null;
+  release_date: Date;
+  runtime?: number | null;
+  title: string;
+  vote_average: number;
+};
+export function CardFilme({ movie, session, setAtualizaParticipantes }: MovieCardProps) {
   const [openModalDetalhes, setOpenModalDetalhes] = useState<boolean>(false);
+  const theme = useTheme();
 
   const handleClickCard = () => {
     setOpenModalDetalhes(true);
@@ -40,32 +53,43 @@ export function CardFilme({ movie }: MovieCardProps) {
         open={openModalDetalhes}
         handleClose={handleClose}
         movie={{ ...movie }}
+        session={{ ...session }}
+        setAtualizaParticipantes={setAtualizaParticipantes}
       />
       <CardActionArea
         onClick={handleClickCard}
         sx={{
           width: "150px",
-          borderRadius: "0px 0px 8px 8px",
+          borderRadius: "8px",
           height: "100%",
           display: "flex",
           justifyContent: "space-between",
           flexDirection: "column",
-          marginLeft: "21px",
+          alignItems: "flex-start",
+          "&:hover": {
+            boxShadow: "5px 5px 0 -2px rgba(53,63,160,1)",
+            
+          },
+          color: theme.palette.primary.contrastText,
         }}
       >
-        <div>
-          <Image
-            alt={"poster do filme" + movie.title}
-            src={movie.poster_path}
-            width="150px"
-            height="225px"
-            style={{ borderRadius: "8px 8px 0px 0px" }}
-          />
-          <Typography variant="body2">Nota: {movie.vote_average}</Typography>
-        </div>
-        <Typography variant="body1" fontWeight="bold">
-          {movie.title}
-        </Typography>
+        <Box display="flex" flexDirection='column' justifyContent="space-between" height='100%'>
+          <Box>
+            <Image
+              alt={"Poster do filme" + movie.title}
+              src={movie.poster_path}
+              width="150px"
+              height="225px"
+              style={{ borderRadius: "8px 8px 0px 0px" }}
+            />
+            <Typography variant="body1" fontWeight="bold" p={0.5}>
+              {movie.title}
+            </Typography>
+          </Box>
+          <Typography variant="body2" p={0.5}>
+            Nota: {movie.vote_average}
+          </Typography>
+        </Box>
       </CardActionArea>
     </>
   );

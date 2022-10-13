@@ -1,13 +1,15 @@
 import Router from "next/router";
 import { ReactNode, createContext, useState, useEffect } from "react";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
-import { api } from "../services/api";
+import { api } from "../services/apiClient";
 import { RotasEnum } from "../shared/utils/rotas";
 
 type User = {
+  id?: string;
+  name?: string;
+  userName?: string;
   email: string;
-  permissions: string[];
-  roles: string[];
+  createdAt?: Date;
 };
 
 type SignInCredentials = {
@@ -17,6 +19,7 @@ type SignInCredentials = {
 
 type AuthContextData = {
   signIn(credentials: SignInCredentials): Promise<void>;
+  signOut(): void;
   isAuthenticated: boolean;
   user: User;
 };
@@ -29,7 +32,7 @@ export function signOut() {
   destroyCookie(undefined, "nextauth.token");
   destroyCookie(undefined, "nextauth.refreshToken");
 
-  Router.push(RotasEnum.INICIO);
+  typeof window !== "undefined" && Router.push(RotasEnum.LOGIN);
 }
 
 export const AuthContext = createContext({} as AuthContextData);
@@ -42,27 +45,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const { "nextauth.token": token } = parseCookies();
 
     if (token) {
-      // api
-      //   .get("/me")
-      //   .then((response) => {
-      //     console.log("res", response);
-      //     const { email, permissions, roles } = response?.data;
-      //     setUser({ email, permissions, roles });
-      //   })
-      //   .catch(() => {
-      //     signOut();
-      //   });
+      api
+        .get("/users/me")
+        .then((response) => {
+          const { id, name, userName, email, createdAt } = response?.data;
+          setUser({ id, name, userName, email, createdAt });
+        })
+        .catch(() => {
+          signOut();
+        });
     }
   }, []);
 
   async function signIn({ email, senha }) {
     try {
-      const response = await api.post("/autenticao", {
+      const response = await api.post("/auth", {
         email,
-        senha,
+        password: senha,
       });
 
-      const { token, refreshToken, permissions, roles } = response.data;
+      const { token, refreshToken } = response.data;
 
       setCookie(undefined, "nextauth.token", token, {
         maxAge: 60 * 60 * 24 * 30, // 30 days
@@ -75,8 +77,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       setUser({
         email,
-        permissions,
-        roles,
       });
 
       api.defaults.headers["Authorization"] = `Bearer ${token}`;
@@ -87,8 +87,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  function signOut() {
+    destroyCookie(undefined, "nextauth.token");
+    destroyCookie(undefined, "nextauth.refreshToken");
+    setUser(null);
+
+    typeof window !== "undefined" && Router.push(RotasEnum.LOGIN);
+  }
+
   return (
-    <AuthContext.Provider value={{ signIn, isAuthenticated, user }}>
+    <AuthContext.Provider value={{ signIn, signOut, isAuthenticated, user }}>
       {children}
     </AuthContext.Provider>
   );

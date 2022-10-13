@@ -4,8 +4,7 @@ import {
   Home,
   List,
   Search,
-  CheckCircle,
-  FeaturedPlayList,
+  VideoLibrary,
 } from "@mui/icons-material";
 
 import React, { ReactElement } from "react";
@@ -33,31 +32,25 @@ export const routes: IRoute[] = [
     exibirMenuLateral: true,
     menuAninhado: [
       {
-        label: "Buscar",
+        label: "Descubra",
         rota: RotasEnum.FILMES,
         icon: <Search />,
         exibirMenuLateral: true,
       },
       {
-        label: "Assistidos",
-        rota: RotasEnum.FILMES_ASSISTIDOS,
-        icon: <CheckCircle />,
-        exibirMenuLateral: true,
-      },
-      {
-        label: "À assistir",
-        rota: RotasEnum.FILMES_ASSISTIR,
-        icon: <FeaturedPlayList />,
+        label: "Meus Filmes",
+        rota: RotasEnum.MEUS_FILMES,
+        icon: <VideoLibrary />,
         exibirMenuLateral: true,
       },
     ],
   },
-  {
-    label: "PERFIL",
-    rota: RotasEnum.PERFIL,
-    icon: <AccountCircle />,
-    exibirMenuLateral: true,
-  },
+  // {
+  //   label: "PERFIL",
+  //   rota: RotasEnum.PERFIL,
+  //   icon: <AccountCircle />,
+  //   exibirMenuLateral: true,
+  // },
   {
     label: "GRUPOS",
     rota: RotasEnum.GRUPOS,

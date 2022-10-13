@@ -1,12 +1,6 @@
-import { FormEvent, useContext, useState } from "react";
-import Image from "next/image";
 import {
   Grid,
-  Box,
-  Button,
-  TextField,
   Typography,
-  Link,
   useTheme,
   useMediaQuery,
   styled,
@@ -15,7 +9,7 @@ import MultiCarousel, { ResponsiveType } from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
 export interface ICarouselProps {
-  titulo: string;
+  titulo?: string;
   velocidadeAutoPlay?: number;
   slidesToSlide?: number;
   arrows?: boolean;
@@ -30,18 +24,20 @@ export type { ResponsiveType };
 
 const StyledMultiCarousel = styled(MultiCarousel)(({ theme }) => ({
   ".itemClass": {
-    // marginLeft: "20px", // margem entre os itens
     marginBottom: "32px",
   },
   ".dotClass": {
     "& button": {
-      borderColor: theme.palette.primary.light,
+      borderColor: theme.palette.primary.main,
       borderWidth: "1px",
     },
     "& .react-multi-carousel-dot--active button": {
-      background: theme.palette.primary.light,
+      background: theme.palette.primary.main,
       borderColor: theme.palette.primary.light,
     },
+  },
+  "& .react-multi-carousel-list": {
+    padding: "8px",
   },
 }));
 
@@ -71,10 +67,14 @@ export const Carousel: React.FC<ICarouselProps> = ({
   if (isXl) deviceType = "xl";
 
   return (
-    <Grid container padding={2} sx={{ backgroundColor: "#545454" }}>
-      <Grid item xs={12} mb={4}>
-        <Typography variant="h5" fontWeight={700}>{titulo}</Typography>
-      </Grid>
+    <Grid container padding={{ xs: 0, sm: 2 }}>
+      {titulo && (
+        <Grid item xs={12} mb={{ xs: 1, sm: 4 }}>
+          <Typography variant="h5" fontWeight={700}>
+            {titulo}
+          </Typography>
+        </Grid>
+      )}
       <Grid
         item
         xs={12}
@@ -108,6 +108,30 @@ export const Carousel: React.FC<ICarouselProps> = ({
           swipeable
           ssr={true} // means to render carousel on server-side.
           deviceType={deviceType}
+          sx={{
+            button: {
+              margin: "auto",
+            },
+            ".react-multiple-carousel__arrow": {
+              top: "30%",
+              minHeight: "40px",
+              minWidth: "40px",
+              borderRadius: "50%",
+              padding: 0,
+              backgroundColor: theme.palette.primary.main,
+              "&:hover": {
+                backgroundColor: theme.palette.primary.dark,
+              },
+            },
+            ".react-multiple-carousel__arrow--left": {
+              left: "0",
+              right: "auto",
+            },
+            ".react-multiple-carousel__arrow--right": {
+              right: "0",
+              left: "auto",
+            },
+          }}
         >
           {children}
         </StyledMultiCarousel>

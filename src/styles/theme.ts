@@ -1,21 +1,28 @@
 import { createTheme } from "@mui/material/styles";
-import { red } from "@mui/material/colors";
 
 // Create a theme instance.
 const theme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      light: "#8183e3",
-      main: "#4e57b0",
-      dark: "#122e80",
+      light: "#9BA2E0",
+      main: "#7179C9",
+      dark: "#353FA0",
+      // light: "#7179C9",
+      // main: "#353FA0",
+      // dark: "#1E2888",
       contrastText: "#fff",
     },
     secondary: {
-      light: "#52c882",
-      main: "#0b9655",
-      dark: "#00672b",
-      contrastText: "#000",
+      light: "#FFF5A9",
+      main: "#FFEC5B",
+      dark: "#E8D434",
+      contrastText: "#fff",
+    },
+    error: {
+      light: "#ef5350",
+      main: "#d32f2f",
+      dark: "#c62828",
     },
   },
   typography: {
@@ -26,7 +33,23 @@ const theme = createTheme({
       defaultProps: {
         fontFamily: "'Source Sans Pro', sans-serif",
       },
-      styleOverrides: {},
+      styleOverrides: {
+        h4: {
+          "@media (max-width:600px)": {
+            fontSize: "1.5rem",
+          },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#353FA0",
+          ":hover": {
+            backgroundColor: "#1E2888",
+          },
+        },
+      },
     },
   },
 });

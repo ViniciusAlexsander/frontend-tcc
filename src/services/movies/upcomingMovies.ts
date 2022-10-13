@@ -35,7 +35,7 @@ export async function getUpcomingMovies(
       ...movie,
       release_date: new Date(movie.release_date),
       poster_path: `${axiosMoviesUrl.small}${movie.poster_path}`,
-      banner_path: `${axiosMoviesUrl.large}${movie.poster_path}`,
+      backdrop_path: `${axiosMoviesUrl.large}${movie.backdrop_path}`,
     };
   });
 
