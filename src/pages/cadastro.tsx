@@ -82,66 +82,66 @@ export default function Cadastro() {
         justifyContent="center"
         height="90vh"
       >
-        <Grid container spacing={2} sx={{ maxWidth: "300px" }}>
-          <Grid item xs={12}>
-            <Typography variant="h3">Cadastre-se</Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              label="Digite seu nome completo"
-              type="text"
-              fullWidth
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              label="Digite um username"
-              type="text"
-              fullWidth
-              value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              label="Digite seu e-mail"
-              type="email"
-              fullWidth
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              variant="outlined"
-              label="Digite sua senha"
-              type="password"
-              fullWidth
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              fullWidth
-              disabled={!password || !email || !name || !userName}
-            >
-              Entrar
-            </Button>
-          </Grid>
-          <Grid item xs={12}>
-            <Typography variant="body2">
-              Ja tem conta? <Link href={RotasEnum.LOGIN}>Fazer login</Link>
-            </Typography>
-          </Grid>
+        <Grid container gap={2}
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center"
+          width={{ xs: "50vw", md: "30vw" }}
+        >
+          <Typography variant="h4" fontWeight={700} mb={2}>
+            CADASTRE-SE
+          </Typography>
+
+          <TextField
+            variant="outlined"
+            label="Digite seu nome completo"
+            type="text"
+            fullWidth
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          <TextField
+            variant="outlined"
+            label="Digite um username"
+            type="text"
+            fullWidth
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+          />
+
+          <TextField
+            variant="outlined"
+            label="Digite seu e-mail"
+            type="email"
+            fullWidth
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <TextField
+            variant="outlined"
+            label="Digite sua senha"
+            type="password"
+            fullWidth
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <Button
+            type="submit"
+            variant="contained"
+            size="large"
+            fullWidth
+            disabled={!password || !email || !name || !userName}
+          >
+            Entrar
+          </Button>
+
+          <Typography variant="body2">
+            Já possui uma conta? <Link href={RotasEnum.LOGIN}>Fazer login</Link>
+          </Typography>
         </Grid>
       </Box>
     </>
