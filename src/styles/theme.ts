@@ -4,6 +4,9 @@ import { createTheme } from "@mui/material/styles";
 const theme = createTheme({
   palette: {
     mode: "dark",
+    background: {
+      default: "#121214",
+    },
     primary: {
       light: "#9BA2E0",
       main: "#7179C9",
@@ -48,6 +51,16 @@ const theme = createTheme({
           ":hover": {
             backgroundColor: "#1E2888",
           },
+        },
+      },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          backgroundColor: "#353FA0",
+        },
+        arrow: {
+          color: "#353FA0",
         },
       },
     },
