@@ -10,6 +10,7 @@ import {
   AlertColor,
   IconButton,
   Button,
+  Tooltip,
 } from "@mui/material";
 import {
   Check,
@@ -79,7 +80,7 @@ export function ModalDetalhesFilme({
   open,
   session,
   handleClose,
-  setAtualizaParticipantes
+  setAtualizaParticipantes,
 }: ModalDetalhesFilmeProps) {
   const [loadingButton, setLoadingButton] = useState(false);
   const [watchedButton, setWatchedButton] = useState(null);
@@ -168,7 +169,24 @@ export function ModalDetalhesFilme({
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="md">
-      <Box sx={{ backgroundColor: "#1a1a1a" }}>
+      <Box sx={{ backgroundColor: "#202024" }}>
+        {/* <div 
+          style={{
+            backgroundImage: `url(../../public/fundo-transparente.png)`,
+            height: "350px",
+            width: "100%",
+            position: "absolute",
+            zIndex: 1,
+          }}
+        ></div>
+        <iframe
+          id="ytplayer"
+          style={{ width: "100%", height: "350px", position: "absolute", border: 0 }}
+          width="100%"
+          height="300px"
+          allow="autoplay"
+          src="https://www.youtube.com/embed/tgbNymZ7vqY?autoplay=1&controls=1&showinfo=0&rel=0&loop=1&playlist=tgbNymZ7vqY"
+        ></iframe> */}
         <Box
           sx={{
             backgroundImage: `url(${movie.backdrop_path})`,
@@ -189,11 +207,12 @@ export function ModalDetalhesFilme({
             width="100%"
             marginBottom="10px"
             paddingX="10px"
+            zIndex={10}
           >
             {/* TITULO E DATA */}
             <Box
               sx={{
-                backgroundColor: "#1a1a1a",
+                backgroundColor: "#202024",
                 border: "1px solid rgba(255, 255, 255, 0.5)",
                 borderRadius: "5px 20px",
                 padding: "5px 15px",
@@ -218,37 +237,60 @@ export function ModalDetalhesFilme({
             {/* BOTOES */}
             {isAuthenticated && (
               <Box>
-                <IconButton
-                  sx={iconButtonsStyles}
-                  onClick={() => handleUpdateMovieInUserListFavorite(movie.id)}
+                <Tooltip
+                  title={
+                    !favoriteButton ? "Adicionar favorito" : "Remover favorito"
+                  }
+                  placement="top"
+                  arrow
                 >
-                  {favoriteButton && (
-                    <Favorite
-                      fontSize="medium"
-                      htmlColor={theme.palette.primary.light}
-                    />
-                  )}
+                  <IconButton
+                    sx={iconButtonsStyles}
+                    onClick={() =>
+                      handleUpdateMovieInUserListFavorite(movie.id)
+                    }
+                  >
+                    {favoriteButton && (
+                      <Favorite
+                        fontSize="medium"
+                        htmlColor={theme.palette.primary.light}
+                      />
+                    )}
 
-                  {!favoriteButton && (
-                    <FavoriteBorder fontSize="medium" htmlColor="#fff" />
-                  )}
-                </IconButton>
-                <IconButton
-                  sx={iconButtonsStyles}
-                  onClick={() => handleUpdateMovieInUserList(movie.id)}
+                    {!favoriteButton && (
+                      <FavoriteBorder fontSize="medium" htmlColor="#fff" />
+                    )}
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip
+                  title={
+                    watchedButton === null
+                      ? "Adicionar em à assistir"
+                      : watchedButton
+                      ? "Remover de assistidos"
+                      : "Adicionar em assistidos"
+                  }
+                  placement="top"
+                  arrow
                 >
-                  {watchedButton === null && (
-                    <Add htmlColor="#fff" fontSize="medium" />
-                  )}
+                  <IconButton
+                    sx={iconButtonsStyles}
+                    onClick={() => handleUpdateMovieInUserList(movie.id)}
+                  >
+                    {watchedButton === null && (
+                      <Add htmlColor="#fff" fontSize="medium" />
+                    )}
 
-                  {watchedButton === false && (
-                    <Remove htmlColor="#fff" fontSize="medium" />
-                  )}
+                    {watchedButton === false && (
+                      <Remove htmlColor="#fff" fontSize="medium" />
+                    )}
 
-                  {watchedButton === true && (
-                    <Check htmlColor="#fff" fontSize="medium" />
-                  )}
-                </IconButton>
+                    {watchedButton === true && (
+                      <Check htmlColor="#fff" fontSize="medium" />
+                    )}
+                  </IconButton>
+                </Tooltip>
               </Box>
             )}
           </Box>
@@ -258,21 +300,21 @@ export function ModalDetalhesFilme({
           <Grid item xs={12} sm={8}>
             <Box display="flex" alignItems="flex-end" mr={2}>
               <Typography variant="body1" mr={3}>
-                <strong>Título original: </strong>
+                <span color="#939399">Título original: </span>
                 {movie.original_title}
               </Typography>
             </Box>
 
             <Box display="flex" alignItems="center">
               <Typography variant="body1">
-                <strong>Popularidade: </strong>
+                <span color="#939399">Popularidade: </span>
                 {movie.popularity}
               </Typography>
             </Box>
             {movie.runtime && (
               <Box display="flex" alignItems="center">
                 <Typography variant="body1">
-                  <strong>Duração: </strong>
+                  <span color="#939399">Duração: </span>
                   {minutosParaHoras(movie.runtime)}
                 </Typography>
               </Box>
@@ -289,7 +331,7 @@ export function ModalDetalhesFilme({
             textAlign={{ xs: "left", sm: "right" }}
           >
             <Typography variant="body1" mr={{ xs: 3, sm: 0 }}>
-              <strong>Genêro: </strong>
+              <span color="#939399">Genêro: </span>
               {movie.genre_ids && findGenresNamesByIds(movie.genre_ids)}
               {movie.genres &&
                 movie.genres.map((gender) => gender.name).join(", ")}
@@ -404,7 +446,7 @@ const iconButtonsStyles = {
   backgroundColor: "#343434",
   border: "1px solid rgba(255, 255, 255, 0.5)",
   ":hover": {
-    backgroundColor: "#1a1a1a",
+    backgroundColor: "#202024",
     borderColor: "rgba(255, 255, 255, 1)",
   },
 };
