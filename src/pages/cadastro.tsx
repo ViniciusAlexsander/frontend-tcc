@@ -1,7 +1,6 @@
 import React, { useState, FormEvent } from "react";
 import {
   Box,
-  Button,
   TextField,
   Grid,
   Typography,
@@ -10,7 +9,8 @@ import {
   Alert,
   AlertProps,
 } from "@mui/material";
-
+import { LoadingButton } from "@mui/lab";
+import { SaveAs } from "@mui/icons-material";
 import { api } from "../services/apiClient";
 import Router from "next/router";
 import { RotasEnum } from "../shared/utils/rotas";
@@ -20,7 +20,8 @@ export default function Cadastro() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [alert, setAlert] = React.useState<{
+  const [loadingButton, setLoadingButton] = useState(false);
+  const [alert, setAlert] = useState<{
     open: boolean;
     mensagem: string;
     severity: AlertProps["severity"];
@@ -30,6 +31,7 @@ export default function Cadastro() {
     event.preventDefault();
 
     try {
+      setLoadingButton(true);
       const response = await api.post("/users", {
         email,
         password,
@@ -50,26 +52,19 @@ export default function Cadastro() {
         mensagem: error.response.data.message || "Erro ao criar usuário",
         severity: "error",
       });
+    } finally {
+      setLoadingButton(false);
     }
   }
-
-  const handleClose = () => {
-    Router.push("/");
-  };
 
   return (
     <>
       <Snackbar
         open={alert.open}
         autoHideDuration={6000}
-        onClose={handleClose}
         anchorOrigin={{ horizontal: "right", vertical: "top" }}
       >
-        <Alert
-          onClose={handleClose}
-          severity={alert.severity}
-          sx={{ width: "100%" }}
-        >
+        <Alert severity={alert.severity} sx={{ width: "100%" }}>
           {alert.mensagem}
         </Alert>
       </Snackbar>
@@ -82,7 +77,9 @@ export default function Cadastro() {
         justifyContent="center"
         height="90vh"
       >
-        <Grid container gap={2}
+        <Grid
+          container
+          gap={2}
           display="flex"
           flexDirection="column"
           alignItems="center"
@@ -129,15 +126,18 @@ export default function Cadastro() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
-          <Button
+          <LoadingButton
             type="submit"
             variant="contained"
             size="large"
             fullWidth
             disabled={!password || !email || !name || !userName}
+            loading={loadingButton}
+            loadingPosition="start"
+            startIcon={<SaveAs />}
           >
-            Entrar
-          </Button>
+            Cadastrar
+          </LoadingButton>
 
           <Typography variant="body2">
             Já possui uma conta? <Link href={RotasEnum.LOGIN}>Fazer login</Link>

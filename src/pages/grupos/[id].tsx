@@ -261,35 +261,44 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                 </Button>
               )}
             </Grid>
-            {sessoesFuturas.length > 0 ? (
-              <Carousel
-                responsive={responsiveSessions}
-                arrows
-                mostrarPontos={!isMobile}
-                mostrarProximo
-              >
-                {sessoesFuturas.map((session) => (
-                  <CardFilme
-                    key={session.id}
-                    movie={session.movie}
-                    setAtualizaParticipantes={setAtualizaParticipantes}
-                    session={{
-                      ...session,
-                    }}
+            <Grid
+              item
+              container
+              xs={12}
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              {sessoesFuturas.length > 0 ? (
+                <Carousel
+                  responsive={responsiveSessions}
+                  arrows
+                  mostrarPontos={!isMobile}
+                  mostrarProximo
+                >
+                  {sessoesFuturas.map((session) => (
+                    <CardFilme
+                      key={session.id}
+                      movie={session.movie}
+                      setAtualizaParticipantes={setAtualizaParticipantes}
+                      session={{
+                        ...session,
+                      }}
+                    />
+                  ))}
+                </Carousel>
+              ) : (
+                <Box mt={2}>
+                  <CardInformativo
+                    mensagem={
+                      "Nenhum filme marcado para assistir. Clique no botão acima para criar uma sessão."
+                    }
+                    tipo="info"
+                    icon={<SentimentVeryDissatisfied />}
                   />
-                ))}
-              </Carousel>
-            ) : (
-              <Box mt={2}>
-                <CardInformativo
-                  mensagem={
-                    "Nenhum filme marcado para assistir. Clique no botão acima para criar uma sessão."
-                  }
-                  tipo="info"
-                  icon={<SentimentVeryDissatisfied />}
-                />
-              </Box>
-            )}
+                </Box>
+              )}
+            </Grid>
 
             {sessoesPassadas.length > 0 && (
               <Grid
