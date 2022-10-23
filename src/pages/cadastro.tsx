@@ -1,10 +1,11 @@
 import React, { useState, FormEvent } from "react";
+import Link from "next/link";
 import {
   Box,
   TextField,
   Grid,
   Typography,
-  Link,
+  Link as MuiLink,
   Snackbar,
   Alert,
   AlertProps,
@@ -20,6 +21,7 @@ export default function Cadastro() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loadingButton, setLoadingButton] = useState(false);
   const [alert, setAlert] = useState<{
     open: boolean;
@@ -44,12 +46,10 @@ export default function Cadastro() {
         mensagem: "Usuário criado com sucesso",
         severity: "success",
       });
-
-      Router.push("/login");
     } catch (error) {
       setAlert({
         open: true,
-        mensagem: error.response.data.message || "Erro ao criar usuário",
+        mensagem: error.response?.data?.message || "Erro ao criar usuário",
         severity: "error",
       });
     } finally {
@@ -57,14 +57,31 @@ export default function Cadastro() {
     }
   }
 
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setAlert({ open: false, mensagem: "", severity: "success" });
+    Router.push(RotasEnum.LOGIN);
+  };
+
   return (
     <>
       <Snackbar
         open={alert.open}
         autoHideDuration={6000}
+        onClose={handleClose}
         anchorOrigin={{ horizontal: "right", vertical: "top" }}
       >
-        <Alert severity={alert.severity} sx={{ width: "100%" }}>
+        <Alert
+          severity={alert.severity}
+          onClose={handleClose}
+          sx={{ width: "100%" }}
+        >
           {alert.mensagem}
         </Alert>
       </Snackbar>
@@ -126,12 +143,31 @@ export default function Cadastro() {
             onChange={(e) => setPassword(e.target.value)}
           />
 
+          <TextField
+            variant="outlined"
+            label="Confirme sua senha"
+            type="password"
+            fullWidth
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            error={confirmPassword !== password}
+            helperText={
+              confirmPassword !== password && "As senhas não estão iguais"
+            }
+          />
+
           <LoadingButton
             type="submit"
             variant="contained"
             size="large"
             fullWidth
-            disabled={!password || !email || !name || !userName}
+            disabled={
+              !password ||
+              !email ||
+              !name ||
+              !userName ||
+              confirmPassword !== password
+            }
             loading={loadingButton}
             loadingPosition="start"
             startIcon={<SaveAs />}
@@ -140,7 +176,10 @@ export default function Cadastro() {
           </LoadingButton>
 
           <Typography variant="body2">
-            Já possui uma conta? <Link href={RotasEnum.LOGIN}>Fazer login</Link>
+            Já possui uma conta?{" "}
+            <MuiLink component={Link} href={RotasEnum.LOGIN}>
+              Fazer login
+            </MuiLink>
           </Typography>
         </Grid>
       </Box>

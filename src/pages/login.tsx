@@ -1,7 +1,8 @@
 import { FormEvent, useContext, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { AuthContext } from "../context/AuthContext";
-import { TextField, Grid, Typography, Link } from "@mui/material";
+import { TextField, Grid, Typography, Link as MuiLink } from "@mui/material";
 import { Login as LoginIcon } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { RotasEnum } from "../shared/utils/rotas";
@@ -107,7 +108,9 @@ export default function Login() {
         <Grid item xs={12}>
           <Typography variant="body2">
             Não possui conta?{" "}
-            <Link href={RotasEnum.CADASTRO}>Clique aqui e cadastre-se.</Link>
+            <MuiLink component={Link} href={RotasEnum.CADASTRO}>
+              Clique aqui e cadastre-se.
+            </MuiLink>
           </Typography>
         </Grid>
       </Grid>
