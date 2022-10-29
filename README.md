@@ -21,6 +21,8 @@ Os usuários terão acesso a aplicação mobile, onde poderão:
   - Criar e participar de grupos
     - E ao entrar em um grupo você pode criar ou participar de sessões
 
+Este repositório é o front-end do projeto, acesse, também, o [back-end](https://github.com/ViniciusAlexsander/backend-tcc/).
+
 ## 💻 Tecnologias
 
 As seguintes ferramentas foram usadas na construção do projeto:
@@ -55,15 +57,15 @@ A pasta “src” (acrônimo para source), contém as pastas mais importantes do
 
 ## 🚀 Como executar o projeto
 
-💡É necessário que o [Back End](https://github.com/ViniciusAlexsander/backend-tcc) esteja sendo executado para funcionar.
+💡 É necessário que o [back-end](https://github.com/ViniciusAlexsander/backend-tcc) esteja sendo executado para funcionar.
 
-### Pré-requisitos
+### 📋 Pré-requisitos
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
 [Git](https://git-scm.com), [Node.js][nodejs].
 Além disto é bom ter um editor para trabalhar com o código como [VSCode][vscode]
 
-### 🧭 Rodando a aplicação web (Front End)
+### 🧭 Rodando o front-end (aplicação web)
 
 ```bash
 # Clone este repositório
