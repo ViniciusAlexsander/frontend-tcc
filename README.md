@@ -2,10 +2,6 @@
     <img alt="CINEFAN" title="#CINEFAN" src="./assets/banner-com-img-brilho-na-img.png" />
 </h1>
 
-<h2 align="center"> 
-	CINEFAN
-</h2>
-
 ## 🎬 Sobre o projeto
 
 O presente projeto é site que apresenta um repositório de informações de filmes. Você pode registrar seus filmes favoritos, filmes que já assistiu e descobrir inúmeros outros através do filtro presente no site.
