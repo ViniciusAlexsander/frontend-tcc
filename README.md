@@ -32,17 +32,8 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 ## 🎨 Layout
 
-O layout da aplicação está disponível no Wireframe.cc:
+Foram feitos wireframes da aplicação antes do desenvolvimento, para termos uma visão geral das funcionalidades que queríamos e onde deveriam ficar. Esses wireframes podem ser acessados através do link a seguir: [Wireframes](https://wireframe.cc/pro/pp/635115ec2575591).
 
-<a href="https://wireframe.cc/pro/pp/635115ec2575591">
-  <img src="https://img.shields.io/badge/Acessar%20Layout-Wireframe-brightgreen">
-</a>
-
-### Web
-
-<p align="center" style="display: flex; align-items: flex-start; justify-content: center;">
-  <img alt="Tela descubra" title="Tela descubra" src="./assets/tela-descubra.png" width="400px">
-</p>
 
 ## 📁 Estrutura de pastas
 
@@ -95,18 +86,6 @@ $ npm run dev
 
 # A aplicação será aberta na porta:3000 - acesse http://localhost:3000
 ```
-
-## 😯 Como contribuir para o projeto
-
-1. Faça um **fork** do projeto.
-2. Crie uma nova branch com as suas alterações: `git checkout -b my-feature`
-3. Salve as alterações e crie uma mensagem de commit contando o que você fez: `git commit -m "feature: My new feature"`
-4. Envie as suas alterações: `git push origin my-feature`
-   > Caso tenha alguma dúvida confira este [guia de como contribuir no GitHub](https://github.com/firstcontributions/first-contributions)
-
-## 📝 Licença
-
-Este projeto esta sobe a licença MIT.
 
 Feito com 💜 por [Nayla Gomes 👩‍💻](https://www.linkedin.com/in/naygo/) e [Vinicius Marinho 👨‍💻](https://www.linkedin.com/in/vinicius-alexsander-lima-marinho/).
 
