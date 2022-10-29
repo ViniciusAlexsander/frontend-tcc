@@ -4,7 +4,7 @@
 
 ## 🎬 Sobre o projeto
 
-O presente projeto é site que apresenta um repositório de informações de filmes. Você pode registrar seus filmes favoritos, filmes que já assistiu e descobrir inúmeros outros através do filtro presente no site.
+CINEFAN é um site que apresenta um repositório de informações de filmes. Você pode registrar seus filmes favoritos, filmes que já assistiu e descobrir inúmeros outros através do filtro presente no site.
 
 Os usuários terão acesso a aplicação mobile, onde poderão:
 
