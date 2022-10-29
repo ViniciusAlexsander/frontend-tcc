@@ -72,7 +72,7 @@ export function HeaderBuscarFilmes({
     <Grid container spacing={2}>
       <Grid item xs={12} alignItems="center">
         <TituloComIcone
-          titulo="Pesquise ou descubra um filme"
+          titulo="PESQUISE OU DESCUBRA UM FILME"
           icon={<Search />}
         />
       </Grid>
