@@ -29,6 +29,8 @@ export async function getMovieProvidersDetails(
     `/movie/${movieId}/watch/providers`
   );
 
+  console.log(data);
+
   const movieProviders = {
     ...data.results.BR,
     rent: data.results.BR?.rent?.map((provider) => {

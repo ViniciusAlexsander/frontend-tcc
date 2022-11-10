@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import React, { useContext, useState } from "react";
 import Image from "next/image";
 import Router from "next/router";
 import {
@@ -6,7 +6,7 @@ import {
   Drawer,
   List,
   Grid,
-  Typography,
+  FormControlLabel,
   AppBar,
   ListItem,
   ListItemButton,
@@ -26,18 +26,21 @@ import {
   ExpandMore,
   Menu,
 } from "@mui/icons-material";
+import { ModeThemeSwitch } from "../index";
 import { routes } from "../../utils/routes";
 import { AuthContext } from "../../../context/AuthContext";
 import { RotasEnum } from "../../utils/rotas";
+import { ColorModeContext } from "../../../context/SwitchModeTHeme";
 
 export interface MenuLateralProps {
   children: React.ReactNode;
 }
 
-export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
+export const MenuLateral = ({ children }: MenuLateralProps) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [open, setOpen] = useState(true);
 
+  const { toggleColorMode } = useContext(ColorModeContext);
   const { isAuthenticated, signOut } = useContext(AuthContext);
 
   const theme = useTheme();
@@ -57,6 +60,8 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
     Router.push(rota);
     handleDrawerToggle();
   };
+
+  console.log("menu");
 
   const itensMenu = (
     <List
@@ -134,22 +139,34 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
           </Box>
         </Box>
 
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={
-              isAuthenticated
-                ? signOut
-                : () => {
-                    handleClickMenuItem(RotasEnum.LOGIN);
-                  }
-            }
-          >
-            <ListItemIcon>
-              <ExitToApp />
-            </ListItemIcon>
-            <ListItemText primary={isAuthenticated ? "Sair" : "Fazer login"} />
-          </ListItemButton>
-        </ListItem>
+        <Box>
+          <ListItem disablePadding>
+            <FormControlLabel
+              control={<ModeThemeSwitch sx={{ m: 1 }} defaultChecked />}
+              label="MUI switch"
+              onChange={toggleColorMode}
+            />
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton
+              onClick={
+                isAuthenticated
+                  ? signOut
+                  : () => {
+                      handleClickMenuItem(RotasEnum.LOGIN);
+                    }
+              }
+            >
+              <ListItemIcon>
+                <ExitToApp />
+              </ListItemIcon>
+              <ListItemText
+                primary={isAuthenticated ? "Sair" : "Fazer login"}
+              />
+            </ListItemButton>
+          </ListItem>
+        </Box>
       </Box>
     </List>
   );
