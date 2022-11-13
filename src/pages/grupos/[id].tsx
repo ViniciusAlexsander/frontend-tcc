@@ -53,8 +53,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
     useState<boolean>(false);
   const [openModalNovaSessao, setOpenModalNovaSessao] =
     useState<boolean>(false);
-  const [atualizaParticipante, setAtualizaParticipantes] =
-    useState<boolean>(false);
+  const [atualizaDetalhes, setAtualizaDetalhes] = useState<boolean>(false);
   const [grupo, setGrupo] = useState<IDetalheGroup | null>(null);
   const [sessions, setSessions] = useState<ISession[]>([]);
 
@@ -86,9 +85,9 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
     if (!openModalNovoMembro) getGroupDetails();
 
     return () => {
-      setAtualizaParticipantes(false);
+      setAtualizaDetalhes(false);
     };
-  }, [id, openModalNovoMembro, atualizaParticipante]);
+  }, [id, openModalNovoMembro, atualizaDetalhes]);
 
   const getGroupDetails = async () => {
     let isAdmin: boolean;
@@ -284,9 +283,10 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                     <CardFilme
                       key={session.id}
                       movie={session.movie}
-                      setAtualizaParticipantes={setAtualizaParticipantes}
+                      setAtualizaDetalhes={setAtualizaDetalhes}
                       session={{
                         ...session,
+                        isAdmin: grupo?.isAdmin,
                       }}
                     />
                   ))}
@@ -329,6 +329,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                       movie={session.movie}
                       session={{
                         ...session,
+                        isAdmin: grupo?.isAdmin,
                       }}
                     />
                   ))}

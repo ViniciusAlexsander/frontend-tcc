@@ -29,7 +29,11 @@ import {
   stringToColor,
   minutosParaHoras,
 } from "../../utils/utils";
-import { joinSession, leaveSession } from "../../../services/bff/session";
+import {
+  deleteGroupSession,
+  joinSession,
+  leaveSession,
+} from "../../../services/bff/session";
 import { RotasEnum } from "../../utils/rotas";
 import {
   findOneUserMovie,
@@ -43,7 +47,7 @@ interface ModalDetalhesFilmeProps {
   session?: ISessions;
   open: boolean;
   handleClose: () => void;
-  setAtualizaParticipantes?: (value: boolean) => void;
+  setAtualizaDetalhes?: (value: boolean) => void;
 }
 
 type ISessions = {
@@ -53,6 +57,7 @@ type ISessions = {
   createdAt: Date;
   sessionDay?: Date;
   users: IUser[];
+  isAdmin: boolean;
 };
 
 type IUser = {
@@ -80,7 +85,7 @@ export function ModalDetalhesFilme({
   open,
   session,
   handleClose,
-  setAtualizaParticipantes,
+  setAtualizaDetalhes,
 }: ModalDetalhesFilmeProps) {
   const [loadingButton, setLoadingButton] = useState(false);
   const [watchedButton, setWatchedButton] = useState(null);
@@ -107,7 +112,7 @@ export function ModalDetalhesFilme({
     try {
       setLoadingButton(true);
       await joinSession({ sessionId });
-      setAtualizaParticipantes(true);
+      setAtualizaDetalhes(true);
 
       setAlert({
         message: "Você entrou na sessão com sucesso",
@@ -129,7 +134,7 @@ export function ModalDetalhesFilme({
     try {
       setLoadingButton(true);
       await leaveSession({ sessionId });
-      setAtualizaParticipantes(true);
+      setAtualizaDetalhes(true);
 
       setAlert({
         message: "Você saiu da sessão",
@@ -139,6 +144,30 @@ export function ModalDetalhesFilme({
     } catch (error) {
       setAlert({
         message: "Erro ao sair da sessão, tente novamente mais tarde",
+        open: true,
+        severity: "error",
+      });
+    } finally {
+      setLoadingButton(false);
+    }
+  };
+
+  const handleClickDeleteSession = async (sessionId: string) => {
+    try {
+      setLoadingButton(true);
+      await deleteGroupSession({ sessionId });
+
+      setAlert({
+        message: "Você deletou a sessão com sucesso",
+        open: true,
+        severity: "success",
+      });
+
+      setAtualizaDetalhes(true);
+      handleClose();
+    } catch (error) {
+      setAlert({
+        message: "Erro ao deletar na sessão, tente novamente mais tarde",
         open: true,
         severity: "error",
       });
@@ -366,7 +395,26 @@ export function ModalDetalhesFilme({
           </Grid>
           <Grid
             item
-            xs={12}
+            xs={6}
+            mt={{ xs: 1, sm: 3 }}
+            display="flex"
+            alignItems="center"
+            justifyContent="flex-start"
+          >
+            {session.isAdmin && (
+              <Button
+                sx={{ backgroundColor: theme.palette.error.main }}
+                variant="contained"
+                size="large"
+                onClick={() => handleClickDeleteSession(session.id)}
+              >
+                Excluir sessão
+              </Button>
+            )}
+          </Grid>
+          <Grid
+            item
+            xs={6}
             mt={{ xs: 1, sm: 3 }}
             display="flex"
             alignItems="center"
