@@ -8,9 +8,7 @@ import {
 import { SentimentVeryDissatisfied, Search } from "@mui/icons-material";
 import { getDiscoverMovies } from "../../services/movies/discoverMovies";
 import { getSearchMovies } from "../../services/movies/searchMovies";
-import { sortByOptions } from "../../shared/utils/movieDiscover";
-import { getRandomInt, randomYear } from "../../shared/utils/utils";
-import { movieGenres } from "../../shared/utils/movieGenres";
+import { getRandomInt } from "../../shared/utils/utils";
 import { LoadingButton } from "@mui/lab";
 import { IMovie } from "../../shared/models/movies/IMovie";
 

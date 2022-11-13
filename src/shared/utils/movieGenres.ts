@@ -13,7 +13,7 @@ export const findGenresNamesByIds = (ids: number[]) => {
     .join(", ");
 };
 
-export const movieGenres = [
+const genres = [
   {
     id: 28,
     name: "Ação",
@@ -91,6 +91,17 @@ export const movieGenres = [
     name: "Faroeste",
   },
 ];
+
+// exportar em ordem alfabetica
+export const movieGenres = genres.sort((a, b) => {
+  if (a.name < b.name) {
+    return -1;
+  }
+  if (a.name > b.name) {
+    return 1;
+  }
+  return 0;
+});
 
 export interface IGenre {
   id: number;
