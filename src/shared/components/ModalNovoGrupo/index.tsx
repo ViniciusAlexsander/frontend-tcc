@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { GroupAdd } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { postNewGroup } from "../../../services/bff/addNewGroup";
+import { postNewGroup } from "../../../services/bff/group";
 
 export interface ModalNovoGrupoProps {
   open: boolean;

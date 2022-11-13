@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Router from "next/router";
 import {
   Box,
   Grid,
@@ -7,6 +8,9 @@ import {
   useTheme,
   Avatar,
   Button,
+  Snackbar,
+  Alert,
+  AlertColor,
 } from "@mui/material";
 import {
   People,
@@ -23,6 +27,7 @@ import {
   ModalNovaSessao,
   CardFilme,
   CardInformativo,
+  ModalConfirmacao,
 } from "../../shared/components";
 import { findGroups } from "../../services/bff/findGroup";
 import { stringAvatar, stringToColor } from "../../shared/utils/utils";
@@ -30,6 +35,8 @@ import { checkAdminGroup } from "../../services/bff/checkAdminGroup";
 import { findGroupSessions, ISession } from "../../services/bff/session";
 import dayjs from "dayjs";
 import { withSSRAuth } from "../../shared/utils/withSSRAuth";
+import { deleteGroup } from "../../services/bff/group";
+import { RotasEnum } from "../../shared/utils/rotas";
 
 interface DetalheGrupoProps {
   id: string;
@@ -53,9 +60,16 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
     useState<boolean>(false);
   const [openModalNovaSessao, setOpenModalNovaSessao] =
     useState<boolean>(false);
+  const [openModalExcluirGrupo, setOpenModalExcluirGrupo] =
+    useState<boolean>(false);
   const [atualizaDetalhes, setAtualizaDetalhes] = useState<boolean>(false);
   const [grupo, setGrupo] = useState<IDetalheGroup | null>(null);
   const [sessions, setSessions] = useState<ISession[]>([]);
+  const [alert, setAlert] = useState<{
+    message: string;
+    severity: AlertColor;
+    open: boolean;
+  }>({ message: "", open: false, severity: "success" });
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
@@ -66,12 +80,18 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
   const handleClickCriarSessao = () => {
     setOpenModalNovaSessao(true);
   };
+  const handleClickExcluirGrupo = () => {
+    setOpenModalExcluirGrupo(true);
+  };
   const handleCloseModalCriarSessao = () => {
     getGroupDetails();
     setOpenModalNovaSessao(false);
   };
   const handleCloseModalNovoMembro = () => {
     setOpenModalNovoMembro(false);
+  };
+  const handleCloseModalExcluirGrupo = () => {
+    setOpenModalExcluirGrupo(false);
   };
 
   let sessoesFuturas = sessions.filter((session) =>
@@ -129,10 +149,41 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
     });
   };
 
+  const handleExcluirGrupo = async () => {
+    try {
+      deleteGroup({ groupId: id });
+      Router.push(RotasEnum.GRUPOS);
+    } catch (error) {
+      setAlert({
+        message: "Erro ao tentar favoritar o filme, tente novamente mais tarde",
+        open: true,
+        severity: "error",
+      });
+    }
+  };
+
+  const handleCloseAlert = () => {
+    setAlert({ message: "", open: false, severity: "success" });
+  };
+
   return (
     <>
       {grupo && (
         <>
+          <Snackbar
+            open={alert.open}
+            autoHideDuration={3000}
+            onClose={handleCloseAlert}
+            anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          >
+            <Alert
+              severity={alert.severity}
+              sx={{ width: "100%" }}
+              onClose={handleCloseAlert}
+            >
+              {alert.message}
+            </Alert>
+          </Snackbar>
           <ModalNovoMembro
             open={openModalNovoMembro}
             handleClose={handleCloseModalNovoMembro}
@@ -142,6 +193,13 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
             open={openModalNovaSessao}
             groupId={grupo?.id}
             handleClose={handleCloseModalCriarSessao}
+          />
+          <ModalConfirmacao
+            titulo="Excluir grupo"
+            descricao="Tem certeza que deseja excluir o grupo?"
+            handleClose={handleCloseModalExcluirGrupo}
+            handleConfirmacao={handleExcluirGrupo}
+            open={openModalExcluirGrupo}
           />
           <Grid container spacing={2}>
             <Grid item xs={3} textAlign="center">
@@ -169,7 +227,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
               </Grid>
 
               <Grid item container alignItems="end">
-                <Grid item container sm={12} md={3}>
+                <Grid item sm={12} md={3}>
                   <Check sx={{ marginRight: 1 }} />
                   <Typography variant="body1">
                     <span>{sessoesPassadas?.length}</span>{" "}
@@ -177,7 +235,7 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                   </Typography>
                 </Grid>
 
-                <Grid item container sm={12} md={3}>
+                <Grid item sm={12} md={3}>
                   <People sx={{ marginRight: 1 }} />
                   <Typography variant="body1">
                     <span>{grupo?.users?.length}</span>{" "}
@@ -185,6 +243,24 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
                       ? " Participantes"
                       : " Participante"}
                   </Typography>
+                </Grid>
+                <Grid
+                  item
+                  sm={12}
+                  md={6}
+                  display="flex"
+                  justifyContent="flex-end"
+                >
+                  {grupo?.isAdmin && (
+                    <Button
+                      variant="contained"
+                      color="error"
+                      size="medium"
+                      onClick={handleClickExcluirGrupo}
+                    >
+                      Excluir grupo
+                    </Button>
+                  )}
                 </Grid>
               </Grid>
             </Grid>

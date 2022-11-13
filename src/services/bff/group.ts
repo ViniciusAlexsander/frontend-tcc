@@ -5,6 +5,10 @@ export type PostNewGroupRequest = {
   description: string;
 };
 
+export type DeleteGroupRequest = {
+  groupId: string;
+};
+
 export async function postNewGroup({
   title,
   description,
@@ -13,4 +17,8 @@ export async function postNewGroup({
     title,
     description,
   });
+}
+
+export async function deleteGroup({ groupId }: DeleteGroupRequest) {
+  await api.delete(`groups/${groupId}`);
 }

@@ -403,8 +403,8 @@ export function ModalDetalhesFilme({
           >
             {session.isAdmin && (
               <Button
-                sx={{ backgroundColor: theme.palette.error.main }}
                 variant="contained"
+                color="error"
                 size="large"
                 onClick={() => handleClickDeleteSession(session.id)}
               >
@@ -461,11 +461,11 @@ export function ModalDetalhesFilme({
                   session?.users.filter((e) => e.id === user.id).length > 0 && (
                     <LoadingButton
                       variant="contained"
+                      color="error"
                       size="large"
                       onClick={() => handleClickLeaveSession(session.id)}
                       loading={loadingButton}
                       loadingPosition="start"
-                      startIcon={<GroupAddSharp />}
                     >
                       Sair da sessão
                     </LoadingButton>
