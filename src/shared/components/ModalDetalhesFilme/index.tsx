@@ -29,7 +29,7 @@ import {
   stringToColor,
   minutosParaHoras,
 } from "../../utils/utils";
-import { joinSession } from "../../../services/bff/session";
+import { joinSession, leaveSession } from "../../../services/bff/session";
 import { RotasEnum } from "../../utils/rotas";
 import {
   findOneUserMovie,
@@ -95,13 +95,13 @@ export function ModalDetalhesFilme({
 
   const isSessionOpen = dayjs().isBefore(dayjs(session.sessionDay));
   const isMobile = useMediaQuery(theme.breakpoints.only("xs"));
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, user } = useContext(AuthContext);
 
   useEffect(() => {
     if (movie?.id && open && isAuthenticated) {
       getUserMovieInfo(movie.id);
     }
-  }, [open]);
+  }, [isAuthenticated, movie.id, open]);
 
   const handleClickJoinSession = async (sessionId: string) => {
     try {
@@ -117,6 +117,28 @@ export function ModalDetalhesFilme({
     } catch (error) {
       setAlert({
         message: "Erro ao entrar na sessão, tente novamente mais tarde",
+        open: true,
+        severity: "error",
+      });
+    } finally {
+      setLoadingButton(false);
+    }
+  };
+
+  const handleClickLeaveSession = async (sessionId: string) => {
+    try {
+      setLoadingButton(true);
+      await leaveSession({ sessionId });
+      setAtualizaParticipantes(true);
+
+      setAlert({
+        message: "Você saiu da sessão",
+        open: true,
+        severity: "success",
+      });
+    } catch (error) {
+      setAlert({
+        message: "Erro ao sair da sessão, tente novamente mais tarde",
         open: true,
         severity: "error",
       });
@@ -371,18 +393,35 @@ export function ModalDetalhesFilme({
                   Participantes
                 </Typography>
 
-                {isSessionOpen && (
-                  <LoadingButton
-                    variant="contained"
-                    size="large"
-                    onClick={() => handleClickJoinSession(session.id)}
-                    loading={loadingButton}
-                    loadingPosition="start"
-                    startIcon={<GroupAddSharp />}
-                  >
-                    Participar da sessão
-                  </LoadingButton>
-                )}
+                {isSessionOpen &&
+                  !(
+                    session?.users.filter((e) => e.id === user.id).length > 0
+                  ) && (
+                    <LoadingButton
+                      variant="contained"
+                      size="large"
+                      onClick={() => handleClickJoinSession(session.id)}
+                      loading={loadingButton}
+                      loadingPosition="start"
+                      startIcon={<GroupAddSharp />}
+                    >
+                      Participar da sessão
+                    </LoadingButton>
+                  )}
+
+                {isSessionOpen &&
+                  session?.users.filter((e) => e.id === user.id).length > 0 && (
+                    <LoadingButton
+                      variant="contained"
+                      size="large"
+                      onClick={() => handleClickLeaveSession(session.id)}
+                      loading={loadingButton}
+                      loadingPosition="start"
+                      startIcon={<GroupAddSharp />}
+                    >
+                      Sair da sessão
+                    </LoadingButton>
+                  )}
               </Box>
               <Grid container item xs={12} mt={{ xs: 2, sm: 4 }}>
                 {session?.users?.length > 0 && (

@@ -84,6 +84,10 @@ export default function DetalheGrupo({ id }: DetalheGrupoProps) {
 
   useEffect(() => {
     if (!openModalNovoMembro) getGroupDetails();
+
+    return () => {
+      setAtualizaParticipantes(false);
+    };
   }, [id, openModalNovoMembro, atualizaParticipante]);
 
   const getGroupDetails = async () => {

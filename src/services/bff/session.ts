@@ -17,6 +17,10 @@ export type IJoinSessionRequest = {
   sessionId: string;
 };
 
+export type ILeaveSessionRequest = {
+  sessionId: string;
+};
+
 export type IFindGroupSessionsResponse = {
   id: string;
   movieId: string;
@@ -113,7 +117,11 @@ export async function findGroupSessions({
 }
 
 export async function joinSession({ sessionId }: IJoinSessionRequest) {
-  await api.post("/sessions/join", {
+  await api.post("/sessions-users", {
     sessionId,
   });
+}
+
+export async function leaveSession({ sessionId }: ILeaveSessionRequest) {
+  await api.delete(`/sessions-users/${sessionId}`);
 }
