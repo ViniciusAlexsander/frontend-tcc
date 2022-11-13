@@ -9,7 +9,7 @@ export const findByName = (names: string[]) => {
   });
 };
 
-export const movieProvidersOptions = [
+const movieProviders = [
   {
     display_priority: 0,
     logo_path: "/t2yyOv40HZeVlLjYsCsPHnWLk4W.jpg",
@@ -113,3 +113,8 @@ export const movieProvidersOptions = [
     provider_id: 484,
   },
 ];
+
+// exportar em ordem de alfabética
+export const movieProvidersOptions = movieProviders.sort((a, b) =>
+  a.provider_name.localeCompare(b.provider_name)
+);
