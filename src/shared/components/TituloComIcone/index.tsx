@@ -11,10 +11,11 @@ export function TituloComIcone({ icon, titulo }: TituloComIconeProps) {
   return (
     <Grid container>
       <Grid item xs={12}>
-        <Box display="flex" alignItems="center" mb={2}>
+        <Box display="flex" alignItems="center" mb={1.2}>
           <Box
             display="flex"
             alignItems="center"
+            color="primary.main"
             sx={{
               marginRight: 2,
               "& svg": {
@@ -24,7 +25,7 @@ export function TituloComIcone({ icon, titulo }: TituloComIconeProps) {
           >
             {icon}
           </Box>
-          <Typography variant="h4">{titulo}</Typography>
+          <Typography variant="h5" fontWeight={700}>{titulo}</Typography>
         </Box>
         <Divider />
       </Grid>

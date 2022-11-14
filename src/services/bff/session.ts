@@ -9,11 +9,19 @@ export type ICreateGroupSessionRequest = {
   sessionDay: Dayjs;
 };
 
+export type IDeleteGroupSessionRequest = {
+  sessionId: string;
+};
+
 export type IFindGroupSessionsRequest = {
   groupId: string;
 };
 
 export type IJoinSessionRequest = {
+  sessionId: string;
+};
+
+export type ILeaveSessionRequest = {
   sessionId: string;
 };
 
@@ -55,6 +63,12 @@ export async function createGroupSession({
     sessionDay,
   });
   return data;
+}
+
+export async function deleteGroupSession({
+  sessionId,
+}: IDeleteGroupSessionRequest) {
+  return await api.delete(`/sessions/${sessionId}`);
 }
 
 export async function findGroupSessions({
@@ -113,7 +127,11 @@ export async function findGroupSessions({
 }
 
 export async function joinSession({ sessionId }: IJoinSessionRequest) {
-  await api.post("/sessions/join", {
+  await api.post("/sessions-users", {
     sessionId,
   });
+}
+
+export async function leaveSession({ sessionId }: ILeaveSessionRequest) {
+  return await api.delete(`/sessions-users/${sessionId}`);
 }

@@ -44,12 +44,10 @@ export function HeaderMeusFilmes({
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
         <TituloComIcone
-          titulo="Pesquise em sua lista de filmes"
+          titulo="PESQUISE EM SUA LISTA DE FILMES"
           icon={<Search />}
         />
-      </Grid>
       <Grid item xs={12}>
         <FormControl fullWidth>
           <InputLabel id="status-label">Status do filme</InputLabel>

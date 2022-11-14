@@ -9,9 +9,9 @@ const theme = createTheme({
     },
     primary: {
       light: "#9BA2E0",
-      main: "#7179C9",
-      dark: "#353FA0",
-      // light: "#7179C9",
+      main: "#353FA0",
+      dark: "#7179C9",
+      // light: "#",
       // main: "#353FA0",
       // dark: "#1E2888",
       contrastText: "#fff",
@@ -42,16 +42,19 @@ const theme = createTheme({
             fontSize: "1.5rem",
           },
         },
+        h5: {
+          fontSize: "1.8rem",
+        },
       },
     },
     MuiButton: {
       styleOverrides: {
-        root: {
-          backgroundColor: "#353FA0",
-          ":hover": {
-            backgroundColor: "#1E2888",
-          },
-        },
+        // contained: {
+        //   backgroundColor: "#353FA0",
+        //   ":hover": {
+        //     backgroundColor: "#1E2888",
+        //   },
+        // },
       },
     },
     MuiTooltip: {

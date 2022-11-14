@@ -1,4 +1,5 @@
 import { useContext, useState } from "react";
+import Image from "next/image";
 import Router from "next/router";
 import {
   Box,
@@ -83,9 +84,13 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
               textAlign: "center",
             }}
           >
-            <Typography variant="h5" fontWeight={700} noWrap component="div">
-              CINE.REPO
-            </Typography>
+            <Image
+              width={220}
+              height={50}
+              src="/logo-sem-borda.png"
+              objectFit="cover"
+              alt="Logo CINEFAN"
+            />
           </Box>
           <Divider />
           <Box>
@@ -172,9 +177,20 @@ export const MenuLateral: React.FC<MenuLateralProps> = ({ children }) => {
             >
               <Menu />
             </IconButton>
-            <Typography variant="h6" noWrap component="div">
-              CINE.REPO
-            </Typography>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              width="75%"
+            >
+              <Image
+                width={220}
+                height={50}
+                src="/logo-sem-borda.png"
+                objectFit="cover"
+                alt="Logo CINEFAN"
+              />
+            </Box>
           </Toolbar>
         </AppBar>
 

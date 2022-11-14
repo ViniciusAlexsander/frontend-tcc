@@ -26,9 +26,9 @@ export default function Grupos() {
   return (
     <>
       <ModalNovoGrupo open={openModalNovoGrupo} handleClose={handleClose} />
-      <Grid container spacing={2} padding={2}>
+      <Grid container spacing={2}>
         <Grid item xs={12}>
-          <TituloComIcone titulo="Grupos" icon={<People />} />
+          <TituloComIcone titulo="GRUPOS" icon={<People />} />
         </Grid>
         <Grid
           item

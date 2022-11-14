@@ -1,74 +1,29 @@
 <h1 align="center">
-    <img alt="NextLevelWeek" title="#NextLevelWeek" src="./assets/banner.png" />
+    <img alt="CINEFAN" title="#CINEFAN" src="./assets/banner-com-img-brilho-na-img.png" />
 </h1>
 
-<h4 align="center"> 
-	CINEFAN
-</h4>
+## 🎬 Sobre o projeto
 
-<p align="center">
-  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/tgmarinho/nlw1?color=%2304D361">
+CINEFAN é um site que apresenta um repositório de informações de filmes. Você pode registrar seus filmes favoritos, filmes que já assistiu e descobrir inúmeros outros através do filtro presente no site.
 
-  <img alt="Repository size" src="https://img.shields.io/github/repo-size/tgmarinho/nlw1">
+Os usuários terão acesso a aplicação mobile, onde poderão:
 
-  	
-  <a href="https://www.twitter.com/tgmarinho/">
-    <img alt="Siga no Twitter" src="https://img.shields.io/twitter/url?url=https%3A%2F%2Fgithub.com%2Ftgmarinho%2Fnlw1">
-  </a>
-	
-  
-  <a href="https://github.com/tgmarinho/nlw1/commits/master">
-    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/tgmarinho/nlw1">
-  </a>
+- Usuário sem cadastro:
+  - Ver os filmes mais populares, filmes que estão no cinema e os próximos lançamentos
+  - Ver os detalhes dos filmes, como gênero, duração, sinopse, elenco e onde ele está disponível
+  - Pesquisar por filmes utilizando a busca avançada
+  - Sortear um filme para ser assistido
+  - Se cadastrar na plataforma
+- Usuário cadastrado, além das funcionalidades para os usuários sem cadastro, também é possível:
+  - Salvar filmes como favoritos
+  - Salvar filmes para serem assistidos
+  - Salvar filmes já assistidos
+  - Criar e participar de grupos
+    - E ao entrar em um grupo você pode criar ou participar de sessões
 
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen">
-   <a href="https://github.com/tgmarinho/nlw1/stargazers">
-    <img alt="Stargazers" src="https://img.shields.io/github/stars/tgmarinho/nlw1?style=social">
-  </a>
-</p>
+Este repositório é o front-end do projeto, acesse, também, o [back-end](https://github.com/ViniciusAlexsander/backend-tcc/).
 
-
-## 💻 Sobre o projeto
-
-♻️ Ecoleta - é uma forma de conectar empresas e entidades de coleta de resíduos orgânicos e inorgânicos as pessoas que precisam descartar seus resíduos de maneira ecológica.
-
-As empresas ou entidades poderão se cadastrar na plataforma web enviando:
-- uma imagem do ponto de coleta
-- nome da entidade, email e whatsapp
-- e o endereço para que ele possa aparecer no mapa
-- além de selecionar um ou mais ítens de coleta: 
-  - lâmpadas
-  - pilhas e baterias
-  - papéis e papelão
-  - resíduos eletrônicos
-  - resíduos orgânicos
-  - óleo de cozinha
-
-Os usuários terão acesso ao aplicativo móvel, onde poderão:
-- navegar pelo mapa para ver as instituições cadastradas
-- entrar em contato com a entidade através do E-mail ou do WhatsApp
-
-Projeto desenvolvido durante a **NLW - Next Level Week** oferecida pela [Rocketseat](rs).
-O NLW é uma experiência online com muito conteúdo prático, desafios e hacks onde o conteúdo fica disponível durante uma semana.
-
-
-## 🎨 Layout
-
-O layout da aplicação está disponível no Wireframe.cc:
-
-<a href="https://wireframe.cc/pro/pp/635115ec2575591">
-  <img alt="Made by tgmarinho" src="https://img.shields.io/badge/Acessar%20Layout-Wireframe-brightgreen">
-</a>
-
-### Web
-
-<p align="center" style="display: flex; align-items: flex-start; justify-content: center;">
-  <img alt="NextLevelWeek" title="#NextLevelWeek" src="./assets/web.svg" width="400px">
-
-  <img alt="NextLevelWeek" title="#NextLevelWeek" src="./assets/sucesso-web.svg" width="400px">
-</p>
-
-## 🛠 Tecnologias
+## 💻 Tecnologias
 
 As seguintes ferramentas foram usadas na construção do projeto:
 
@@ -77,18 +32,39 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - [Next.JS][nextjs]
 - [TypeScript][typescript]
 
+## 🎨 Layout
+
+Foram feitos wireframes da aplicação antes do desenvolvimento, para termos uma visão geral das funcionalidades que queríamos e onde deveriam ficar. Esses wireframes podem ser acessados através do link a seguir: [Wireframes](https://wireframe.cc/pro/pp/635115ec2575591).
+
+## 📁 Estrutura de pastas
+
+A pasta “src” (acrônimo para source), contém as pastas mais importantes do projeto com a maior parte dos arquivos referentes ao site, criados e escritos pelos desenvolvedores.
+
+- **Context**: aqui mantivemos os arquivos que utilizam do context api, um gerenciador de estado global.
+
+- **Pages**: Nesta página estão os códigos escritos em React para as paginas
+
+- **Services**: Para a requisição de serviços externos, como o back-end, a pasta “services” contém arquivos no formato TS para a realização dessa comunicação, seguindo o padrão REST.
+
+- **Components**: são trechos de código que se repetem, onde nenhuma (ou pouca informação) é diferente, e podem ser utilizados em mais de uma página.
+
+- **Models**: Nesta pasta estão os models dos objetos que serão retornados das requisições aos serviços externos.
+
+- **Utils**: Responsável por manter códigos com funções auxiliares
+
+- **Styles**: Responsável por manter arquivos de estilo e o arquivo de configuração do tema da aplicação.
 
 ## 🚀 Como executar o projeto
 
-💡É necessário que o [Back End](https://github.com/ViniciusAlexsander/backend-tcc) esteja sendo executado para funcionar.
+💡 É necessário que o [back-end](https://github.com/ViniciusAlexsander/backend-tcc) esteja sendo executado para funcionar.
 
-### Pré-requisitos
+### 📋 Pré-requisitos
 
 Antes de começar, você vai precisar ter instalado em sua máquina as seguintes ferramentas:
-[Git](https://git-scm.com), [Node.js][nodejs]. 
+[Git](https://git-scm.com), [Node.js][nodejs].
 Além disto é bom ter um editor para trabalhar com o código como [VSCode][vscode]
 
-### 🧭 Rodando a aplicação web (Front End)
+### 🧭 Rodando o front-end (aplicação web)
 
 ```bash
 # Clone este repositório
@@ -100,7 +76,7 @@ $ cd frontend-tcc
 # Instale as dependências
 $ npm install
 
-# Faça uma cópia do arquivo .env.example e altere para .env.local e substitua os valores das variáveis de ambiente 
+# Faça uma cópia do arquivo .env.example e altere para .env.local e substitua os valores das variáveis de ambiente
 NEXT_PUBLIC_MOVIE_DB_API_KEY= (sua chave de api)
 NEXT_PUBLIC_URL_BFF= (url do seu backend)
 NEXT_PUBLIC_URL_MOVIES_API=https://api.themoviedb.org/3
@@ -112,20 +88,7 @@ $ npm run dev
 # A aplicação será aberta na porta:3000 - acesse http://localhost:3000
 ```
 
-## 😯 Como contribuir para o projeto
-
-1. Faça um **fork** do projeto.
-2. Crie uma nova branch com as suas alterações: `git checkout -b my-feature`
-3. Salve as alterações e crie uma mensagem de commit contando o que você fez: `git commit -m "feature: My new feature"`
-4. Envie as suas alterações: `git push origin my-feature`
-> Caso tenha alguma dúvida confira este [guia de como contribuir no GitHub](https://github.com/firstcontributions/first-contributions)
-
-
-## 📝 Licença
-
-Este projeto esta sobe a licença MIT.
-
-Feito com 💜 por [Nayla Gomes](https://www.linkedin.com/in/naygo/) 👩‍💻 e [Vinicius Marinho](https://www.linkedin.com/in/vinicius-alexsander-lima-marinho/).
+Feito com 💜 por [Nayla Gomes 👩‍💻](https://www.linkedin.com/in/naygo/) e [Vinicius Marinho 👨‍💻](https://www.linkedin.com/in/vinicius-alexsander-lima-marinho/).
 
 [nodejs]: https://nodejs.org/
 [typescript]: https://www.typescriptlang.org/

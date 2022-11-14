@@ -1,8 +1,9 @@
 import Router from "next/router";
-import { ReactNode, createContext, useState, useEffect } from "react";
+import React, { ReactNode, createContext, useState, useEffect } from "react";
 import { destroyCookie, parseCookies, setCookie } from "nookies";
 import { api } from "../services/apiClient";
 import { RotasEnum } from "../shared/utils/rotas";
+import { Snackbar, Alert, AlertProps } from "@mui/material";
 
 type User = {
   id?: string;
@@ -40,6 +41,12 @@ export const AuthContext = createContext({} as AuthContextData);
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>(null);
   const isAuthenticated = !!user;
+
+  const [alert, setAlert] = useState<{
+    open: boolean;
+    mensagem: string;
+    severity: AlertProps["severity"];
+  }>({ open: false, mensagem: "", severity: "success" });
 
   useEffect(() => {
     const { "nextauth.token": token } = parseCookies();
@@ -83,7 +90,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       Router.push(RotasEnum.INICIO);
     } catch (error) {
-      console.log(error);
+      setAlert({
+        open: true,
+        mensagem:
+          error.response.data.message ||
+          "Erro ao realizar login, tente novamente mais tarde",
+        severity: "error",
+      });
     }
   }
 
@@ -95,8 +108,33 @@ export function AuthProvider({ children }: AuthProviderProps) {
     typeof window !== "undefined" && Router.push(RotasEnum.LOGIN);
   }
 
+  const handleClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setAlert({ open: false, mensagem: "", severity: "success" });
+  };
+
   return (
     <AuthContext.Provider value={{ signIn, signOut, isAuthenticated, user }}>
+      <Snackbar
+        open={alert.open}
+        autoHideDuration={3000}
+        onClose={handleClose}
+        anchorOrigin={{ horizontal: "right", vertical: "top" }}
+      >
+        <Alert
+          severity={alert.severity}
+          sx={{ width: "100%" }}
+          onClose={handleClose}
+        >
+          {alert.mensagem}
+        </Alert>
+      </Snackbar>
       {children}
     </AuthContext.Provider>
   );

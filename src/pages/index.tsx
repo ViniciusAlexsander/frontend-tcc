@@ -56,9 +56,9 @@ export default function Home({
   };
 
   return (
-    <Stack spacing={2} sx={{ margin: 1 }}>
+    <Stack spacing={2}>
       <TituloComIcone
-        titulo="Seja bem-vindo!"
+        titulo="WELCOME!"
         icon={<LocalMovies />}
       />
       <Box>

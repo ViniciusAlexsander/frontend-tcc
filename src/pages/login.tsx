@@ -1,20 +1,23 @@
 import { FormEvent, useContext, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { AuthContext } from "../context/AuthContext";
-import { Button, TextField, Grid, Typography, Link } from "@mui/material";
+import { TextField, Grid, Typography, Link as MuiLink } from "@mui/material";
+import { Login as LoginIcon } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
 import { RotasEnum } from "../shared/utils/rotas";
-import { GetServerSideProps } from "next";
-import { parseCookies } from "nookies";
 import { withSSRGuest } from "../shared/utils/withSSRGuest";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const [loadingButton, setLoadingButton] = useState(false);
 
   const { signIn } = useContext(AuthContext);
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault();
+    setLoadingButton(true);
 
     const data = {
       email,
@@ -22,6 +25,7 @@ export default function Login() {
     };
 
     await signIn(data);
+    setLoadingButton(false);
   }
 
   return (
@@ -88,20 +92,25 @@ export default function Login() {
           />
         </Grid>
         <Grid item xs={12}>
-          <Button
+          <LoadingButton
             type="submit"
             variant="contained"
             size="large"
             fullWidth
             disabled={!senha || !email}
+            loading={loadingButton}
+            loadingPosition="start"
+            startIcon={<LoginIcon />}
           >
             Entrar
-          </Button>
+          </LoadingButton>
         </Grid>
         <Grid item xs={12}>
           <Typography variant="body2">
             Não possui conta?{" "}
-            <Link href={RotasEnum.CADASTRO}>Clique aqui e cadastre-se.</Link>
+            <MuiLink component={Link} href={RotasEnum.CADASTRO}>
+              Clique aqui e cadastre-se.
+            </MuiLink>
           </Typography>
         </Grid>
       </Grid>

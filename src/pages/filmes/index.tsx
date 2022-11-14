@@ -8,16 +8,14 @@ import {
 import { SentimentVeryDissatisfied, Search } from "@mui/icons-material";
 import { getDiscoverMovies } from "../../services/movies/discoverMovies";
 import { getSearchMovies } from "../../services/movies/searchMovies";
-import { sortByOptions } from "../../shared/utils/movieDiscover";
-import { getRandomInt, randomYear } from "../../shared/utils/utils";
-import { movieGenres } from "../../shared/utils/movieGenres";
+import { getRandomInt } from "../../shared/utils/utils";
 import { LoadingButton } from "@mui/lab";
 import { IMovie } from "../../shared/models/movies/IMovie";
 
 export default function Filmes() {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState<string | null>(null);
-  const [sortBy, setSortBy] = useState<string>(sortByOptions[0].value);
+  const [sortBy, setSortBy] = useState<string>(null);
   const [providers, setProviders] = useState<string[]>([]);
   const [genders, setGenders] = useState<string[]>([]);
   const [releaseYear, setReleaseYear] = useState<Date | null>(null);
@@ -46,8 +44,17 @@ export default function Filmes() {
         genders,
         releaseYear: releaseYear ? new Date(releaseYear).getFullYear() : null,
       });
-    if (randomFilm) setMovies([discoverMovies[1]]);
-    else setMovies(page > 1 ? movies.concat(discoverMovies) : discoverMovies);
+
+    if (randomFilm && discoverMovies.length > 0) {
+      const randomMovie =
+        discoverMovies[getRandomInt(0, discoverMovies.length)]; // pega filme aleatório na lista filtrada
+      setMovies([randomMovie]);
+      setTotalResults(1);
+      setTotalPages(1);
+      setLoading(false);
+      setLoadingButton(false);
+    } else setMovies(page > 1 ? movies.concat(discoverMovies) : discoverMovies);
+
     setTotalResults(totalResults);
     setTotalPages(totalPages);
     setLoading(false);
@@ -99,28 +106,17 @@ export default function Filmes() {
   };
 
   const handleClickSort = () => {
-    let randomGender = [movieGenres[getRandomInt(0, movieGenres.length)].name];
-    let randomYearResult = randomYear();
-    setGenders(randomGender);
-    setReleaseYear(randomYearResult);
     setPage(1);
-    getMovies(
-      page,
-      sortByOptions[0].value,
-      providers,
-      randomGender,
-      randomYearResult,
-      true
-    );
+    getMovies(page, sortBy, providers, genders, releaseYear, true);
   };
 
   const handleClickClean = () => {
-    setSortBy(sortByOptions[0].value);
+    setSortBy(null);
     setProviders([]);
     setGenders([]);
     setReleaseYear(null);
     setPage(1);
-    getMovies(page, sortByOptions[0].value, [], [], null);
+    getMovies(page, null, [], [], null);
   };
 
   const handleClickFilter = () => {
