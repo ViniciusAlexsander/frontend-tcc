@@ -36,7 +36,6 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 Foram feitos wireframes da aplicação antes do desenvolvimento, para termos uma visão geral das funcionalidades que queríamos e onde deveriam ficar. Esses wireframes podem ser acessados através do link a seguir: [Wireframes](https://wireframe.cc/pro/pp/635115ec2575591).
 
-
 ## 📁 Estrutura de pastas
 
 A pasta “src” (acrônimo para source), contém as pastas mais importantes do projeto com a maior parte dos arquivos referentes ao site, criados e escritos pelos desenvolvedores.
